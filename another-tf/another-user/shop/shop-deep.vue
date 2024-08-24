@@ -1,9 +1,9 @@
 <template>
 	<view class="shop-deep-container">
 
-		<BeeBack style="padding: 20rpx 0;">
-			<view style="display: flex;align-items: center;justify-content: space-between;">
-				<BeeIcon name="arrowleft" :size="34" color="#222229" style="width: fit-content;"></BeeIcon>
+		<BeeBack>
+			<view style="display: flex;align-items: center;justify-content: space-between;padding: 20rpx 20rpx 16rpx;">
+				<BeeIcon name="arrowleft" :size="26" color="#222229" style="width: fit-content;"></BeeIcon>
 				<view style="flex: 1;display: flex;align-items: center;" @click.stop="() => {}">
 					<text style="font-weight: bold;font-size: 36rpx;">{{ title }}</text>
 					<tui-input

@@ -332,7 +332,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .graphic-verification-code-container {
 	box-sizing: border-box;
 

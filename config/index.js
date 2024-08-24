@@ -17,6 +17,8 @@ export const ANOTHER_TF_INTERFACE = 'https://nsappapi.tuanfengkeji.cn' // 线上
 export const ANOTHER_TF_UPLOAD = 'https://nsappapi.tuanfengkeji.cn/file/upload' // 线上
 // 新团蜂入驻端项目地址
 export const ANOTHER_TF_SETTLE = 'https://nsh51.tuanfengkeji.cn' // 线上
+// 团蜂商家端的接口路径
+export const MER_TF_INTERFACE = 'https://nsbusinessapi.tuanfengkeji.cn' // 线上
 
 // export const SheQu1_URL = 'https://test.zhult.com/' // 测试
 // export const SheQu_URL = 'https://test.tuanfengkeji.cn/dts-app-api' // 测试
@@ -26,6 +28,7 @@ export const ANOTHER_TF_SETTLE = 'https://nsh51.tuanfengkeji.cn' // 线上
 // export const ANOTHER_TF_INTERFACE = 'https://nsappapitest.tuanfengkeji.cn' // 测试
 // export const ANOTHER_TF_UPLOAD = 'https://nsappapitest.tuanfengkeji.cn/file/upload' // 测试
 // export const ANOTHER_TF_SETTLE = 'https://nsh51test.tuanfengkeji.cn' // 测试
+// export const MER_TF_INTERFACE = 'https://nsbusinessapitest.tuanfengkeji.cn' // 测试
 
 // export const ANOTHER_TF_INTERFACE = 'http://192.168.0.91:9107' // 本地
 // export const IMG_UPLOAD_URL = 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload' // 线上，旧团蜂文件上传接口

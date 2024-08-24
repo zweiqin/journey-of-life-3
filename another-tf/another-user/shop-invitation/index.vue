@@ -2,7 +2,7 @@
 	<view class="shop-invitation-container">
 		<BeeBack>
 			<view
-				style="display: flex;align-items: center;justify-content: space-between;padding: 32rpx 20rpx 16rpx;background-color: #f5f5f5;"
+				style="display: flex;align-items: center;justify-content: space-between;padding: 20rpx 20rpx 16rpx;background-color: #f5f5f5;"
 			>
 				<BeeIcon name="home-fill" :size="26" color="#222229" style="width: fit-content;">
 				</BeeIcon>

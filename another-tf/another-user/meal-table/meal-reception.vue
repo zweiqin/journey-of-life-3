@@ -1,12 +1,12 @@
 <template>
-	<view class="splicing-reception-container">
+	<view class="meal-reception-container">
 		<BeeBack>
 			<view
 				style="display: flex;align-items: center;justify-content: space-between;padding: 20rpx 20rpx 16rpx;background-color: #f5f5f5;"
 			>
 				<BeeIcon name="home-fill" :size="26" color="#222229" style="width: fit-content;">
 				</BeeIcon>
-				<text style="flex: 1;margin-left: -40rpx;text-align: center;">拼单接收</text>
+				<text style="flex: 1;margin-left: -40rpx;text-align: center;">点餐</text>
 			</view>
 		</BeeBack>
 		<view
@@ -108,14 +108,14 @@
 					<template #left="{ entity }">
 						<ATFShopGoods
 							:shop-id="shopId" :c-item="entity" show-sales :is-to-detail="false"
-							@add-car="(e) => $refs.refATFSpecificationScreen.open(e.shopId, e.productId, e.skuId)"
+							:show-tips="false" @add-car="(e) => $refs.refATFSpecificationScreen.open(e.shopId, e.productId, e.skuId)"
 						>
 						</ATFShopGoods>
 					</template>
 					<template #right="{ entity }">
 						<ATFShopGoods
 							:shop-id="shopId" :c-item="entity" show-sales :is-to-detail="false"
-							@add-car="(e) => $refs.refATFSpecificationScreen.open(e.shopId, e.productId, e.skuId)"
+							:show-tips="false" @add-car="(e) => $refs.refATFSpecificationScreen.open(e.shopId, e.productId, e.skuId)"
 						>
 						</ATFShopGoods>
 					</template>
@@ -138,30 +138,73 @@
 
 		<BeeWxShare ref="beeWxShareRef" @click="handleShareServe()"></BeeWxShare>
 
-		<ATFSpecificationScreen
-			ref="refATFSpecificationScreen" is-splicing :splicing-id="receivedSplicingId"
-			btn-text="加入拼单" @success="initShopCart"
-		></ATFSpecificationScreen>
-
-		<view v-if="brandDetail.shopId && receivedSplicingId">
-			<ATFStoreShopCart ref="refATFStoreShopCart" :brand-id="brandDetail.shopId"></ATFStoreShopCart>
+		<view style="position: relative;z-index: 998;">
+			<tui-dialog
+				:buttons="[]" :show="isShowMealCreateDialog" title="点餐资料填写"
+			>
+				<template #content>
+					<view>
+						<view style="display: flex;justify-content: space-between;align-items: center;">
+							<view style="font-size: 32rpx;color: #333333;">用餐人数：</view>
+							<view style="flex: 1;">
+								<tui-numberbox
+									:value="mealCreateFormData.userNum" :min="0" :max="999"
+									@change="(e) => mealCreateFormData.userNum = e.value"
+								></tui-numberbox>
+							</view>
+						</view>
+						<view style="margin-top: 28rpx;">
+							<tui-button
+								type="warning" width="50%" height="66rpx" margin="0 auto"
+								:size="28" @click="handleConfirmMealCreate"
+							>
+								确 认
+							</tui-button>
+						</view>
+					</view>
+				</template>
+			</tui-dialog>
 		</view>
 
+		<ATFMessageFill
+			ref="refATFMessageFill" :message-z-index="997" :message-mask-z-index="996"
+			@confirm="handleConfirmOrderPlace"
+		></ATFMessageFill>
+
+		<ATFSpecificationScreen
+			ref="refATFSpecificationScreen" show-select-btn :show-number="false"
+			btn-text="菜品添加" @select="handleSelectSku"
+		></ATFSpecificationScreen>
+
+		<view v-if="selectedSkuList && selectedSkuList.length">
+			<ATFStoreSkusCart
+				ref="refATFStoreSkusCart" :data="selectedSkuList" :number-disabled="isPlaceSuccess"
+				:show-btn="!isPlaceSuccess" title="点餐购物车" @empty="handleEmptyCart"
+				@sku-add="handleAddSkuCount" @sku-sub="handleSubSkuCount"
+				@click-btn="handleOrderPlace"
+			></ATFStoreSkusCart>
+		</view>
 	</view>
 </template>
 
 <script>
 import { A_TF_MAIN } from '../../../config'
 import { mapGetters } from 'vuex'
-import { updateInvitedSplicingOrdersApi, getIndexShopDetailApi, getShopProductsApi, getShopClassifyApi } from '../../../api/anotherTFInterface'
+import { getIndexShopDetailApi, getShopClassifyApi, getShopProductsApi } from '../../../api/anotherTFInterface'
+import { createShopLaOrdersApi, submitShopLaOrdersApi, dishAddShopLaOrdersDishApi, dishIncShopLaOrdersDishApi, dishDecShopLaOrdersDishApi, toEmptyShopLaOrdersDishApi } from '../../../api/anotherTFInterface/merProject'
 import { navigationAddress, setMiniprogramShareConfig } from '../../../utils'
 
 export default {
-	name: 'SplicingReception',
+	name: 'MealReception',
 	data() {
 		return {
-			receivedSplicingId: 0,
 			shopId: '',
+			isShowMealCreateDialog: true,
+			mealCreateFormData: {
+				deskId: '',
+				userNum: 1,
+				type: 1
+			},
 			brandDetail: {},
 			allTabList: [ '商品' ],
 			allTabData: [ { classifyName: '商品', classifyId: 0 } ],
@@ -180,27 +223,28 @@ export default {
 				data: [],
 				listTotal: 0,
 				isEmpty: false
-			}
+			},
+			selectedSkuList: [],
+			mealPlaceFormData: {
+				number: '',
+				remark: ''
+			},
+			isPlaceSuccess: false
 		}
 	},
 	onLoad(options) {
-		this.receivedSplicingId = Number(options.splicingId) || 0
-		this.shopId = options.shopId || ''
-		updateInvitedSplicingOrdersApi({
-			splicingId: this.receivedSplicingId
-		}).then((result) => {
-			this.getBrandDetail()
-			getShopClassifyApi({
-				shopId: this.shopId
-			}).then((res) => {
-				this.allTabData = this.allTabData.concat(res.data.filter((item) => JSON.stringify(item) !== '{}'))
-				this.allTabList = this.allTabData.map((item) => item.classifyName)
-			})
-			this.getShopGoodsTemplate()
+		this.mealCreateFormData.deskId = Number(options.did) || ''
+		this.shopId = options.id || ''
+		this.getBrandDetail()
+		getShopClassifyApi({
+			shopId: this.shopId
+		}).then((res) => {
+			this.allTabData = this.allTabData.concat(res.data.filter((item) => JSON.stringify(item) !== '{}'))
+			this.allTabList = this.allTabData.map((item) => item.classifyName)
 		})
+		this.getShopGoodsTemplate()
 	},
 	onShow() {
-		this.initShopCart()
 	},
 	computed: {
 		...mapGetters([ 'obtainLocationCount' ])
@@ -226,9 +270,54 @@ export default {
 		}
 	},
 	methods: {
-		initShopCart() {
-			if (this.brandDetail.shopId && this.$refs.refATFStoreShopCart && this.$refs.refATFStoreShopCart.$refs.refATFShopCartList) {
-				this.$refs.refATFStoreShopCart.$refs.refATFShopCartList.getShopCartData('single')
+		handleConfirmMealCreate() {
+			if (this.isPlaceSuccess) {
+				this.$showToast('已下单，无法操作')
+			} else {
+				uni.showLoading()
+				createShopLaOrdersApi(this.mealCreateFormData)
+					.then((res) => {
+						this.mealPlaceFormData.number = res.data
+						this.isShowMealCreateDialog = false
+						uni.hideLoading()
+					})
+					.catch((e) => {
+						uni.hideLoading()
+					})
+			}
+		},
+		handleSelectSku(e) {
+			if (this.isPlaceSuccess) {
+				this.$showToast('已下单，无法操作')
+			} else {
+				uni.showLoading()
+				dishAddShopLaOrdersDishApi({
+					id: e.selectedSku.skuId
+				}).then((res) => {
+					const temSku = this.selectedSkuList.find((i) => i.skuId === e.selectedSku.skuId)
+					if (temSku) {
+						temSku.number = temSku.number + 1
+					} else {
+						const selectedSku = JSON.parse(JSON.stringify(e.selectedSku))
+						this.selectedSkuList.push({
+							shopId: e.shopId,
+							productId: e.productId,
+							skuId: selectedSku.skuId,
+							productName: e.productName,
+							price: selectedSku.price,
+							originalPrice: selectedSku.originalPrice,
+							stockNumber: selectedSku.stockNumber,
+							activityType: selectedSku.activityType,
+							image: e.skuImage,
+							value: e.currentSku.map((i) => i.skuText).join('，'),
+							number: 1
+						})
+					}
+					uni.hideLoading()
+				})
+					.catch((e) => {
+						uni.hideLoading()
+					})
 			}
 		},
 		async getBrandDetail() {
@@ -245,8 +334,8 @@ export default {
 					setMiniprogramShareConfig({
 						data: {
 							event: 'sharingPageTurn',
-							webPath: `/another-tf/another-user/shop/splicing-reception?shopId=${this.shopId}&splicingId=${this.receivedSplicingId}`,
-							title: `拼单分享--${this.brandDetail.shopName}-${this.brandDetail.shopAdress}`,
+							webPath: `/another-tf/another-user/meal-table/meal-reception?id=${this.shopId}&did=${this.mealCreateFormData.deskId}`,
+							title: `点餐分享--${this.brandDetail.shopName}-${this.brandDetail.shopAdress}`,
 							imageUrl: this.common.seamingImgUrl(this.brandDetail.shopLogo)
 						}
 					})
@@ -333,15 +422,106 @@ export default {
 			if (!this.isLogin()) return
 			const data = {
 				data: {
-					title: `拼单分享--${this.brandDetail.shopName}-${this.brandDetail.shopAdress}`,
+					title: `点餐分享--${this.brandDetail.shopName}-${this.brandDetail.shopAdress}`,
 					desc: this.brandDetail.shopBrief,
-					link: `${A_TF_MAIN}/#/another-tf/another-user/shop/splicing-reception?shopId=${this.shopId}&splicingId=${this.receivedSplicingId}`,
+					link: `${A_TF_MAIN}/#/another-tf/another-user/meal-table/meal-reception?id=${this.shopId}&did=${this.mealCreateFormData.deskId}`,
 					imageUrl: this.common.seamingImgUrl(this.brandDetail.shopLogo)
 				},
 				successCb: () => { },
 				failCb: () => { }
 			}
 			this.$refs.beeWxShareRef.share(data, isQuit)
+		},
+		handleEmptyCart(cartObj) {
+			uni.showModal({
+				title: '提示',
+				content: '确认清空购物车？',
+				success: async (res) => {
+					if (res.confirm) {
+						uni.showLoading()
+						toEmptyShopLaOrdersDishApi({ id: this.mealPlaceFormData.number })
+							.then((res) => {
+								this.selectedSkuList = []
+								uni.hideLoading()
+							})
+							.catch((e) => {
+								uni.hideLoading()
+							})
+					}
+				}
+			})
+		},
+		handleAddSkuCount(skuId) {
+			uni.showLoading()
+			dishIncShopLaOrdersDishApi({ id: skuId })
+				.then((res) => {
+					const temSku = this.selectedSkuList.find((i) => i.skuId === skuId)
+					if (temSku) temSku.number = temSku.number + 1
+					uni.hideLoading()
+				})
+				.catch((e) => {
+					uni.hideLoading()
+				})
+		},
+		handleSubSkuCount(skuId) {
+			const temSku = this.selectedSkuList.find((i) => i.skuId === skuId)
+			if (temSku) {
+				if (temSku.number <= 1) {
+					uni.showModal({
+						title: '提示',
+						content: '是否将该商品移出购物车？',
+						success: async (res) => {
+							if (res.confirm) {
+								uni.showLoading()
+								dishDecShopLaOrdersDishApi({ id: skuId })
+									.then((res) => {
+										if (temSku) this.selectedSkuList.splice(this.selectedSkuList.findIndex((item) => item.skuId === skuId), 1)
+										uni.hideLoading()
+									})
+									.catch((e) => {
+										uni.hideLoading()
+									})
+							}
+						}
+					})
+				} else {
+					uni.showLoading()
+					dishDecShopLaOrdersDishApi({ id: skuId })
+						.then((res) => {
+							if (temSku) temSku.number = temSku.number - 1
+							uni.hideLoading()
+						})
+						.catch((e) => {
+							uni.hideLoading()
+						})
+				}
+			}
+		},
+		handleOrderPlace(cartObj) {
+			if (this.isPlaceSuccess) {
+				this.$showToast('已下单，无法操作')
+			} else if (cartObj.allNum) {
+				this.$refs.refATFMessageFill.isShowPopup = true
+			} else {
+				this.$showToast('请先选择商品')
+			}
+		},
+		handleConfirmOrderPlace(e) {
+			if (this.isPlaceSuccess) {
+				this.$showToast('已下单，无法操作')
+			} else {
+				this.mealPlaceFormData.remark = e.remark
+				uni.showLoading()
+				submitShopLaOrdersApi(this.mealPlaceFormData)
+					.then((res) => {
+						this.$showToast('下单成功')
+						this.isPlaceSuccess = true
+						uni.hideLoading()
+					})
+					.catch((e) => {
+						uni.hideLoading()
+					})
+			}
 		}
 	},
 	onReachBottom() {
@@ -354,13 +534,19 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.splicing-reception-container {
+.meal-reception-container {
 	min-height: 100vh;
 	box-sizing: border-box;
 
 	.tui-scroll__view {
 		/deep/ .tui-tabs__line {
 			clip-path: inset(0% 15% 0% 15% round 4rpx 4rpx 4rpx 4rpx);
+		}
+	}
+
+	/deep/ .tui-dialog {
+		.tui-dialog__ft {
+			display: none;
 		}
 	}
 }

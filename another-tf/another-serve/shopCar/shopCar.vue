@@ -1,8 +1,8 @@
 <template>
 	<view class="content">
-		<BeeBack style="padding: 10rpx 0;">
-			<view style="display: flex;align-items: center;justify-content: space-between;">
-				<BeeIcon name="arrowleft" :size="34" color="#222229" style="width: fit-content;">
+		<BeeBack>
+			<view style="display: flex;align-items: center;justify-content: space-between;padding: 20rpx 20rpx 16rpx;">
+				<BeeIcon name="arrowleft" :size="26" color="#222229" style="width: fit-content;">
 				</BeeIcon>
 				<text style="flex: 1;margin-left: -40rpx;text-align: center;">购物车</text>
 			</view>
