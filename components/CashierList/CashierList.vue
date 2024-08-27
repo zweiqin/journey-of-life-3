@@ -112,6 +112,11 @@ export default {
 			type: Number,
 			default: 0
 		},
+		// 原本需要价格判断的支付方式，可以不进行价格判断。支付方式的字符串数组
+		unnecessaryPrices: {
+			type: Array,
+			default: () => []
+		},
 		// 是否显示，用于默认某一个支付
 		show: {
 			type: Boolean,
@@ -134,6 +139,7 @@ export default {
 			type: [Boolean, String, Number],
 			default: ''
 		},
+		// 通联支付
 		showTonglianPay: {
 			type: Boolean,
 			default: true
@@ -233,7 +239,7 @@ export default {
 					}
 					if (newValue === true) {
 						this.detailShopInfo = { hsbMrchId: '0' }
-						this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
+						this.paymentList.find((item) => item.paymentMode === '9').disabled = (!this.unnecessaryPrices.includes('9') && !this.pricePay) || !this.detailShopInfo.hsbMrchId
 						// if (this.paymentList.find((item) => item.paymentMode === '9').disabled && (this.paymentMode === '9')) this.handleSetDisable()
 						this.handleSetDisable()
 						this.handleNoticeFather()
@@ -242,7 +248,7 @@ export default {
 						getShopCheckListDetailApi({ shopIds: this.huiShiBaoPay })
 							.then((res) => {
 								this.detailShopInfo = res.data.shopCheckList[0] || { hsbMrchId: '' }
-								this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
+								this.paymentList.find((item) => item.paymentMode === '9').disabled = (!this.unnecessaryPrices.includes('9') && !this.pricePay) || !this.detailShopInfo.hsbMrchId
 								// if (this.paymentList.find((item) => item.paymentMode === '9').disabled && (this.paymentMode === '9')) this.handleSetDisable() // 加上该判断则是不主动选择。但当其它默认不行的时候，会被动备用选择
 								this.handleSetDisable()
 								if (!this.detailShopInfo.hsbMrchId && this.paymentList.find((item) => item.paymentMode === '9')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '9'), 1)
@@ -300,7 +306,7 @@ export default {
 								disabled: true
 							})
 						}
-						this.paymentList.find((item) => item.paymentMode === '11').disabled = !this.pricePay || !this.voucherPay.isCanVoucher
+						this.paymentList.find((item) => item.paymentMode === '11').disabled = (!this.unnecessaryPrices.includes('11') && !this.pricePay) || !this.voucherPay.isCanVoucher
 						// if (this.paymentList.find((item) => item.paymentMode === '11').disabled && (this.paymentMode === '11')) this.handleSetDisable()
 						this.handleSetDisable()
 						this.handleNoticeFather()
@@ -329,7 +335,7 @@ export default {
 					getPricePlatformAllApi({})
 						.then((res) => {
 							this.pricePlatformInfo = res.data
-							this.paymentList.find((item) => item.paymentMode === '7').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.commissionPrice)
+							this.paymentList.find((item) => item.paymentMode === '7').disabled = (!this.unnecessaryPrices.includes('7') && !this.pricePay) || (this.pricePay > this.pricePlatformInfo.commissionPrice)
 							if (this.paymentList.find((item) => item.paymentMode === '7').disabled && (this.paymentMode === '7')) this.handleSetDisable()
 							this.handleNoticeFather()
 							uni.hideLoading()
@@ -364,7 +370,7 @@ export default {
 					getPricePlatformAllApi({})
 						.then((res) => {
 							this.pricePlatformInfo = res.data
-							this.paymentList.find((item) => item.paymentMode === '5').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.rechargePrice)
+							this.paymentList.find((item) => item.paymentMode === '5').disabled = (!this.unnecessaryPrices.includes('5') && !this.pricePay) || (this.pricePay > this.pricePlatformInfo.rechargePrice)
 							if (this.paymentList.find((item) => item.paymentMode === '5').disabled && (this.paymentMode === '5')) this.handleSetDisable()
 							this.handleNoticeFather()
 							uni.hideLoading()
@@ -399,7 +405,7 @@ export default {
 					getPricePlatformAllApi({})
 						.then((res) => {
 							this.pricePlatformInfo = res.data
-							this.paymentList.find((item) => item.paymentMode === '8').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.beeCoinPrice)
+							this.paymentList.find((item) => item.paymentMode === '8').disabled = (!this.unnecessaryPrices.includes('8') && !this.pricePay) || (this.pricePay > this.pricePlatformInfo.beeCoinPrice)
 							if (this.paymentList.find((item) => item.paymentMode === '8').disabled && (this.paymentMode === '8')) this.handleSetDisable()
 							this.handleNoticeFather()
 							uni.hideLoading()
@@ -436,7 +442,7 @@ export default {
 						.then((res) => {
 							// console.log(3333)
 							this.priceShopInfo = res.data
-							this.paymentList.find((item) => item.paymentMode === '6').disabled = !this.pricePay || (this.pricePay > this.priceShopInfo.current)
+							this.paymentList.find((item) => item.paymentMode === '6').disabled = (!this.unnecessaryPrices.includes('6') && !this.pricePay) || (this.pricePay > this.priceShopInfo.current)
 							if (this.paymentList.find((item) => item.paymentMode === '6').disabled && (this.paymentMode === '6')) this.handleSetDisable()
 							this.handleNoticeFather()
 							uni.hideLoading()
@@ -465,39 +471,39 @@ export default {
 					}
 					if (this.huiShiBaoPay) {
 						if (this.paymentList.find((item) => item.paymentMode === '9')) {
-							this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
+							this.paymentList.find((item) => item.paymentMode === '9').disabled = (!this.unnecessaryPrices.includes('9') && !this.pricePay) || !this.detailShopInfo.hsbMrchId
 							if (this.paymentList.find((item) => item.paymentMode === '9').disabled && (this.paymentMode === '9')) this.handleSetDisable()
 						}
 					} else if (!this.huiShiBaoPay && (this.paymentMode === '9')) {
 						this.handleSetDisable()
 					}
 					if (this.voucherPay.voucherTotalAll) {
-						this.paymentList.find((item) => item.paymentMode === '11').disabled = !this.pricePay || !this.voucherPay.isCanVoucher
+						this.paymentList.find((item) => item.paymentMode === '11').disabled = (!this.unnecessaryPrices.includes('11') && !this.pricePay) || !this.voucherPay.isCanVoucher
 						if (this.paymentList.find((item) => item.paymentMode === '11').disabled && (this.paymentMode === '11')) this.handleSetDisable()
 					} else if (!this.voucherPay.voucherTotalAll && (this.paymentMode === '11')) {
 						this.handleSetDisable()
 					}
 					if (this.showCommissionPay) {
-						this.paymentList.find((item) => item.paymentMode === '7').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.commissionPrice)
+						this.paymentList.find((item) => item.paymentMode === '7').disabled = (!this.unnecessaryPrices.includes('7') && !this.pricePay) || (this.pricePay > this.pricePlatformInfo.commissionPrice)
 						if (this.paymentList.find((item) => item.paymentMode === '7').disabled && (this.paymentMode === '7')) this.handleSetDisable()
 					} else if (!this.showCommissionPay && (this.paymentMode === '7')) {
 						this.handleSetDisable()
 					}
 					if (this.showPlatformPay) {
-						this.paymentList.find((item) => item.paymentMode === '5').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.rechargePrice)
+						this.paymentList.find((item) => item.paymentMode === '5').disabled = (!this.unnecessaryPrices.includes('5') && !this.pricePay) || (this.pricePay > this.pricePlatformInfo.rechargePrice)
 						if (this.paymentList.find((item) => item.paymentMode === '5').disabled && (this.paymentMode === '5')) this.handleSetDisable()
 					} else if (!this.showPlatformPay && (this.paymentMode === '5')) {
 						this.handleSetDisable()
 					}
 					if (this.showTransactionPay) {
-						this.paymentList.find((item) => item.paymentMode === '8').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.beeCoinPrice)
+						this.paymentList.find((item) => item.paymentMode === '8').disabled = (!this.unnecessaryPrices.includes('8') && !this.pricePay) || (this.pricePay > this.pricePlatformInfo.beeCoinPrice)
 						if (this.paymentList.find((item) => item.paymentMode === '8').disabled && (this.paymentMode === '8')) this.handleSetDisable()
 					} else if (!this.showTransactionPay && (this.paymentMode === '8')) {
 						this.handleSetDisable()
 					}
 					if (this.shopIdPay) { // pricePay（明显直接）依赖shopIdPay，所以pricePay放后面
 						if (this.paymentList.find((item) => item.paymentMode === '6')) { // 因为pricePay放后面，所以上面的shopIdPay的监听的同步代码里必然会有该项。这里严谨点
-							this.paymentList.find((item) => item.paymentMode === '6').disabled = !this.pricePay || (this.pricePay > this.priceShopInfo.current)
+							this.paymentList.find((item) => item.paymentMode === '6').disabled = (!this.unnecessaryPrices.includes('6') && !this.pricePay) || (this.pricePay > this.priceShopInfo.current)
 							if (this.paymentList.find((item) => item.paymentMode === '6').disabled && (this.paymentMode === '6')) this.handleSetDisable()
 						}
 					} else if (!this.shopIdPay && (this.paymentMode === '6')) {
@@ -564,14 +570,14 @@ export default {
 			})
 			if (this.huiShiBaoPay === true) {
 				this.detailShopInfo = { hsbMrchId: '0' }
-				this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
+				this.paymentList.find((item) => item.paymentMode === '9').disabled = (!this.unnecessaryPrices.includes('9') && !this.pricePay) || !this.detailShopInfo.hsbMrchId
 				this.handleSetDisable()
 				this.handleNoticeFather()
 			} else {
 				getShopCheckListDetailApi({ shopIds: this.huiShiBaoPay })
 					.then((res) => {
 						this.detailShopInfo = res.data.shopCheckList[0] || { hsbMrchId: '' }
-						this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
+						this.paymentList.find((item) => item.paymentMode === '9').disabled = (!this.unnecessaryPrices.includes('9') && !this.pricePay) || !this.detailShopInfo.hsbMrchId
 						this.handleSetDisable()
 						if (!this.detailShopInfo.hsbMrchId && this.paymentList.find((item) => item.paymentMode === '9')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '9'), 1)
 						this.handleNoticeFather()
@@ -596,7 +602,7 @@ export default {
 				icon: require('../../static/images/user/pay/daijinquan.png'),
 				disabled: true
 			})
-			this.paymentList.find((item) => item.paymentMode === '11').disabled = !this.pricePay || !this.voucherPay.isCanVoucher
+			this.paymentList.find((item) => item.paymentMode === '11').disabled = (!this.unnecessaryPrices.includes('11') && !this.pricePay) || !this.voucherPay.isCanVoucher
 			this.handleSetDisable()
 			this.handleNoticeFather()
 		}
@@ -629,13 +635,13 @@ export default {
 				.then((res) => {
 					this.pricePlatformInfo = res.data
 					if (this.showCommissionPay) {
-						this.paymentList.find((item) => item.paymentMode === '7').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.commissionPrice)
+						this.paymentList.find((item) => item.paymentMode === '7').disabled = (!this.unnecessaryPrices.includes('7') && !this.pricePay) || (this.pricePay > this.pricePlatformInfo.commissionPrice)
 					}
 					if (this.showPlatformPay) {
-						this.paymentList.find((item) => item.paymentMode === '5').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.rechargePrice)
+						this.paymentList.find((item) => item.paymentMode === '5').disabled = (!this.unnecessaryPrices.includes('5') && !this.pricePay) || (this.pricePay > this.pricePlatformInfo.rechargePrice)
 					}
 					if (this.showTransactionPay) {
-						this.paymentList.find((item) => item.paymentMode === '8').disabled = !this.pricePay || (this.pricePay > this.pricePlatformInfo.beeCoinPrice)
+						this.paymentList.find((item) => item.paymentMode === '8').disabled = (!this.unnecessaryPrices.includes('8') && !this.pricePay) || (this.pricePay > this.pricePlatformInfo.beeCoinPrice)
 					}
 					this.handleSetDisable()
 					this.handleNoticeFather()
@@ -651,7 +657,7 @@ export default {
 			getRechargeTotalCustomersApi({ shopId: this.shopIdPay })
 				.then((res) => {
 					this.priceShopInfo = res.data
-					this.paymentList.find((item) => item.paymentMode === '6').disabled = !this.pricePay || (this.pricePay > this.priceShopInfo.current)
+					this.paymentList.find((item) => item.paymentMode === '6').disabled = (!this.unnecessaryPrices.includes('6') && !this.pricePay) || (this.pricePay > this.priceShopInfo.current)
 					this.handleSetDisable()
 					this.handleNoticeFather()
 				})
@@ -664,7 +670,7 @@ export default {
 			// this.paymentMode = ''
 			// if (this.huiShiBaoPay) {
 			// 	if (this.paymentList.find((item) => item.paymentMode === '9')) {
-			// 		this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
+			// 		this.paymentList.find((item) => item.paymentMode === '9').disabled = (!this.unnecessaryPrices.includes('9') && !this.pricePay) || !this.detailShopInfo.hsbMrchId
 			// 		if (!this.paymentList.find((item) => item.paymentMode === '9').disabled) this.paymentMode = '9'
 			// 	}
 			// } else if (this.showTonglianPay) {
@@ -674,7 +680,7 @@ export default {
 			// 	}
 			// } else if (this.voucherPay.voucherTotalAll) {
 			// 	if (this.paymentList.find((item) => item.paymentMode === '11')) {
-			// 		this.paymentList.find((item) => item.paymentMode === '11').disabled = !this.pricePay || !this.voucherPay.isCanVoucher
+			// 		this.paymentList.find((item) => item.paymentMode === '11').disabled = (!this.unnecessaryPrices.includes('11') && !this.pricePay) || !this.voucherPay.isCanVoucher
 			// 		if (!this.paymentList.find((item) => item.paymentMode === '11').disabled) this.paymentMode = '11'
 			// 	}
 			// } else {
@@ -696,7 +702,7 @@ export default {
 			// this.paymentMode = ''
 			// if (this.voucherPay.voucherTotalAll) {
 			// 	if (this.paymentList.find((item) => item.paymentMode === '11')) {
-			// 		this.paymentList.find((item) => item.paymentMode === '11').disabled = !this.pricePay || !this.voucherPay.isCanVoucher
+			// 		this.paymentList.find((item) => item.paymentMode === '11').disabled = (!this.unnecessaryPrices.includes('11') && !this.pricePay) || !this.voucherPay.isCanVoucher
 			// 		if (!this.paymentList.find((item) => item.paymentMode === '11').disabled) this.paymentMode = '11'
 			// 	}
 			// }
@@ -708,7 +714,7 @@ export default {
 			// }
 			// if (this.huiShiBaoPay) {
 			// 	if (this.paymentList.find((item) => item.paymentMode === '9')) {
-			// 		this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
+			// 		this.paymentList.find((item) => item.paymentMode === '9').disabled = (!this.unnecessaryPrices.includes('9') && !this.pricePay) || !this.detailShopInfo.hsbMrchId
 			// 		if (!this.paymentList.find((item) => item.paymentMode === '9').disabled) this.paymentMode = '9'
 			// 	}
 			// }
@@ -716,7 +722,7 @@ export default {
 			this.paymentMode = ''
 			if (this.huiShiBaoPay) {
 				if (this.paymentList.find((item) => item.paymentMode === '9')) {
-					this.paymentList.find((item) => item.paymentMode === '9').disabled = !this.pricePay || !this.detailShopInfo.hsbMrchId
+					this.paymentList.find((item) => item.paymentMode === '9').disabled = (!this.unnecessaryPrices.includes('9') && !this.pricePay) || !this.detailShopInfo.hsbMrchId
 					if (!this.paymentList.find((item) => item.paymentMode === '9').disabled) this.paymentMode = '9'
 				}
 			}
@@ -731,7 +737,7 @@ export default {
 			if (!this.paymentMode) {
 				if (this.voucherPay.voucherTotalAll) {
 					if (this.paymentList.find((item) => item.paymentMode === '11')) {
-						this.paymentList.find((item) => item.paymentMode === '11').disabled = !this.pricePay || !this.voucherPay.isCanVoucher
+						this.paymentList.find((item) => item.paymentMode === '11').disabled = (!this.unnecessaryPrices.includes('11') && !this.pricePay) || !this.voucherPay.isCanVoucher
 						if (!this.paymentList.find((item) => item.paymentMode === '11').disabled) this.paymentMode = '11'
 					}
 				}
@@ -770,37 +776,37 @@ export default {
 		// 支付方式点击事件
 		handleClickPaymentMode(payment) {
 			if (payment.paymentMode === '11') {
-				if (!this.pricePay) {
+				if (!this.unnecessaryPrices.includes('11') && !this.pricePay) {
 					uni.showToast({ title: this.missingPriceText, icon: 'none' })
 				} else if (!this.voucherPay.isCanVoucher) {
 					uni.showToast({ title: this.voucherPay.noVoucherText, icon: 'none' }) // 无法使用代金券支付
 				}
 			} else if (payment.paymentMode === '7') {
-				if (!this.pricePay) {
+				if (!this.unnecessaryPrices.includes('7') && !this.pricePay) {
 					uni.showToast({ title: this.missingPriceText, icon: 'none' })
 				} else if (this.pricePay > this.pricePlatformInfo.commissionPrice) {
 					uni.showToast({ title: '该余额小于支付金额，请使用其他支付方式', icon: 'none' }) // 佣金不足
 				}
 			} else if (payment.paymentMode === '5') {
-				if (!this.pricePay) {
+				if (!this.unnecessaryPrices.includes('5') && !this.pricePay) {
 					uni.showToast({ title: this.missingPriceText, icon: 'none' })
 				} else if (this.pricePay > this.pricePlatformInfo.rechargePrice) {
 					uni.showToast({ title: '该余额小于支付金额，请使用其他支付方式', icon: 'none' }) // 平台余额不足
 				}
 			} else if (payment.paymentMode === '8') {
-				if (!this.pricePay) {
+				if (!this.unnecessaryPrices.includes('8') && !this.pricePay) {
 					uni.showToast({ title: this.missingPriceText, icon: 'none' })
 				} else if (this.pricePay > this.pricePlatformInfo.beeCoinPrice) {
 					uni.showToast({ title: '该余额小于支付金额，请使用其他支付方式', icon: 'none' }) // 消费金余额不足
 				}
 			} else if (payment.paymentMode === '9') {
-				if (!this.pricePay) {
+				if (!this.unnecessaryPrices.includes('9') && !this.pricePay) {
 					uni.showToast({ title: this.missingPriceText, icon: 'none' })
 				} else if (!this.detailShopInfo.hsbMrchId) {
 					uni.showToast({ title: '该商家未开通惠市宝服务', icon: 'none' }) // 该商家未开通惠市宝服务
 				}
 			} else if (payment.paymentMode === '6') {
-				if (!this.pricePay) {
+				if (!this.unnecessaryPrices.includes('6') && !this.pricePay) {
 					uni.showToast({ title: this.missingPriceText, icon: 'none' })
 				} else if (this.pricePay > this.priceShopInfo.current) {
 					uni.showToast({ title: '该余额小于支付金额，请使用其他支付方式', icon: 'none' }) // 商家余额不足

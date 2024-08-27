@@ -241,7 +241,7 @@
 </template>
 
 <script>
-import { getShopCartApi, getCartListApi, getPricesCanvasApi, updateNumberCartGoodsApi, deleteCartGoodsApi } from '../../api/anotherTFInterface'
+import { getShopCartApi, getCartListApi, getPricesCanvasApi, updateNumberCartGoodsApi, deleteCartGoodsApi, updateEndSplicingOrdersApi } from '../../api/anotherTFInterface'
 
 export default {
 	name: 'ATFShopCartList',
@@ -269,7 +269,7 @@ export default {
 	data() {
 		return {
 			timer: '',
-			shopCartList: [], // 购物车数据，每个元素的skus必有值（已对数据处理）。但在商家购物车的情况下，有拼单就会cartUserList
+			shopCartList: [], // 购物车数据，每个元素的skus必有值（已对数据处理）。但在商家购物车的情况下，只有cartUserList，且无商品则无元素
 			isLoading: true, // 购物车是否为空
 			isFirstLoading: true
 		}
@@ -309,7 +309,6 @@ export default {
 						shopObj.rules = []
 						shopObj.currentRules = {}
 						shopObj.ids = 0
-						// cartUserList有元素就肯定是拼单，skus有元素就肯定不是拼单
 						if (shopObj.cartUserList && shopObj.cartUserList.length) {
 							shopObj.cartUserList && shopObj.cartUserList.forEach((section) => {
 								section.cartSkuList = section.cartSkuList.filter((part) => !(part.shelveState === 0))
@@ -413,21 +412,35 @@ export default {
 			}
 		},
 
-		// 用户SKU数量减
+		// 拼单用户SKU数量减
 		handleSubUserSku(shopIndex, userIndex, skuIndex) {
 			const selectSku = this.shopCartList[shopIndex].cartUserList[userIndex].cartSkuList[skuIndex]
 			if (selectSku.number <= 1) {
 				if (this.isSubDelete) {
-					uni.showModal({
-						title: '提示',
-						content: '是否将该商品移出购物车？',
-						success: async (res) => {
-							if (res.confirm) {
-								await deleteCartGoodsApi({ ids: [ selectSku.skuId ] })
-								await this.getShopCartData(this.type)
+					if (this.shopCartList.reduce((total, value) => total + value.skus.length, 0) <= 1) {
+						uni.showModal({
+							title: '提示',
+							content: '是否将该商品移出购物车，并结束拼单？',
+							success: async (res) => {
+								if (res.confirm) {
+									await deleteCartGoodsApi({ ids: [ selectSku.skuId ] })
+									await updateEndSplicingOrdersApi({ splicingId: this.shopCartList[shopIndex].splicingId })
+									await this.getShopCartData(this.type)
+								}
 							}
-						}
-					})
+						})
+					} else {
+						uni.showModal({
+							title: '提示',
+							content: '是否将该商品移出购物车？',
+							success: async (res) => {
+								if (res.confirm) {
+									await deleteCartGoodsApi({ ids: [ selectSku.skuId ] })
+									await this.getShopCartData(this.type)
+								}
+							}
+						})
+					}
 				} else {
 					return uni.showToast({ title: '亲！至少一件哦！', icon: 'none' })
 				}
@@ -439,7 +452,7 @@ export default {
 				}, 600)
 			}
 		},
-		// 用户SKU数量加
+		// 拼单用户SKU数量加
 		handleAddUserSku(shopIndex, userIndex, skuIndex) {
 			const selectSku = this.shopCartList[shopIndex].cartUserList[userIndex].cartSkuList[skuIndex]
 			if (selectSku.number >= selectSku.stockNumber) {

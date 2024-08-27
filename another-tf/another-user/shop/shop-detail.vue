@@ -25,40 +25,47 @@
 				@refresh="getBrandDetail"
 			></ATFBrandInfo>
 		</view>
-		<!-- <view style="padding: 0 30rpx;background-color: #ffffff;">
+		<view style="padding: 0 30rpx;background-color: #ffffff;">
 			<view
-			style="padding: 14rpx 0 28rpx;border-top: 1rpx dashed #dddddd;"
+				style="padding: 14rpx 0;border-top: 1rpx dashed #dddddd;"
 			>
-			<view v-if="!initiatedSplicingId" style="display: flex;align-items: center;justify-content: flex-end;">
-			<tui-button
-			type="warning" width="180rpx" height="58rpx" shape="circle"
-			plain margin="0 0 0 18rpx" bold
-			@click="handleStartSplicing"
-			>
-			发起拼单
-			</tui-button>
+				<view v-if="!initiatedSplicingId" style="display: flex;align-items: center;justify-content: flex-end;">
+					<tui-button
+						type="warning" width="180rpx" height="58rpx" shape="circle"
+						plain margin="0 0 0 18rpx" bold
+						@click="handleStartSplicing"
+					>
+						发起拼单
+					</tui-button>
+				</view>
+				<view v-else style="display: flex;align-items: center;justify-content: space-between;">
+					<view style="font-size: 36rpx;font-weight: bold;color: #007aff;">拼单进行中：</view>
+					<view style="flex: 1;display: flex;align-items: center;justify-content: flex-end;flex-wrap: wrap;">
+						<tui-button
+							type="blue" width="240rpx" height="58rpx" shape="circle"
+							plain margin="6rpx 0 6rpx 18rpx" bold
+							@click="handleCopySplicing"
+						>
+							复制拼单链接
+						</tui-button>
+						<tui-button
+							type="blue" width="180rpx" height="58rpx" shape="circle"
+							plain margin="6rpx 0 6rpx 18rpx" bold
+							@click="handleShareServe()"
+						>
+							分享拼单
+						</tui-button>
+						<tui-button
+							type="danger" width="180rpx" height="58rpx" shape="circle"
+							plain margin="6rpx 0 6rpx 18rpx" bold
+							@click="handleEndSplicing"
+						>
+							结束拼单
+						</tui-button>
+					</view>
+				</view>
 			</view>
-			<view v-else style="display: flex;align-items: center;justify-content: space-between;">
-			<view style="font-size: 36rpx;font-weight: bold;color: #007aff;">拼单进行中：</view>
-			<view style="display: flex;align-items: center;justify-content: flex-end;">
-			<tui-button
-			type="blue" width="180rpx" height="58rpx" shape="circle"
-			plain margin="0 0 0 18rpx" bold
-			@click="handleShareServe"
-			>
-			分享拼单
-			</tui-button>
-			<tui-button
-			type="danger" width="180rpx" height="58rpx" shape="circle"
-			plain margin="0 0 0 18rpx" bold
-			@click="handleEndSplicing"
-			>
-			结束拼单
-			</tui-button>
-			</view>
-			</view>
-			</view>
-			</view> -->
+		</view>
 
 		<!-- <view
 			style="display: flex;justify-content: space-between;align-items: center;padding: 18rpx 30rpx;margin-top: 18rpx;background-color: #ffffff;"
@@ -402,19 +409,26 @@ export default {
 			this.getShopGoodsTemplate()
 		},
 		handleStartSplicing() {
-			uni.showLoading()
-			updateStartSplicingOrdersApi({
-				shopId: this.shopId
-			}).then((res) => {
-				uni.hideLoading()
-				this.$showToast('发起成功')
-				setTimeout(() => {
-					this.initShopCart()
-				}, 1000)
-			})
-				.catch((e) => {
-					uni.hideLoading()
-				})
+			if (this.$refs.refATFStoreShopCart && this.$refs.refATFStoreShopCart.$refs.refATFShopCartList) {
+				const shopCartList = this.$refs.refATFStoreShopCart.$refs.refATFShopCartList.getShopCartListData()
+				if (shopCartList.reduce((total, value) => total + value.skus.length, 0)) {
+					uni.showLoading()
+					updateStartSplicingOrdersApi({
+						shopId: this.shopId
+					}).then((res) => {
+						uni.hideLoading()
+						this.$showToast('发起成功')
+						setTimeout(() => {
+							this.initShopCart()
+						}, 1000)
+					})
+						.catch((e) => {
+							uni.hideLoading()
+						})
+				} else {
+					this.$showToast('请先添加商品到购物车')
+				}
+			}
 		},
 		handleEndSplicing() {
 			uni.showLoading()
@@ -431,7 +445,11 @@ export default {
 					uni.hideLoading()
 				})
 		},
+		handleCopySplicing() {
+			this.$copy(`${A_TF_MAIN}/#/another-tf/another-user/shop/splicing-reception?shopId=${this.brandDetail.shopId}&splicingId=${this.initiatedSplicingId}`)
+		},
 		handleShareServe(isQuit) {
+			this.$copy(`${A_TF_MAIN}/#/another-tf/another-user/shop/splicing-reception?shopId=${this.brandDetail.shopId}&splicingId=${this.initiatedSplicingId}`)
 			if (!this.isLogin()) return
 			const data = {
 				data: {
