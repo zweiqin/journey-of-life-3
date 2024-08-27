@@ -1653,6 +1653,20 @@
         //   }
         // },
         {
+          "path": "another-user/commission-statistics/vip-user",
+          "style": {
+            "navigationBarTitleText": "会员列表",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
+          "path": "another-user/commission-statistics/my-inviter",
+          "style": {
+            "navigationBarTitleText": "我的邀请人",
+            "enablePullDownRefresh": true
+          }
+        },
+        {
           "path": "another-user/transaction-funds/transaction-operation",
           "style": {
             "navigationBarTitleText": "消费金操作",
@@ -1683,13 +1697,6 @@
           "path": "another-user/community-card/index",
           "style": {
             "navigationBarTitleText": "社区卡包"
-          }
-        },
-        {
-          "path": "another-user/commission-statistics/vip-user",
-          "style": {
-            "navigationBarTitleText": "会员列表",
-            "enablePullDownRefresh": true
           }
         },
         {

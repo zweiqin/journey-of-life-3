@@ -101,6 +101,21 @@
 							<tui-icon name="arrowright" :size="48" unit="rpx" color="#000000" margin="0 2rpx 0 16rpx"></tui-icon>
 						</view>
 					</view>
+
+					<view
+						v-if="!'hasInviter'"
+						style="display: flex;justify-content: space-between;align-items: center;padding: 34rpx 0;"
+						@click="go('/another-tf/another-user/commission-statistics/my-inviter')"
+					>
+						<view style="display: flex;align-items: center;">
+							<image
+								:src="common.seamingImgUrl('1724665107883-wodeyaoqingren.png')"
+								style="width: 36rpx;height: 36rpx;margin-right: 18rpx;" mode="widthFix"
+							/>
+							<view>我的邀请人</view>
+						</view>
+						<tui-icon name="arrowright" :size="48" unit="rpx" color="#000000" margin="0 2rpx 0 0"></tui-icon>
+					</view>
 				</view>
 			</view>
 		</view>

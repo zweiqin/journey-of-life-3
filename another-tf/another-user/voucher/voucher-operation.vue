@@ -654,7 +654,9 @@ export default {
 				}
 				if (!this.transferForm.voucherTarget) return this.$showToast('缺少转赠对象')
 				if (!this.transferForm.voucherType) return this.$showToast('缺少转赠类型')
-				if (!this.transferForm.buyerUserObj.buyerUserId) return this.$showToast('缺少赠送对象')
+				if (this.transferForm.voucherTarget === '1') {
+					if (!this.transferForm.buyerUserObj.buyerUserId) return this.$showToast('缺少赠送对象')
+				}
 				if (typeof this.currentTransferIndex === 'number') {
 					if (!this.transferForm.voucherNum) return this.$showToast('缺少代金券数量')
 				} else {
