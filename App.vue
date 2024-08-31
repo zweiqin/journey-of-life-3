@@ -214,8 +214,8 @@ export default {
 @import './app.css';
 
 .tui-badge.tui-danger.tui-badge-scale {
-  box-shadow: 0px 0 1upx #ed3f14;
-  border: 4upx solid #fff;
+  box-shadow: 0px 0 1rpx #ed3f14;
+  border: 4rpx solid #fff;
 }
 
 .tui-toast-text {
@@ -291,79 +291,79 @@ uni-rich-text img {
 }
 
 .fs4 {
-  font-size: 4upx;
+  font-size: 4rpx;
 }
 
 .fs18 {
-  font-size: 18upx;
+  font-size: 18rpx;
 }
 
 .fs20 {
-  font-size: 20upx;
+  font-size: 20rpx;
 }
 
 .fs22 {
-  font-size: 22upx;
+  font-size: 22rpx;
 }
 
 .fs24 {
-  font-size: 24upx;
+  font-size: 24rpx;
 }
 
 .fs26 {
-  font-size: 26upx;
+  font-size: 26rpx;
 }
 
 .fs28 {
-  font-size: 28upx;
+  font-size: 28rpx;
 }
 
 .fs30 {
-  font-size: 30upx;
+  font-size: 30rpx;
 }
 
 .fs32 {
-  font-size: 32upx;
+  font-size: 32rpx;
 }
 
 .fs34 {
-  font-size: 34upx;
+  font-size: 34rpx;
 }
 
 .fs36 {
-  font-size: 36upx;
+  font-size: 36rpx;
 }
 
 .fs38 {
-  font-size: 38upx;
+  font-size: 38rpx;
 }
 
 .fs40 {
-  font-size: 40upx;
+  font-size: 40rpx;
 }
 
 .fs42 {
-  font-size: 42upx;
+  font-size: 42rpx;
 }
 
 .fs44 {
-  font-size: 44upx;
+  font-size: 44rpx;
 }
 
 .fs46 {
-  font-size: 46upx;
+  font-size: 46rpx;
 }
 
 .fs48 {
-  font-size: 46upx;
+  font-size: 46rpx;
 }
 
 .fs50 {
-  font-size: 50upx;
+  font-size: 50rpx;
 }
 
 .fs60 {
-  font-size: 60upx;
+  font-size: 60rpx;
 }
 
 .fs-bold {
@@ -468,47 +468,47 @@ uni-rich-text img {
 }
 
 .mar-top-5 {
-  margin-top: 5upx;
+  margin-top: 5rpx;
 }
 
 .mar-top-10 {
-  margin-top: 10upx;
+  margin-top: 10rpx;
 }
 
 .mar-top-20 {
-  margin-top: 20upx;
+  margin-top: 20rpx;
 }
 
 .mar-top-30 {
-  margin-top: 30upx;
+  margin-top: 30rpx;
 }
 
 .mar-top-32 {
-  margin-top: 32upx;
+  margin-top: 32rpx;
 }
 
 .mar-top-36 {
-  margin-top: 36upx;
+  margin-top: 36rpx;
 }
 
 .mar-top-40 {
-  margin-top: 40upx;
+  margin-top: 40rpx;
 }
 
 .mar-top-50 {
-  margin-top: 50upx;
+  margin-top: 50rpx;
 }
 
 .mar-top-60 {
-  margin-top: 60upx;
+  margin-top: 60rpx;
 }
 
 .mar-top-70 {
-  margin-top: 70upx;
+  margin-top: 70rpx;
 }
 
 .mar-top-100 {
-  margin-top: 100upx;
+  margin-top: 100rpx;
 }
 
 .mar-top-percent40 {
@@ -520,143 +520,143 @@ uni-rich-text img {
 }
 
 .mar-left-6 {
-  margin-left: 6upx;
+  margin-left: 6rpx;
 }
 
 .mar-left-5 {
-  margin-left: 5upx;
+  margin-left: 5rpx;
 }
 
 .mar-left-10 {
-  margin-left: 10upx;
+  margin-left: 10rpx;
 }
 
 .mar-left-20 {
-  margin-left: 20upx;
+  margin-left: 20rpx;
 }
 
 .mar-left-30 {
-  margin-left: 30upx;
+  margin-left: 30rpx;
 }
 
 .mar-left-35 {
-  margin-left: 35upx;
+  margin-left: 35rpx;
 }
 
 .mar-left-40 {
-  margin-left: 40upx;
+  margin-left: 40rpx;
 }
 
 .mar-left-50 {
-  margin-left: 50upx;
+  margin-left: 50rpx;
 }
 
 .mar-left-60 {
-  margin-left: 60upx;
+  margin-left: 60rpx;
 }
 
 .mar-left-70 {
-  margin-left: 70upx;
+  margin-left: 70rpx;
 }
 
 .mar-right-10 {
-  margin-right: 10upx;
+  margin-right: 10rpx;
 }
 
 .mar-right-20 {
-  margin-right: 20upx;
+  margin-right: 20rpx;
 }
 
 .mar-right-25 {
-  margin-right: 25upx;
+  margin-right: 25rpx;
 }
 
 .mar-right-30 {
-  margin-right: 30upx;
+  margin-right: 30rpx;
 }
 
 .mar-right-35 {
-  margin-right: 35upx;
+  margin-right: 35rpx;
 }
 
 .mar-right-40 {
-  margin-right: 40upx;
+  margin-right: 40rpx;
 }
 
 .mar-right-50 {
-  margin-right: 50upx;
+  margin-right: 50rpx;
 }
 
 .pad-left-10 {
-  padding-left: 10upx;
+  padding-left: 10rpx;
 }
 
 .pad-left-20 {
-  padding-left: 20upx;
+  padding-left: 20rpx;
 }
 
 .pad-left-40 {
-  padding-left: 40upx;
+  padding-left: 40rpx;
 }
 
 .pad-right-20 {
-  padding-right: 20upx;
+  padding-right: 20rpx;
 }
 
 .pad-top-20 {
-  padding-top: 20upx;
+  padding-top: 20rpx;
 }
 
 .pad-top-40 {
-  padding-top: 40upx;
+  padding-top: 40rpx;
 }
 
 .pad-bot-20 {
-  padding-bottom: 20upx;
+  padding-bottom: 20rpx;
 }
 
 .pad-topbot-20 {
-  padding: 20upx 0upx;
+  padding: 20rpx 0rpx;
 }
 
 .pad-topbot-5 {
-  padding: 0upx 5upx;
+  padding: 0rpx 5rpx;
 }
 
 .pad-topbot-10 {
-  padding: 0upx 10upx;
+  padding: 0rpx 10rpx;
 }
 
 .pad-topbot-50 {
-  padding: 50upx 0upx;
+  padding: 50rpx 0rpx;
 }
 
 .pad-bot-20 {
-  padding-bottom: 20upx;
+  padding-bottom: 20rpx;
 }
 
 .pad-bot-30 {
-  padding-bottom: 30upx;
+  padding-bottom: 30rpx;
 }
 
 .pad-bot-40 {
-  padding-bottom: 40upx;
+  padding-bottom: 40rpx;
 }
 
 .pad-bot-100 {
-  padding-bottom: 100upx;
+  padding-bottom: 100rpx;
 }
 
 .pad-bot-140 {
-  padding-bottom: 140upx;
+  padding-bottom: 140rpx;
 }
 
 .bor-rad-30 {
-  border-radius: 30upx;
+  border-radius: 30rpx;
 }
 
 .bor-rad-45 {
-  border-radius: 45upx;
+  border-radius: 45rpx;
 }
 
 .bor-rad-half {
@@ -676,23 +676,23 @@ uni-rich-text img {
 }
 
 .bor-bot-line {
-  border-bottom: #c8c7cc 1upx solid;
+  border-bottom: #c8c7cc 1rpx solid;
 }
 
 .bor-line-F7F7F7 {
-  border-bottom: #f7f7f7 1upx solid;
+  border-bottom: #f7f7f7 1rpx solid;
 }
 
 .bor-line-E5E5E5 {
-  border-bottom: #e5e5e5 1upx solid;
+  border-bottom: #e5e5e5 1rpx solid;
 }
 
 .borRig-line-E5E5E5 {
-  border-right: #dddddd 2upx solid;
+  border-right: #dddddd 2rpx solid;
 }
 
 .borRig-line-20 {
-  border-bottom: #f7f7f7 20upx solid;
+  border-bottom: #f7f7f7 20rpx solid;
 }
 
 .font-color-red {
@@ -807,7 +807,7 @@ uni-rich-text img {
 }
 
 .border-bottom-Line {
-  border-bottom: 1upx solid #ededed;
+  border-bottom: 1rpx solid #ededed;
 }
 
 .decoration {

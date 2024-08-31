@@ -1,105 +1,114 @@
 <template>
 	<div class="good-evaluate-and-question-container">
-		<view class="evaQaTab flex-items flex-sp-around">
-			<view :class="{ active: activeTab === 1 }" class="evaBtn" @click="activeTab = 1">
-				<view class="tabTit">宝贝评价（{{ goodsDetail.comments.length }}）</view>
-			</view>
-			<view :class="{ active: activeTab === 2 }" class="qaBtn" @click="activeTab = 2">
-				<view class="tabTit">商品问答（{{ problemsTotal }}）</view>
-			</view>
-		</view>
 		<!-- 评价 -->
-		<view class="borRig-line-20"></view>
-		<view v-show="activeTab === 1" class="evaluate-box flex-start flex-column">
-			<view v-if="goodsDetail.comments.length > 0" class="evaluateTag-box">
-				<view class="evaluateTag-text">
-					全部({{ goodsDetail.comments.length }})
+		<view style="padding: 30rpx 20rpx;background-color: #ffffff;border-radius: 16rpx;">
+			<view style="display: flex;justify-content: space-between;align-items: center;padding: 10rpx 0;">
+				<view style="font-weight: bold;">宝贝评价</view>
+				<view
+					style="flex: 1;display: flex;justify-content: flex-end;align-items: center;"
+					@click="go(`/another-tf/another-serve/evaluateList/index?shopId=${goodsDetail.shopId}&productId=${goodsDetail.productId}&skuId=${goodsDetail.skuId}`)"
+				>
+					<view v-if="goodsDetail.comments.length" style="font-size: 24rpx;color: #999999;">
+						共{{ goodsDetail.comments.length > 100
+							? `${Math.floor(goodsDetail.comments.length / 100) * 100}+`
+							: goodsDetail.comments.length }}条评论
+					</view>
+					<tui-icon :size="22" color="#191919" name="arrowright" margin="0 0 0 4rpx"></tui-icon>
 				</view>
 			</view>
-			<view
-				v-for="(commentItem, commentIndex) in goodsDetail.comments.slice(0, 2)" :key="commentIndex"
-				class="evaluate-contentbox mar-top-30"
-			>
-				<view class="evaluate-content flex-items flex-row flex-sp-between">
-					<view class="flex-items">
-						<image class="user-headSmallImg" :src="common.seamingImgUrl(commentItem.headImage)"></image>
-						<label class="fs28 mar-left-20">{{ commentItem.name }}</label>
+			<view>
+				<view
+					v-for="(commentItem, commentIndex) in goodsDetail.comments.slice(0, 2)" :key="commentIndex"
+					style="padding-top: 24rpx;"
+				>
+					<view style="display: flex;justify-content: space-between;align-items: center;">
+						<view style="display: flex;align-items: center;">
+							<image
+								style="width: 50rpx;height: 50rpx;border-radius: 50%;"
+								:src="common.seamingImgUrl(commentItem.headImage)"
+							></image>
+							<view style="margin-left: 20rpx;font-size: 28rpx;">{{ commentItem.name }}</view>
+						</view>
+						<view style="font-size: 22rpx;color: #999999;">{{ commentItem.createTime }}</view>
 					</view>
-					<label class="font-color-999 fs22">{{ commentItem.createTime }}</label>
-				</view>
-				<view class="evaluateDes-box">
-					<label class="evaluateDes">{{ commentItem.comment }}</label>
-				</view>
-				<view v-if="commentItem.image" class="item-image-box">
-					<view v-for="(imgItem, imgIndex) in (commentItem.image.split(',') || [])" :key="imgIndex">
-						<image
-							class="img-item" :src="common.seamingImgUrl(imgItem)"
-							@click="handlePreviewImage(goodsDetail.comments[commentIndex].images, imgIndex)"
+					<view style="margin-top: 20rpx;font-size: 26rpx;">{{ commentItem.comment }}</view>
+					<view v-if="commentItem.image" style="display: flex;flex-wrap: wrap;">
+						<view
+							v-for="(imgItem, imgIndex) in commentItem.image.split(',').filter(i => i)" :key="imgIndex"
+							style="padding: 4rpx;"
 						>
-						</image>
+							<image
+								style="width: 154rpx;height: 154rpx;border-radius: 10rpx;" :src="common.seamingImgUrl(imgItem)"
+								@click="handlePreviewImage(goodsDetail.comments[commentIndex].images, imgIndex)"
+							>
+							</image>
+						</view>
 					</view>
-				</view>
-				<view class="item-line"></view>
-				<view v-if="commentItem.addComment !== ''" class="item-like-box">
-					<view class="addEvaluate">
-						<view>追加评价：{{ commentItem.addComment }}</view>
-						<view v-if="commentItem.addImages" class="item-image-box">
-							<view v-for="(itemAddImg, imgIndex) in commentItem.addImages" :key="imgIndex">
-								<image
-									class="img-item" :src="common.seamingImgUrl(itemAddImg)"
-									@click="handlePreviewImage(goodsDetail.comments[commentIndex].addImages, imgIndex)"
-								>
-								</image>
+					<view v-if="commentItem.addComment">
+						<view style="padding-top: 10rpx;">
+							<view>
+								<text style="font-size: 24rpx;color: #666666;">追加评价：</text>
+								<text style="font-size: 26rpx;">{{ commentItem.addComment }}</text>
+							</view>
+							<view v-if="commentItem.addImages && commentItem.addImages.length" style="display: flex;flex-wrap: wrap;">
+								<view v-for="(itemAddImg, imgIndex) in commentItem.addImages" :key="imgIndex" style="padding: 4rpx;">
+									<image
+										style="width: 154rpx;height: 154rpx;border-radius: 10rpx;"
+										:src="common.seamingImgUrl(itemAddImg)"
+										@click="handlePreviewImage(goodsDetail.comments[commentIndex].addImages, imgIndex)"
+									>
+									</image>
+								</view>
 							</view>
 						</view>
 					</view>
+					<view style="display: flex;align-items: center;justify-content: flex-end;padding: 14rpx 14rpx 0 0;">
+						<tui-icon
+							v-if="commentItem.ifLike === 1" :size="22" color="#c5aa7b" name="agree"
+							@click="handlePraise(commentItem.commentId, 0)"
+						></tui-icon>
+						<tui-icon
+							v-else :size="22" color="#cccccc" name="agree"
+							@click="handlePraise(commentItem.commentId, 1)"
+						></tui-icon>
+						<view style="margin-left: 28rpx;font-size: 28rpx;">{{ commentItem.likes }}</view>
+					</view>
 				</view>
-				<view class="like-box">
-					<tui-icon
-						v-if="commentItem.ifLike === 1" :size="24" color="#c5aa7b" name="agree"
-						@click="handlePraise(commentItem, 0)"
-					></tui-icon>
-					<tui-icon v-else :size="24" color="#cccccc" name="agree" @click="handlePraise(commentItem, 1)"></tui-icon>
-					<view class="like-num">{{ commentItem.likes }}</view>
-				</view>
-			</view>
-			<view
-				v-if="goodsDetail.comments.length > 0" class="moreBox"
-				@click="go(`/another-tf/another-serve/evaluateList/index?shopId=${goodsDetail.shopId}&productId=${goodsDetail.productId}&skuId=${goodsDetail.skuId}`)"
-			>
-				<label class="fs24">查看全部</label>
-				<tui-icon :size="24" color="#baa174" name="arrowright" margin="0 0 0 10upx"></tui-icon>
 			</view>
 		</view>
+
 		<!-- 问答 -->
-		<view class="borRig-line-20"></view>
-		<view v-show="activeTab === 2" class="questions">
-			<view class="questionInfo flex-items flex-row flex-sp-between">
-				<view class="infoTit">宝贝好不好，问问已买过的人</view>
+		<view style="margin-top: 26rpx;padding: 30rpx 20rpx;background-color: #ffffff;border-radius: 16rpx;">
+			<view style="display: flex;justify-content: space-between;align-items: center;padding: 10rpx 0 24rpx;">
+				<view style="font-weight: bold;">商品问答</view>
 				<view
-					class="putQuestion"
-					@click="go(`/another-tf/another-serve/putQuestions/index?shopId=${goodsDetail.shopId}&productId=${goodsDetail.productId}&skuId=${goodsDetail.skuId}&questionNumber=${problemsList.length}`)"
-				>
-					<text>去提问</text>
-					<tui-icon :size="30" color="#d9c9a8" name="arrowright"></tui-icon>
-				</view>
-			</view>
-			<view class="listBox">
-				<QuestionsAndAnswersList :product-info="goodsDetail" :problems-list="problemsList" />
-				<view
-					v-if="problemsList.length > 0" class="moreBox"
+					style="flex: 1;display: flex;justify-content: flex-end;align-items: center;"
 					@click="go(`/another-tf/another-serve/answerList/index?shopId=${goodsDetail.shopId}&productId=${goodsDetail.productId}&skuId=${goodsDetail.skuId}`)"
 				>
-					<label class="fs24">查看全部</label>
-					<tui-icon :size="24" color="#baa174" name="arrowright" margin="0 0 0 10upx"></tui-icon>
+					<view v-if="problemsTotal" style="font-size: 24rpx;color: #999999;">
+						共{{ problemsTotal > 100 ? `${Math.floor(problemsTotal / 100) * 100}+` : problemsTotal }}条问题
+					</view>
+					<tui-icon :size="22" color="#191919" name="arrowright" margin="0 0 0 4rpx"></tui-icon>
 				</view>
+			</view>
+			<QuestionsAndAnswersList :product-info="goodsDetail" :problems-list="problemsList" />
+			<view style="display: flex;justify-content: space-between;align-items: center;">
+				<view style="font-size: 28rpx;">宝贝好不好，问问已买过的人</view>
+				<tui-button
+					type="black" width="fit-content" height="60rpx" margin="0 0 0 10rpx"
+					@click="go(`/another-tf/another-serve/putQuestions/index?shopId=${goodsDetail.shopId}&productId=${goodsDetail.productId}&skuId=${goodsDetail.skuId}&questionNumber=${problemsList.length}`)"
+				>
+					<view style="display: flex;align-items: center;padding: 0 20rpx;font-size: 28rpx;line-height: 1;">
+						<text>去提问</text>
+						<tui-icon name="arrowright" color="#d9c9a8" :size="28" unit="rpx" margin="0 0 0 10rpx"></tui-icon>
+					</view>
+				</tui-button>
 			</view>
 		</view>
 	</div>
 </template>
 
 <script>
-import lodash from 'lodash-es'
 import QuestionsAndAnswersList from './QuestionsAndAnswersList'
 import { getProblemsSeckillApi, updateLikeOrUnLikeCommentApi } from '../../../../api/anotherTFInterface'
 
@@ -114,22 +123,29 @@ export default {
 	},
 	data() {
 		return {
-			// 当前选中的tab
-			activeTab: 1, // 1评价 2问答
 			problemsList: [], // 问题列表
 			problemsTotal: 0 // 问题总数
 		}
 	},
+	watch: {
+		goodsDetail: {
+			handler(newValue, oldValue) {
+				if (newValue.productId !== oldValue.productId) {
+					this.handleGetProblemList()
+				}
+			},
+			immediate: false,
+			deep: true
+		}
+	},
+	created() {
+		this.handleGetProblemList()
+	},
 	methods: {
-		/**
-		 * 获取问答数据
-		 * @return {Promise<void>}
-		 */
-
-		async handleGetProblemList(productId) {
-			if (!productId && !this.goodsDetail.productId) return
+		async handleGetProblemList() {
+			if (!this.goodsDetail.productId) return
 			const res = await getProblemsSeckillApi({
-				productId: productId || this.goodsDetail.productId,
+				productId: this.goodsDetail.productId,
 				page: 1,
 				pageSize: 2
 			})
@@ -156,226 +172,25 @@ export default {
 		 * @param action 0取消1点赞
 		 */
 
-		handlePraise: lodash.debounce(async function (commentItem, actionType) {
+		async handlePraise(commentId, actionType) {
 			uni.showLoading({
 				mask: true,
-				title: '提交中...'
+				title: '操作中...'
 			})
 			try {
-				await updateLikeOrUnLikeCommentApi({
-					commentId: commentItem.commentId,
-					ifLike: actionType
-				})
-				if (commentItem.ifLike === 1) {
-					commentItem.ifLike = 0
-					commentItem.likes--
-				} else {
-					commentItem.ifLike = 1
-					commentItem.likes++
-				}
+				await updateLikeOrUnLikeCommentApi({ commentId, ifLike: actionType })
+				this.$emit('success')
+				this.$showToast('操作成功')
 			} finally {
 				uni.hideLoading()
 			}
-		}, 500)
+		}
 	}
 }
 </script>
 
 <style lang="less" scoped>
 .good-evaluate-and-question-container {
-	background-color: #ffffff;
-
-	.evaQaTab {
-		height: 82rpx;
-		line-height: 82rpx;
-		border-bottom: #F3F4F5 solid 2rpx;
-		font-size: 30rpx;
-		color: #CCCCCC;
-
-		.evaBtn {
-			width: 50%;
-			position: relative;
-			text-align: center;
-
-			&:before {
-				content: '';
-				width: 2rpx;
-				height: 30rpx;
-				background: #CCCCCC;
-				display: block;
-				position: absolute;
-				right: 0;
-				top: 20rpx;
-			}
-		}
-
-		.qaBtn {
-			width: 50%;
-			text-align: center;
-		}
-
-		.tabTit {
-			display: inline-block;
-			height: 82rpx;
-			line-height: 82rpx;
-		}
-
-		.active {
-			color: #333333;
-
-			.tabTit {
-				border-bottom: 4rpx solid #444444;
-			}
-		}
-	}
-
-	.questions {
-		.questionInfo {
-			padding: 0 30upx;
-			min-height: 150upx;
-
-			.infoTit {
-				font-size: 28upx;
-			}
-
-			.putQuestion {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				width: 140upx;
-				height: 60upx;
-				background: #333333;
-				line-height: 60upx;
-				font-size: 24upx;
-				color: #FFEBC4;
-				padding-left: 20rpx;
-				position: relative;
-			}
-		}
-
-		.listBox {
-			padding: 0 30upx;
-			border-bottom: 20upx solid #EEEEEE;
-		}
-	}
-
-	.evaluate-box {
-		background-color: #FFFFFF;
-		margin-top: 20upx;
-
-		.evaluateTag-box {
-			margin-top: 10upx;
-			margin-left: 10upx;
-			padding-bottom: 10upx;
-			display: flex;
-			flex-wrap: wrap;
-
-			.evaluateTag-text {
-				background-color: #F4F4F4;
-				border-radius: 6upx;
-				padding: 16upx 14upx;
-				color: #656565;
-				margin-left: 20upx;
-				margin-top: 20upx;
-			}
-		}
-
-		.evaluate-contentbox {
-			display: flex;
-			justify-content: center;
-			flex-direction: column;
-			margin-left: 30upx;
-			// border-bottom: 1upx solid #EDEDED;
-			padding-bottom: 50upx;
-
-			.evaluate-content {
-				width: 670upx;
-				display: flex;
-				justify-content: space-between;
-
-				.user-headSmallImg {
-					width: 46upx;
-					height: 46upx;
-					border-radius: 50%;
-				}
-			}
-
-			.evaluateDes-box {
-				width: 670upx;
-				margin-top: 30upx;
-
-				.evaluateDes {
-					width: 670upx;
-				}
-			}
-
-			.addEvaluate {
-				padding-top: 30upx;
-			}
-		}
-	}
-
-	.item-image-box {
-		width: 700upx;
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-
-		.img-item {
-			width: 223upx;
-			height: 223upx;
-			border-radius: 10upx;
-			margin-right: 10upx;
-			margin-top: 10upx;
-		}
-	}
-
-	.item-line {
-		width: 690upx;
-		height: 1px;
-		background: rgba(238, 238, 238, 1);
-		margin-top: 20upx;
-	}
-
-	.item-like-box {
-		display: flex;
-		flex-direction: row;
-		width: 690upx;
-		align-items: center;
-		justify-content: space-between;
-	}
-
-	.like-box {
-		display: flex;
-		flex-direction: row;
-		padding-top: 30upx;
-		align-items: center;
-		justify-content: flex-end;
-		margin-right: 50upx;
-
-		.like-num {
-			font-size: 28upx;
-			font-weight: 500;
-			color: rgba(51, 51, 51, 1);
-			margin-left: 30upx;
-		}
-	}
-
-	.moreBox {
-		width: 170rpx;
-		height: 54rpx;
-		line-height: 54rpx;
-		margin: 0 auto 50rpx auto;
-		border: 2rpx solid #C5AA7B;
-		color: #C5AA7B;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-
-		image {
-			width: 10rpx;
-			height: 20rpx;
-		}
-	}
+	box-sizing: border-box;
 }
 </style>

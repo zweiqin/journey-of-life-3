@@ -75,7 +75,8 @@
 			<view v-if="showPayTypePopup" style="padding: 60upx 0 128upx;">
 				<CashierList
 					:price-pay="currentRechargeCount" show
-					:hui-shi-bao-pay="!!currentRechargeCount"
+					pay-type-shops
+					:hui-shi-bao-pay="!!currentRechargeCount" show-tonglian-pay
 					:show-commission-pay="!!currentRechargeCount" :show-platform-pay="!!currentRechargeCount"
 					@change="(e) => payInfo = e"
 				/>

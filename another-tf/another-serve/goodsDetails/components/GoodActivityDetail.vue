@@ -1,121 +1,154 @@
 <template>
 	<view class="good-activity-detail-container">
 		<!-- 商品详情 -->
-		<swiper class="goodsImgswiper-box " indicator-dots autoplay>
+		<swiper
+			style="width: 750rpx;height: 750rpx;" :indicator-dots="false" autoplay
+			@change="(e) => swiperCurrent = e.detail.current"
+		>
 			<swiper-item v-for="(imgItem, index) in goodsDetail.images" :key="index">
 				<image
-					v-if="!isVideoSource(imgItem)" mode="aspectFit" class="goodsImg default-img"
+					v-if="!isVideoSource(imgItem)" mode="aspectFit" class="default-img"
+					style="width: 750rpx;height: 750rpx;"
 					:src="common.seamingImgUrl(imgItem)"
 				></image>
 				<video v-else style="width: 750rpx; height: 750rpx;" :src="common.seamingImgUrl(imgItem)"></video>
 			</swiper-item>
 		</swiper>
-		<!-- 分享 -->
-		<view class="share-box flex-items-plus" @click="shareObj.actionShow = true">
-			<tui-icon :size="18" color="#141414" name="share-fill"></tui-icon>
-			<label class="fs24 mar-left-5">分享</label>
+		<view
+			style="position: absolute;top: 680rpx;right: 40rpx;z-index: 99;padding: 4rpx 28rpx;font-size: 28rpx;color: #ffffff;background: rgba(0, 0, 0, 0.2);border-radius: 28rpx;"
+		>
+			{{ swiperCurrent + 1 }}/{{ goodsDetail.images.length }}
 		</view>
-		<view class="goodgDes-box">
+
+		<!-- 分享 -->
+		<view
+			style="position: absolute;top: 50rpx;right: 0;z-index: 99;display: flex;justify-content: center;align-items: center;padding: 10rpx 34rpx;background-color: #FFFFFF;border-radius: 30rpx 0 0 30rpx;"
+			@click="shareObj.actionShow = true"
+		>
+			<tui-icon :size="18" color="#141414" name="share-fill"></tui-icon>
+			<view style="margin-left: 6rpx;font-size: 24rpx;">分享</view>
+		</view>
+
+		<view style="margin: 22rpx 28rpx 0;padding: 0 0 34rpx;background-color: #FFFFFF;border-radius: 16rpx;overflow: hidden;">
 			<view>
-				<view v-if="skuSelect.activityType === 0" class="flex-items flex-sp-between">
-					<view class="flex-items">
-						<label class="fs36 font-color-C83732">￥</label>
-						<label class="fs36 fs-bold font-color-C83732 mar-left-10">{{ skuSelect.price || 0 }}</label>
-						<view class="flex-column-plus mar-left-20">
-							<label
+				<view
+					v-if="skuSelect.activityType === 0"
+					style="display: flex;justify-content: space-between;align-items: center;padding: 30rpx 24rpx 16rpx;"
+				>
+					<view style="display: flex;align-items: flex-end;">
+						<view style="font-size: 30rpx;color: #EA5C1E;">￥</view>
+						<view style="margin-left: 2rpx;font-size: 46rpx;font-weight: bold;color: #EA5C1E;">{{ skuSelect.price || 0 }}</view>
+						<view style="display: flex;flex-direction: column;margin-left: 20rpx;">
+							<view
 								v-if="skuSelect.price !== skuSelect.originalPrice"
-								class="fs24 font-color-999 discountsPriceLine mar-left-20"
+								style="margin-left: 2rpx;font-size: 28rpx;color: #A0A0A0;text-decoration: line-through;"
 							>
 								￥ {{ skuSelect.originalPrice || 0 }}
-							</label>
-						</view>
-					</view>
-					<label class="fs24 font-color-999">{{ goodsDetail.users || 0 }}人付款</label>
-				</view>
-				<view v-else-if="[1, 2, 3, 4, 5, 8, 9, 10, 11].includes(skuSelect.activityType)" style="background-color: #333333;">
-					<view class="flex-items flex-row flex-sp-between">
-						<view class="flex-column-plus">
-							<ATFActivityImage
-								:type="skuSelect.activityType" :show-icon="[1, 2, 3, 4, 5, 8, 9, 10].includes(skuSelect.activityType)"
-								background-color="transparent"
-								:text="[ 11 ].includes(skuSelect.activityType) ? goodsDetail.activityName : ''"
-								:font-size="[ 11 ].includes(skuSelect.activityType) ? '36rpx' : '40rpx'"
-								bold italic :icon-size="28"
-							></ATFActivityImage>
-							<view class="flex-row-plus flex-items mar-top-10">
-								<label class="fs30 font-color-FFF">￥</label>
-								<label class="fs42 mar-left-5 font-color-FFF">{{ skuSelect.price || 0 }}</label>
-								<label class="fs28 mar-left-10 discountsPriceLine font-color-999">
-									￥{{ skuSelect.originalPrice || 0 }}
-								</label>
 							</view>
 						</view>
-						<view v-if="[1, 2, 3, 4, 5, 10, 11].includes(skuSelect.activityType)">
-							<view v-if="(skuSelect.ifEnable === 0)" style="text-align: center;">
-								<view style="padding-bottom: 10rpx;font-size: 28rpx;color: #cccccc;">距离结束剩余</view>
-								<tui-countdown
-									:width="42" :height="42" :size="30" :colon-size="30"
-									colon-color="#999999"
-									color="#FFEBC4" border-color="transparent" background-color="#525252" days
-									:is-colon="false"
-									:time="Math.floor((Date.parse(skuSelect.endTime) - Date.now()) / 1000)"
-									@end="handleEndActivity"
-								></tui-countdown>
-							</view>
-							<view v-else>
-								<label class="fs28 mar-right-20">即将开始：{{ skuSelect.startTime }}</label>
+					</view>
+					<view style="font-size: 24rpx;color: #A0A0A0;">{{ goodsDetail.users || 0 }}人付款</view>
+				</view>
+				<view
+					v-else-if="[1, 2, 3, 4, 5, 8, 9, 10, 11].includes(skuSelect.activityType)"
+					style="display: flex;justify-content: space-between;align-items: center;padding: 22rpx 24rpx 16rpx;background: linear-gradient(280deg, #FA5858 0%, #E51D1D 100%);"
+				>
+					<view style="display: flex;flex-direction: column;">
+						<view style="display: flex;align-items: center;margin-bottom: 4rpx;">
+							<view style="font-size: 30rpx;color: #ffffff;">￥</view>
+							<view style="margin-left: 4rpx;font-size: 42rpx;color: #ffffff;">{{ skuSelect.price || 0 }}</view>
+							<view
+								style="margin-left: 6rpx;font-size: 30rpx;color: #f7acac;text-decoration: line-through;"
+							>
+								￥{{ skuSelect.originalPrice || 0 }}
 							</view>
 						</view>
-						<view v-else-if="[ 8 ].includes(skuSelect.activityType)">{{ goodsDetail.sceneName }}</view>
+						<ATFActivityImage
+							:type="skuSelect.activityType" :show-icon="[1, 2, 3, 4, 5, 8, 9, 10].includes(skuSelect.activityType)"
+							background-color="transparent" color="#ffffff" icon-color="#ffffff"
+							:text="[ 11 ].includes(skuSelect.activityType) ? goodsDetail.activityName : ''"
+							:font-size="[ 11 ].includes(skuSelect.activityType) ? '30rpx' : '34rpx'"
+							:icon-size="32" bold italic
+						></ATFActivityImage>
+					</view>
+					<view v-if="[1, 2, 3, 4, 5, 10, 11].includes(skuSelect.activityType)">
+						<view v-if="(skuSelect.ifEnable === 0)" style="text-align: right;">
+							<view style="padding-bottom: 18rpx;font-size: 26rpx;color: #ffffff;">距离结束剩余</view>
+							<tui-countdown
+								:width="36" :height="36" :size="26" :colon-size="26"
+								colon-color="#ffffff"
+								color="#ffffff" border-color="transparent" background-color="#3f2323" days
+								:is-colon="false"
+								:time="Math.floor((Date.parse(skuSelect.endTime) - Date.now()) / 1000)"
+								@end="handleEndActivity"
+							></tui-countdown>
+						</view>
+						<view v-else style="margin-right: 20rpx;font-size: 28rpx;">
+							即将开始：{{ skuSelect.startTime }}
+						</view>
+					</view>
+					<view v-else-if="[ 8 ].includes(skuSelect.activityType)">{{ goodsDetail.sceneName }}</view>
+				</view>
+			</view>
+			<view style="padding: 0 24rpx;">
+				<view style="display: flex;justify-content: space-between;align-items: center;padding: 10rpx 12rpx 0;">
+					<view
+						style="flex: 1;width: 0;font-weight: bold;overflow: hidden;word-break: break-all;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
+					>
+						{{ goodsDetail.productName }}
+					</view>
+					<view
+						v-if="goodsDetail.shopId && goodsDetail.shopName && !goodsDetail.shopName.startsWith('团蜂')"
+						style="margin: 0 0 0 15rpx;display: flex;flex-direction: column;justify-content: center;align-items: center;"
+						@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${goodsDetail.shopId}`)"
+					>
+						<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
+						<view style="font-size: 22rpx;">店铺</view>
 					</view>
 				</view>
-			</view>
-			<view style="display: flex;align-items: center;flex-wrap: wrap;margin-top: 10rpx;">
 				<view
-					v-if="skuSelect.beeCoin"
-					style="width: fit-content;padding: 6rpx 12rpx;margin: 10rpx 6rpx 0 0;background-color: #f0f0f0;font-size: 28rpx;color: #fa5151;border-radius: 22rpx;"
+					v-if="goodsDetail.productBrief"
+					style="display: flex;align-items: center;padding-top: 10rpx;font-size: 24rpx;"
 				>
-					赠送 {{ skuSelect.beeCoin }} 消费金
+					<view style="color: #3D3D3D;">卖点</view>
+					<view style="flex: 1;margin-left: 20rpx;color: #EA5C1E;">{{ goodsDetail.productBrief }}</view>
 				</view>
-				<view
-					v-if="skuSelect.voucherId && skuSelect.voucherPrice"
-					style="width: fit-content;padding: 6rpx 12rpx;margin: 10rpx 6rpx 0 0;background-color: #f0f0f0;font-size: 28rpx;color: #fa5151;border-radius: 22rpx;"
-				>
-					可使用{{ skuSelect.voucherPrice }}代金券抵扣
-				</view>
-				<view
-					v-if="skuSelect.presenterVoucher"
-					style="width: fit-content;padding: 6rpx 12rpx;margin: 10rpx 6rpx 0 0;background-color: #f0f0f0;font-size: 28rpx;color: #fa5151;border-radius: 22rpx;"
-				>
-					赠送 {{ skuSelect.price
-						? `${(Number.parseFloat(skuSelect.presenterVoucher / skuSelect.price).toFixed(3) * 1000) / 10}%`
-						: skuSelect.presenterVoucher }} 代金券
-				</view>
-			</view>
-			<view class="nameContainer">
-				<view
-					style="flex: 1;width: 0;overflow: hidden;word-break: break-all;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
-				>
-					{{ goodsDetail.productName }}
-				</view>
-				<view class="collectBox " @click="handleCollect">
-					<tui-icon v-if="goodsDetail.ifCollect === 1" :size="24" color="#c5aa7b" name="star-fill"></tui-icon>
-					<tui-icon v-else :size="24" color="#333333" name="star"></tui-icon>
-					<label class="fs22">收藏</label>
-				</view>
-			</view>
-			<view
-				v-if="goodsDetail.markTools.length > 0 || goodsDetail.shopMarkTools.length > 0"
-				class="activity-box mar-top-10" @click="$refs.refCouponPopup && ($refs.refCouponPopup.showActivity = true)"
-			>
-				<label class="fs24 font-color-999">优惠</label>
-				<view class="activity-content mar-left-30 flex-items flex-sp-between flex-row">
-					<view class="fs20 overflow" style="width: 500rpx;">
-						{{ goodsDetail.couponSplicing }}
+				<view style="padding-top: 10rpx;">
+					<view
+						v-if="skuSelect.beeCoin"
+						style="padding: 14rpx 20rpx;margin: 10rpx 6rpx 0 0;background-color: #ffeee6;font-size: 26rpx;font-weight: bold;color: #EA5C1E;border-radius: 8rpx;"
+					>
+						赠送 {{ skuSelect.beeCoin }} 消费金
 					</view>
-					<view class="flex-items">
-						<label class="fs24 font-color-C5AA7B">领券</label>
-						<tui-icon :size="24" color="#baa174" name="arrowright" margin="0 0 0 10rpx"></tui-icon>
+					<view
+						v-if="skuSelect.voucherId && skuSelect.voucherPrice"
+						style="padding: 14rpx 20rpx;margin: 10rpx 6rpx 0 0;background-color: #ffeee6;font-size: 26rpx;font-weight: bold;color: #EA5C1E;border-radius: 8rpx;"
+					>
+						可使用{{ skuSelect.voucherPrice }}代金券抵扣
+					</view>
+					<view
+						v-if="skuSelect.presenterVoucher"
+						style="padding: 14rpx 20rpx;margin: 10rpx 6rpx 0 0;background-color: #ffeee6;font-size: 26rpx;font-weight: bold;color: #EA5C1E;border-radius: 8rpx;"
+					>
+						赠送 {{ skuSelect.price
+							? `${(Number.parseFloat(skuSelect.presenterVoucher / skuSelect.price).toFixed(3) * 1000) / 10}%`
+							: skuSelect.presenterVoucher }} 代金券
+					</view>
+				</view>
+				<view
+					v-if="goodsDetail.markTools.length || goodsDetail.shopMarkTools.length"
+					style="display: flex;justify-content: space-between;align-items: center;margin-top: 10rpx;padding: 8rpx 0 0;border-top: 2rpx solid #EDEDED;"
+					@click="$refs.refCouponPopup && ($refs.refCouponPopup.showActivity = true)"
+				>
+					<view style="font-size: 28rpx;color: #999999;">优惠</view>
+					<view style="display: flex;justify-content: space-between;align-items: center;margin-left: 30rpx;">
+						<view style="font-size: 22rpx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+							{{ goodsDetail.couponSplicing }}
+						</view>
+						<view style="display: flex;align-items: center;">
+							<view style="font-size: 28rpx;color: #C5AA7B;">领券</view>
+							<tui-icon :size="20" color="#baa174" name="arrowright" margin="0 0 0 10rpx"></tui-icon>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -141,7 +174,7 @@
 <script>
 import CouponPopup from './CouponPopup'
 import { isVideoSource } from '../../../../utils'
-import { getProductSharePicApi, updateCollectCancelPUTApi, updateCollectToCollectApi } from '../../../../api/anotherTFInterface'
+import { getProductSharePicApi } from '../../../../api/anotherTFInterface'
 
 export default {
 	name: 'GoodActivityDetail',
@@ -172,7 +205,8 @@ export default {
 					{ text: '邀请好友' }
 				],
 				actionShow: false
-			}
+			},
+			swiperCurrent: 0
 		}
 	},
 	methods: {
@@ -185,34 +219,6 @@ export default {
 				icon: 'none'
 			})
 			this.$emit('activityEnd')
-		},
-
-		/**
-		 * 收藏
-		 */
-
-		handleCollect() {
-			if (this.goodsDetail.ifCollect === 0) {
-				updateCollectToCollectApi({
-					productId: parseInt(this.goodsDetail.productId)
-				}).then((res) => {
-					this.goodsDetail.ifCollect = 1
-					uni.showToast({
-						title: '收藏成功',
-						icon: 'success'
-					})
-				})
-			} else {
-				updateCollectCancelPUTApi({
-					ids: [ this.goodsDetail.productId ]
-				}).then((res) => {
-					this.goodsDetail.ifCollect = 0
-					uni.showToast({
-						title: '取消收藏成功',
-						icon: 'success'
-					})
-				})
-			}
 		},
 
 		/**
@@ -266,6 +272,7 @@ export default {
 
 <style lang="less" scoped>
 .good-activity-detail-container {
+	position: relative;
 	box-sizing: border-box;
 
 	/deep/ .tui-countdown-box {
@@ -280,61 +287,6 @@ export default {
 
 	/deep/ .tui-actionsheet-mask {
 		z-index: 995;
-	}
-
-	.goodsImgswiper-box {
-		width: 750rpx;
-		height: 750rpx;
-
-		.goodsImg {
-			width: 750rpx;
-			height: 750rpx;
-		}
-	}
-
-	.share-box {
-		width: 200rpx;
-		height: 60rpx;
-		background-color: #FFFFFF;
-		border-radius: 30rpx 0 0 30rpx;
-		position: absolute;
-		top: 110rpx;
-		right: 0;
-		z-index: 99;
-	}
-
-	.goodgDes-box {
-		background-color: #FFFFFF;
-		padding: 30rpx 25rpx 25rpx;
-
-		.nameContainer {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			padding: 10rpx 12rpx 0;
-
-			.collectBox {
-				width: 80rpx;
-				margin: 0 0 0 15rpx;
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				align-items: center;
-			}
-		}
-
-		.activity-box {
-			display: flex;
-			flex-direction: row;
-			justify-content: center;
-			align-items: flex-end;
-			border-top: 1rpx solid #EDEDED;
-
-			.activity-content {
-				width: 614rpx;
-				padding-top: 20rpx;
-			}
-		}
 	}
 }
 </style>
