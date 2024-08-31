@@ -94,7 +94,9 @@
 			<view v-if="payObj.showPayPopup" style="padding: 60rpx 0 128rpx;">
 				<CashierList
 					:price-pay="payObj.pricePay" show
-					:hui-shi-bao-pay="payObj.skus.every((b) => !b.platformCurrencyId) && payObj.pricePay ? payObj.shopId : 0"
+					:pay-type-shops="[ payObj.shopId ]"
+					:hui-shi-bao-pay="payObj.skus.every((b) => !b.platformCurrencyId) && payObj.pricePay ? [ payObj.shopId ] : false"
+					show-tonglian-pay
 					:show-commission-pay="payObj.skus.every((b) => !b.platformCurrencyId) && !!payObj.pricePay"
 					:show-platform-pay="payObj.skus.every((b) => !b.platformCurrencyId) && !!payObj.pricePay"
 					:show-transaction-pay="payObj.skus.every((b) => !b.platformCurrencyId) && !!payObj.pricePay"

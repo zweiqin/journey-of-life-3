@@ -74,7 +74,7 @@
 								:src="common.seamingImgUrl(skuItem.image)"
 								style="width: 180rpx;height: 180rpx;border-radius: 10rpx;margin-right: 30rpx;"
 							></image>
-							<view>
+							<view style="flex: 1;">
 								<text
 									style="font-size: 26rpx;color: #333333;display: -webkit-box;overflow: hidden;text-overflow: ellipsis;word-break: break-all;-webkit-box-orient: vertical;-webkit-line-clamp: 2;"
 								>

@@ -1,45 +1,38 @@
 <template>
-	<div class="content">
-		<view class="listBox">
-			<view v-for="(problemItem, problemIndex) in problemsList" :key="problemIndex" class="itemBox">
-				<view class="itemAsk">
-					<i>问</i><span>{{ problemItem.problem }}</span>
+	<view class="questions-and-answers-list-container">
+		<view
+			v-for="(problemItem, problemIndex) in problemsList" :key="problemIndex"
+			style="display: flex;justify-content: space-between;align-items: center;margin-bottom: 24rpx;font-size: 26rpx;"
+			@click="go(`/another-tf/another-serve/qADetail/index?productId=${productInfo.productId}&problemId=${problemItem.problemId}`)"
+		>
+			<view style="flex: 1;display: flex;align-items: center;">
+				<view
+					style="padding: 8rpx 14rpx 8rpx 10rpx;font-size: 22rpx;color: #ffffff;font-style: italic;background-color: #ea5c1e;border-radius: 12rpx 12rpx 0 12rpx;"
+				>
+					问
 				</view>
-				<view v-if="problemItem.answers.length > 0">
-					<view v-for="(answerItem, answerIndex) in (problemItem.answers.slice(0, 1))" :key="answerIndex" class="answer">
-						<view class="answerBox">
-							<i>答</i><span>{{ answerItem.answer }}</span>
-						</view>
-						<view
-							v-if="problemItem.ifAnswer === 1" class="answerBtn"
-							@click="go(`/another-tf/another-serve/qADetail/index?productId=${productInfo.productId}&problemId=${problemItem.problemId}`)"
-						>
-							立即回答
-						</view>
-					</view>
+				<view style="flex: 1;width: 0;margin-left: 14rpx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+					{{ problemItem.problem }}
+				</view>
+			</view>
+			<view style="margin: 0 0 0 16rpx;">
+				<view v-if="problemItem.answers.length" style="color: #999999;">
+					<!-- {{ problemItem.answers[0].answer }} -->
+					{{ problemItem.answers.length }}条回答
 				</view>
 				<view v-else>
-					<view class="answer">
-						<view class="answerBox">
-							<i>答</i><span>暂无答复</span>
-						</view>
-						<view
-							v-if="problemItem.ifAnswer === 1" class="answerBtn"
-							@click="go(`/another-tf/another-serve/qADetail/index?productId=${productInfo.productId}&problemId=${problemItem.problemId}`)"
-						>
-							立即回答
-						</view>
-					</view>
-				</view>
-				<view
-					v-if="problemItem.answers.length > 1" class="seeAll"
-					@click="go(`/another-tf/another-serve/qADetail/index?productId=${productInfo.productId}&problemId=${problemItem.problemId}`)"
-				>
-					查看全部答复
+					<tui-button
+						v-if="problemItem.ifAnswer === 1" type="black" width="140rpx" height="46rpx"
+						margin="0" plain
+						:size="26"
+						@click="go(`/another-tf/another-serve/qADetail/index?productId=${productInfo.productId}&problemId=${problemItem.problemId}`)"
+					>
+						立即回答
+					</tui-button>
 				</view>
 			</view>
 		</view>
-	</div>
+	</view>
 </template>
 
 <script>
@@ -64,87 +57,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.listBox {
-	padding: 0 30upx;
-
-	.itemBox {
-		padding-bottom: 30upx;
-		border-bottom: 1upx solid #EEEEEE;
-		margin-bottom: 30upx;
-
-		&:last-child {
-			border-bottom: none;
-		}
-
-		.itemAsk {
-			display: flex;
-			align-items: center;
-			margin-bottom: 42upx;
-
-			i {
-				font-style: normal;
-				width: 38upx;
-				height: 38upx;
-				line-height: 38upx;
-				background: #C5AA7B;
-				display: block;
-				margin-right: 30upx;
-				font-size: 24upx;
-				color: #FFFFFF;
-				text-align: center;
-			}
-
-			span {
-				font-size: 28upx;
-				color: #333333;
-			}
-		}
-
-		.answer {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			margin-bottom: 30upx;
-
-			.answerBox {
-				display: flex;
-				align-items: center;
-
-				i {
-					font-style: normal;
-					width: 38upx;
-					height: 38upx;
-					line-height: 38upx;
-					background: #C5AA7B;
-					display: block;
-					text-align: center;
-					margin-right: 30upx;
-					font-size: 24rpx;
-					color: #FFFFFF;
-				}
-
-				span {
-					font-size: 26upx;
-					color: #666666;
-				}
-			}
-
-			.answerBtn {
-				width: 130upx;
-				height: 50upx;
-				line-height: 50upx;
-				border: #333333 2rpx solid;
-				text-align: center;
-				color: #333;
-				font-size: 24upx;
-			}
-		}
-
-		.seeAll {
-			margin-left: 68upx;
-			font-size: 28upx;
-			color: #C5AA7B;
-		}
-	}
+.questions-and-answers-list-container {
+	box-sizing: border-box;
 }
 </style>

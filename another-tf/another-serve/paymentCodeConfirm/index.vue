@@ -118,9 +118,12 @@
 
 			<view style="margin-top: 20rpx;">
 				<CashierList
+					v-if="settlement.shops.length"
 					padding="8rpx 26rpx 6rpx" radius="24rpx" show :price-pay="totalPrice"
 					:unnecessary-prices="[ '9' ]" missing-price-text="请输入金额"
-					:hui-shi-bao-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) ? settlement.shops.length === 1 ? settlement.shops[0].shopId : 0 : 0"
+					:pay-type-shops="settlement.shops.length ? settlement.shops.map(i => i.shopId) : false"
+					:hui-shi-bao-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && (settlement.shops.length === 1) ? [ settlement.shops[0].shopId ] : false"
+					show-tonglian-pay
 					:voucher-pay="{ voucherTotalAll: settlement.voucherTotalAll, userVoucherDeductLimit: settlement.userVoucherDeductLimit, voucherList: settlement.voucherList, isCanVoucher: voucherObj.isCanVoucher, noVoucherText: voucherObj.noVoucherText }"
 					:show-commission-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))"
 					:show-platform-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))"

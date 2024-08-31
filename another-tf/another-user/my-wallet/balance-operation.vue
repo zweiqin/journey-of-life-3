@@ -152,7 +152,12 @@
 
 		<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
 			<view v-if="showPayTypePopup" style="padding: 60upx 0 128upx;">
-				<CashierList :price-pay="rechargeForm.amounts || 0" show :hui-shi-bao-pay="!!rechargeForm.amounts" @change="(e) => payInfo = e" />
+				<CashierList
+					:price-pay="rechargeForm.amounts || 0" show
+					pay-type-shops
+					:hui-shi-bao-pay="!!rechargeForm.amounts" show-tonglian-pay
+					@change="(e) => payInfo = e"
+				/>
 				<tui-button
 					type="warning" width="168upx" height="64upx" margin="30upx auto 0"
 					shape="circle"

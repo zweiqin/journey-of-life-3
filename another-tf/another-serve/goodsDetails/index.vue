@@ -2,33 +2,38 @@
 	<view class="goods-details-container">
 		<view style="position: absolute;top:0;left: 0;">{{ viewUpdate }}</view>
 		<BeeBack>
-			<view style="display: flex;align-items: center;justify-content: space-between;">
-				<BeeIcon name="arrowleft" :size="34" color="#222229" style="width: fit-content;">
+			<view style="padding: 12rpx 0;background-color: #ffffff;">
+				<BeeIcon name="arrowleft" :size="30" color="#222229" style="width: fit-content;">
 				</BeeIcon>
-				<text style="flex: 1;margin-left: -40rpx;text-align: center;line-height: 2.5;">商品详情</text>
 			</view>
 		</BeeBack>
 
 		<view>
-			<view style="padding-bottom: 160rpx;">
+			<view>
 				<view v-if="goodsDetail.productId">
 					<!--  拼团滚动 -->
-					<view class="news-box">
-						<view class="news-bg">
-							<swiper vertical circular interval="8000" duration="2000" autoplay>
-								<swiper-item v-for="(item, index) in broadCastList" :key="index">
-									<view class="news-item flex-items">
-										<image class="item-avatar" :src="common.seamingImgUrl(item.headImage)"></image>
-										<view class="news-item-user">{{ item.name }}</view>
-										<view>{{ item.timeStr }}</view>
-										<view v-if="item.type === 1">给了好评</view>
-										<view v-if="item.type === 2">正在拼单</view>
-										<view v-if="item.type === 3">拼单成功</view>
-										<view v-if="item.type === 4">下单</view>
-									</view>
-								</swiper-item>
-							</swiper>
-						</view>
+					<view
+						v-if="broadCastList && broadCastList.length"
+						style="position: fixed;left: 20rpx;top: 200rpx;z-index: 1;width: 450rpx;overflow: hidden;"
+					>
+						<swiper vertical circular interval="8000" duration="2000" autoplay>
+							<swiper-item v-for="(item, index) in broadCastList" :key="index">
+								<view
+									style="display: flex;align-items: center;padding: 6rpx 20rpx;color: #FFFFFF;font-size: 24rpx;background: rgba(0, 0, 0, 0.75);border-radius: 36rpx;"
+								>
+									<image
+										style="width: 50rpx;height: 50rpx;border-radius: 50%;margin-right: 20rpx;"
+										:src="common.seamingImgUrl(item.headImage)" mode="aspectFit"
+									></image>
+									<view>{{ item.name }}</view>
+									<view>{{ item.timeStr }}</view>
+									<view v-if="item.type === 1">给了好评</view>
+									<view v-if="item.type === 2">正在拼单</view>
+									<view v-if="item.type === 3">拼单成功</view>
+									<view v-if="item.type === 4">下单</view>
+								</view>
+							</swiper-item>
+						</swiper>
 					</view>
 
 					<!-- 轮播图+分享+价格名称+活动倒计时+优惠券 -->
@@ -36,24 +41,20 @@
 						ref="goodActivityDetail" :sku-select="selectedCurrentMsg.selectedSku"
 						:goods-detail="goodsDetail" @activityEnd="handleGetProductDetail"
 					/>
-					<view
-						v-if="goodsDetail.productBrief"
-						style="display: flex;align-items: center;margin-top: 10rpx;padding: 10rpx 20rpx 10rpx;font-size: 24rpx;background-color: #ffffff;"
-					>
-						<view style="color: #999999;">卖点</view>
-						<view style="flex: 1;margin-left: 20rpx;">{{ goodsDetail.productBrief }}</view>
-					</view>
 
 					<!-- 发货 -->
-					<view v-if="goodsDetail.ifLogistics" class="express-box flex-items flex-row fs24">
-						<view class="fs24 font-color-999 mar-right-20 ">发货</view>
+					<view
+						v-if="goodsDetail.ifLogistics"
+						style="display: flex;align-items: center;margin: 26rpx 28rpx 0;padding: 18rpx 20rpx;font-size: 24rpx;background-color: #ffffff;border-radius: 16rpx;"
+					>
+						<view style="margin-right: 20rpx;color: #999999;">发货</view>
 						<tui-icon
 							v-if="goodsDetail.receive && goodsDetail.receive.receiveAdress" name="gps" :size="14"
-							color="#c1c1c1"
+							color="#c1c1c1" margin="0 0 0 10rpx"
 						></tui-icon>
 						<view
 							v-if="goodsDetail.receive && goodsDetail.receive.receiveAdress"
-							class="mar-left-10 mapName mar-right-30"
+							style="margin-right: 30rpx;padding-right: 10rpx;color: #999999;border-right: 2rpx solid #CCCCCC;"
 						>
 							{{ goodsDetail.receive.receiveAdress }}
 						</view>
@@ -66,54 +67,83 @@
 					</view>
 
 					<!-- 选择SKU -->
-					<view class="fs24 chooseSize-box flex-start" @click="handleShowGoodsSkuSelect(6)">
-						<view class="chooseSize-content flex-items flex-row flex-sp-between">
-							<view class="flex-row-plus">
-								<label class="fs26 mar-left-30 font-color-999">选择</label>
-								<view style="flex: 1;">
-									<view v-for="(item, index) in selectedCurrentMsg.currentSku" :key="index" style="margin: 0 10rpx 6rpx;">
-										{{ item.skuText || '-' }}
-									</view>
-								</view>
+					<view
+						style="display: flex;justify-content: space-between;align-items: center;margin: 26rpx 28rpx 0;padding: 26rpx 20rpx;font-size: 24rpx;background-color: #ffffff;border-radius: 16rpx;"
+						@click="handleShowGoodsSkuSelect(6)"
+					>
+						<view style="font-size: 26rpx;color: #999999;">选择</view>
+						<view style="flex: 1;display: flex;align-items: center;flex-wrap: wrap;margin-left: 30rpx;font-size: 28rpx;color: #888888;">
+							<view
+								v-for="(item, index) in selectedCurrentMsg.currentSku" :key="index"
+								style="margin: 2rpx 6rpx;padding: 8rpx 26rpx;border: 2rpx solid #cccccc;border-radius: 16rpx;"
+							>
+								{{ item.skuText || '-' }}
 							</view>
-							<tui-icon :size="24" color="#baa174" name="arrowright"></tui-icon>
 						</view>
 					</view>
 
 					<!-- 结合销售 -->
-					<CombinedSales :shop-id="shopId" :product-id="productId"></CombinedSales>
+					<view style="margin: 26rpx 28rpx 0;">
+						<CombinedSales :shop-id="shopId" :product-id="productId"></CombinedSales>
+					</view>
 					<!-- 拼单列表 -->
 					<view
 						v-if="(selectedCurrentMsg.selectedSku.activityType === 1) && (selectedCurrentMsg.selectedSku.ifEnable === 0) && selectedCurrentMsg.selectedSku.collageOrders && selectedCurrentMsg.selectedSku.collageOrders.length"
-						class="goodsDiscount"
+						style="margin: 26rpx 28rpx 0;padding: 26rpx 20rpx;background-color: #ffffff;border-radius: 16rpx;"
 					>
-						<view class="questionTit mar-left-30 flex-items flex-row flex-sp-between">
-							<label class="">这些人正在拼单</label>
-							<view class="allMoreBox">
+						<view
+							style="display: flex;justify-content: space-between;align-items: center;margin-bottom: 18rpx;color: #333333;font-size: 30rpx;"
+						>
+							<view>这些人正在拼单</view>
+							<view style="display: flex;align-items: center;color: #999999;font-size: 24rpx;">
 								<view class="allMore" @click="showGroupBuyList = true">
 									查看全部
 								</view>
 								<tui-icon :size="24" color="#baa174" name="arrowright" margin="0 0 0 10rpx"></tui-icon>
 							</view>
 						</view>
-						<view
-							v-for="(Gitem, index) in selectedCurrentMsg.selectedSku.collageOrders.slice(0, 3)" :key="index"
-							class="groupBuy"
-						>
-							<view v-if="Gitem.time > 0" class="groupBuyList">
-								<view class="groupBuyItem">
-									<view class="leftAvatar">
-										<image :src="common.seamingImgUrl(Gitem.headImage)" alt=""></image>
-										<span>{{ Gitem.name }}</span>
+						<view style="border-top: 2rpx solid #EEEEEE;">
+							<view
+								v-for="(Gitem, index) in selectedCurrentMsg.selectedSku.collageOrders.slice(0, 3)"
+								:key="index"
+							>
+								<view
+									v-if="Gitem.time > 0"
+									style="display: flex;align-items: center;justify-content: space-between;flex-wrap: wrap;border-bottom: 1rpx solid #EEEEEE;"
+								>
+									<view style="display: flex;align-items: center;padding: 10rpx 0;">
+										<image
+											style="width: 72rpx;height: 72rpx;margin-right: 10rpx;border-radius: 50%;"
+											:src="common.seamingImgUrl(Gitem.headImage)"
+										></image>
+										<text>{{ Gitem.name }}</text>
 									</view>
-									<view class="rightInfo">
-										<view class="groupBuyTime" style="width: 70%;">
-											<view class="needPeople flex-row-plus">还差<b>{{ Gitem.person }}人</b>拼成</view>
-											<view class="endDate">剩余{{ handleGetDownTime(Gitem.time) }}</view>
+									<view
+										style="flex: 1;display: flex;justify-content: flex-end;align-items: center;margin-left: 12rpx;padding: 10rpx 0;white-space: nowrap;"
+									>
+										<view>
+											<view style="margin-bottom: 10rpx;font-size: 28rpx;color: #333333;text-align: right;">
+												还差<text style="color: #C5AA7B;">{{ Gitem.person }}人</text>拼成
+											</view>
+											<view style="display: flex;align-items: center;">
+												<view style="color: #666666;font-size: 26rpx;">
+													剩余
+												</view>
+												<tui-countdown
+													:width="42" :height="36" :size="30" :colon-size="30"
+													colon-color="#333333"
+													color="#333333" border-color="transparent"
+													:time="Math.floor((Gitem.time - Date.now()) / 1000)"
+													@end="handleGetProductDetail"
+												></tui-countdown>
+											</view>
 										</view>
-										<view class="groupBuyBtn" @click="handleGoGroupBooking(Gitem.collageId)">
+										<tui-button
+											type="black" width="140rpx" height="60rpx" margin="0 0 0 14rpx"
+											:size="24" @click="handleGoGroupBooking(Gitem.collageId)"
+										>
 											和Ta拼
-										</view>
+										</tui-button>
 									</view>
 								</view>
 							</view>
@@ -122,41 +152,47 @@
 				</view>
 
 				<!--  评价  -->
-				<GoodEvaluateAndQuestion ref="goodEvaluateAndQuestion" :goods-detail="goodsDetail" />
+				<view style="margin: 26rpx 28rpx 0;">
+					<GoodEvaluateAndQuestion :goods-detail="goodsDetail" @success="handleGetProductDetail" />
+				</view>
 
-				<view v-if="goodsDetail.productId">
+				<view v-if="goodsDetail.productId" style="margin: 26rpx 0 0;">
 					<!-- 店铺 -->
 					<view
 						v-if="goodsDetail.shopName && !goodsDetail.shopName.startsWith('团蜂')"
-						class="inStore-box flex-items flex-row flex-sp-between"
+						style="display: flex;justify-content: space-between;align-items: center;margin: 0 28rpx 26rpx;padding: 32rpx 20rpx;background-color: #FFFFFF;border-radius: 16rpx;"
 					>
-						<view class="flex-display flex-row">
-							<view>
-								<image
-									class="inStore-logo default-img" :src="common.seamingImgUrl(goodsDetail.shopLogo)"
-									@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)"
-								></image>
-							</view>
-							<view class="flex-display flex-column mar-left-20">
-								<label @click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)">
-									{{ goodsDetail.shopName }}
-								</label>
-								<view class="flex-display flex-row fs24 font-color-999 mar-top-5">
-									<label>商品总类：{{ goodsDetail.classifyNumber }}</label>
-									<label class="mar-left-30">已售：{{ goodsDetail.number }}件</label>
+						<view
+							style="display: flex;align-items: center;"
+							@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)"
+						>
+							<image
+								style="width: 70rpx;height: 70rpx;"
+								class="default-img" :src="common.seamingImgUrl(goodsDetail.shopLogo)"
+							></image>
+							<view style="flex: 1;margin-left: 20rpx;">
+								<view>{{ goodsDetail.shopName }}</view>
+								<view style="display: flex;align-items: center;margin-top: 6rpx;color: #999999;font-size: 24rpx;">
+									<view>商品总类：{{ goodsDetail.classifyNumber }}</view>
+									<view style="margin-left: 20rpx;">已售：{{ goodsDetail.number }}件</view>
 								</view>
 							</view>
 						</view>
-						<view class="inStore-but" @click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)">
-							<text>去逛逛</text>
-							<tui-icon :size="30" color="#ffebc4" name="arrowright"></tui-icon>
-						</view>
+						<tui-button
+							type="black" width="fit-content" height="60rpx" margin="0 0 0 10rpx"
+							@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)"
+						>
+							<view style="display: flex;align-items: center;padding: 0 20rpx;font-size: 28rpx;line-height: 1;">
+								<text>去逛逛</text>
+								<tui-icon name="arrowright" color="#ffebc4" :size="28" unit="rpx" margin="0 0 0 10rpx"></tui-icon>
+							</view>
+						</tui-button>
 					</view>
 					<!-- 详细信息 -->
-					<view style="background-color: #FFFFFF;margin-top: 20rpx;padding: 20rpx 30rpx;">
+					<view style="background-color: #FFFFFF;padding: 18rpx 20rpx;">
 						<view style="display: flex;flex-direction: row;align-items: center;margin-bottom: 10rpx;">
 							<view style="width: 265rpx;border-bottom: 1rpx solid #EDEDED;"></view>
-							<label style="padding: 0 22rpx;white-space: nowrap;">宝贝详情</label>
+							<view style="padding: 0 22rpx;white-space: nowrap;">宝贝详情</view>
 							<view style="width: 265rpx;border-bottom: 1rpx solid #EDEDED;"></view>
 						</view>
 						<view>
@@ -166,39 +202,50 @@
 				</view>
 			</view>
 			<!-- 底部购买 -->
-			<view v-if="goodsDetail.productId" class="buygoods-box">
-				<view class="buygoodsBut-box" :style="{ 'height': (isIphone === true ? 160 : 130) + 'rpx' }">
-					<view style="display: flex;align-items: center;">
-						<view
-							v-if="goodsDetail.shopName && !goodsDetail.shopName.startsWith('团蜂')"
-							class="btns flex-column-plus flex-items"
-							@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)"
-						>
-							<tui-icon :size="24" color="#333333" name="shop"></tui-icon>
-							<label class="fs22">店铺</label>
-						</view>
-						<view v-if="!isExchange" class="btns flex-column-plus mar-left-10 flex-items" @click="handleOpenCustomerService">
-							<tui-icon :size="24" color="#333333" name="message"></tui-icon>
-							<label class="fs22">客服</label>
-						</view>
-						<view
-							v-if="!isExchange"
-							class="btns flex-column-plus mar-left-10 flex-items Cart"
-							@click="go('/another-tf/another-serve/shopCar/shopCar')"
-						>
-							<view v-if="allCartNum > 0" class="cartAllNum">
-								{{ allCartNum }}
+			<view v-if="goodsDetail.productId" class="buygoods-box" :style="{ 'height': (isIphone === true ? 160 : 130) + 'rpx' }">
+				<view class="buygoodsBut-box">
+					<view style="flex: 1;display: flex;justify-content: space-between;align-items: center;padding: 0 24rpx;">
+						<view style="flex: 1;display: flex;">
+							<view
+								v-if="!isExchange"
+								style="display: flex;flex-direction: column;justify-content: center;align-items: center;"
+								@click="handleOpenCustomerService"
+							>
+								<tui-icon :size="26" color="#333333" name="message"></tui-icon>
+								<view style="margin-top: 4rpx;font-size: 22rpx;">客服</view>
 							</view>
-							<tui-icon :size="24" color="#333333" name="cart"></tui-icon>
-							<label class="fs22">购物车</label>
+						</view>
+						<view style="flex: 1;display: flex;justify-content: center;">
+							<view
+								v-if="!isExchange" class="Cart"
+								style="display: flex;flex-direction: column;justify-content: center;align-items: center;"
+								@click="go('/another-tf/another-serve/shopCar/shopCar')"
+							>
+								<view v-if="allCartNum > 0" class="cartAllNum">
+									{{ allCartNum }}
+								</view>
+								<tui-icon :size="26" color="#333333" name="cart"></tui-icon>
+								<view style="margin-top: 4rpx;font-size: 22rpx;">购物车</view>
+							</view>
+						</view>
+						<view style="flex: 1;display: flex;justify-content: flex-end;">
+							<view
+								style="display: flex;flex-direction: column;justify-content: center;align-items: center;"
+								@click="handleCollect"
+							>
+								<tui-icon v-if="goodsDetail.ifCollect === 1" :size="26" color="#ff570d" name="star-fill"></tui-icon>
+								<tui-icon v-else :size="26" color="#292D32" name="star"></tui-icon>
+								<view v-if="goodsDetail.ifCollect === 1" style="margin-top: 4rpx;font-size: 22rpx;">已收藏</view>
+								<view v-else style="margin-top: 4rpx;font-size: 22rpx;">收藏</view>
+							</view>
 						</view>
 					</view>
-					<view style="flex: 1;">
+					<view>
 						<view
 							v-if="goodsDetail.shelveState === 0"
 							style="display: flex;align-items: center;justify-content: flex-end;"
 						>
-							<tui-button type="gray" width="360rpx" height="80rpx" disabled shape="circle" margin="0 0 0 40rpx">
+							<tui-button type="gray" width="360rpx" height="80rpx" disabled shape="circle" margin="0 0 0 16rpx">
 								商品已下架
 							</tui-button>
 						</view>
@@ -208,7 +255,7 @@
 						>
 							<tui-button
 								type="gray" width="190rpx" height="80rpx" plain
-								margin="0 0 0 40rpx"
+								margin="0 0 0 16rpx"
 								style="font-size: 28rpx;color: #333333!important;border-radius: 8rpx;"
 								@click="handleShowGoodsSkuSelect(4)"
 							>
@@ -222,19 +269,20 @@
 								我要开团
 							</tui-button>
 						</view>
-						<view v-else style="display: flex;align-items: center;justify-content: flex-end;">
+						<view
+							v-else
+							class="bottom-btn"
+							style="display: flex;align-items: center;justify-content: flex-end;"
+						>
 							<tui-button
 								v-if="!isExchange" type="gray" width="190rpx" height="80rpx"
-								plain
-								margin="0 0 0 40rpx"
-								style="font-size: 28rpx;color: #333333!important;border-radius: 8rpx;"
+								margin="0 0 0 16rpx"
 								@click="handleShowGoodsSkuSelect(1)"
 							>
 								加入购物车
 							</tui-button>
 							<tui-button
-								type="black" width="190rpx" height="80rpx" margin="0 0 0 16rpx"
-								style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8rpx;"
+								type="black" width="190rpx" height="80rpx" margin="0"
 								@click="handleShowGoodsSkuSelect(2)"
 							>
 								立即购买
@@ -248,12 +296,12 @@
 		<BeeWxShare ref="beeWxShareRef" @click="handleShareServe()"></BeeWxShare>
 
 		<!-- 回到顶部 -->
-		<view class="returnTopService-box">
+		<view style="position: fixed;bottom: 160rpx;right: 30rpx;">
 			<view
-				class="returnTop-box flex-items-plus flex-column"
+				style="padding: 18rpx;border-radius: 50%;background: #FFFFFF;opacity: 0.8;"
 				:style="{ 'display': returnTopFlag === true ? 'flex' : 'none' }" @click="handleReturnTop"
 			>
-				<tui-icon :size="29" color="#c5aa7b" name="top"></tui-icon>
+				<tui-icon :size="30" color="#c5aa7b" name="top"></tui-icon>
 			</view>
 		</view>
 		<!-- SKU选择器 -->
@@ -265,34 +313,65 @@
 		/>
 		<!-- 拼单弹框 -->
 		<tui-popup
-			:show="showGroupBuyList" :mode-class="[ 'fade' ]" class="popupDiscount"
+			:show="showGroupBuyList" :mode-class="[ 'fade' ]"
+			:styles="{ width: '100%', position: 'fixed', left: 0, top: 0, bottom: 0, zIndex: 9999, backgroundColor: 'rgba(0, 0, 0, 0.5)', padding: '50rpx 28rpx 0', boxSizing: 'border-box' }"
 			@click="showGroupBuyList = false"
 		>
-			<view class="popupDiscountTit">这些人正在拼单</view>
-			<view class="groupBuy">
-				<view class="groupBuyList">
-					<scroll-view style="height: 480rpx;" scroll-y>
+			<view style="background-color: #ffffff;">
+				<view
+					style="padding: 20rpx 0;font-size: 36rpx;color: #333333;text-align: center;border-bottom: 1rpx solid #EEEEEE;"
+				>
+					这些人正在拼单
+				</view>
+				<scroll-view style="max-height: 880rpx;" scroll-y>
+					<view style="padding: 0 20rpx;border-top: 2rpx solid #EEEEEE;">
 						<view
 							v-for="(aitem, index) in selectedCurrentMsg.selectedSku.collageOrders" :key="index"
-							class="groupBuyItem1"
 						>
-							<view v-if="aitem.time > 0" class="leftAvatar">
-								<image :src="common.seamingImgUrl(aitem.headImage)" alt=""></image>
-								<view class="groupBuyTime">
-									<view class="needPeople">
-										<span>{{ aitem.name }}</span>还差<b>{{ aitem.person }}人</b>
-									</view>
-									<view class="endDate">剩余{{ handleGetDownTime(aitem.time) }}</view>
+							<view
+								v-if="aitem.time > 0"
+								style="display: flex;align-items: center;justify-content: space-between;flex-wrap: wrap;border-bottom: 1rpx solid #EEEEEE;"
+							>
+								<view style="display: flex;align-items: center;padding: 10rpx 0;">
+									<image
+										style="width: 72rpx;height: 72rpx;margin-right: 10rpx;border-radius: 50%;"
+										:src="common.seamingImgUrl(aitem.headImage)"
+									></image>
+									<text>{{ aitem.name || '--' }}</text>
 								</view>
-							</view>
-							<view v-if="aitem.time > 0" class="rightInfo">
-								<view class="groupBuyBtn" @click.stop="handleGoGroupBooking(aitem.collageId)">
-									和Ta拼
+								<view
+									style="flex: 1;display: flex;justify-content: flex-end;align-items: center;margin-left: 12rpx;padding: 10rpx 0;white-space: nowrap;"
+								>
+									<view>
+										<view style="margin-bottom: 10rpx;font-size: 28rpx;color: #333333;text-align: right;">
+											<text style="color: #333333;padding-right: 10rpx;">{{ aitem.name }}</text>
+											还差<text style="color: #C5AA7B;">{{ aitem.person }}人</text>
+										</view>
+										<view style="display: flex;align-items: center;">
+											<view style="color: #666666;font-size: 26rpx;">
+												剩余
+											</view>
+											<tui-countdown
+												:width="42" :height="36" :size="30" :colon-size="30"
+												colon-color="#333333"
+												color="#333333" border-color="transparent"
+												:time="Math.floor((aitem.time - Date.now()) / 1000)"
+												@end="handleGetProductDetail"
+											></tui-countdown>
+										</view>
+									</view>
+									<tui-button
+										v-if="aitem.time > 0"
+										type="black" width="140rpx" height="60rpx" margin="0 0 0 14rpx"
+										:size="24" @click="handleGoGroupBooking(aitem.collageId)"
+									>
+										和Ta拼
+									</tui-button>
 								</view>
 							</view>
 						</view>
-					</scroll-view>
-				</view>
+					</view>
+				</scroll-view>
 			</view>
 		</tui-popup>
 
@@ -308,8 +387,8 @@ import CombinedSales from './components/combinedSales'
 import GoodEvaluateAndQuestion from './components/GoodEvaluateAndQuestion'
 import GoodActivityDetail from './components/GoodActivityDetail'
 import GoodSkuSelect from './components/GoodSkuSelect'
-import { timeFormatting, resolveGoodsDetailSkuSituation, setMiniprogramShareConfig } from '../../../utils'
-import { getBuyerSelectionDetailsApi, getProductDetailsByIdApi, getBroadCastList, addUserTrackReportDoPointerApi, getCartListApi, getShopCartApi } from '../../../api/anotherTFInterface'
+import { resolveGoodsDetailSkuSituation, setMiniprogramShareConfig } from '../../../utils'
+import { getBuyerSelectionDetailsApi, getProductDetailsByIdApi, getBroadCastList, addUserTrackReportDoPointerApi, updateCollectCancelPUTApi, updateCollectToCollectApi, getCartListApi, getShopCartApi } from '../../../api/anotherTFInterface'
 
 export default {
 	name: 'GoodsDetails',
@@ -342,12 +421,12 @@ export default {
 			collageId: 0, // 去拼团时的拼单ID
 			broadCastList: [], // 拼团滚动数据
 			showGroupBuyList: false, // 是否展示拼单弹窗
-			shopGroupWorkTicker: null, // 拼团倒计时定时器
 			// 拼单
 			splicingId: 0,
 			// 商品详情
 			goodsDetail: {
 				receive: {},
+				shopId: '',
 				productId: '',
 				names: [],
 				shelveState: 0, // 0下架
@@ -414,20 +493,12 @@ export default {
 			this.handleGetProductDetail()
 		})
 	},
-	mounted() {
-		this.$refs.goodEvaluateAndQuestion.handleGetProblemList(this.productId)
-	},
 	onUnload() {
 		uni.$off('sendAddressSuccessMsg')
 		// 判断是否要埋点
 		if ((new Date().getTime() - this.pointOption.inTime) >= 5000) {
 			this.pointOption.data.productIds = this.productId
 			addUserTrackReportDoPointerApi(this.pointOption.data)
-		}
-		// 销毁平团倒计时计时器
-		if (this.shopGroupWorkTicker) {
-			clearInterval(this.shopGroupWorkTicker)
-			this.shopGroupWorkTicker = null
 		}
 	},
 	onPageScroll(e) {
@@ -447,48 +518,6 @@ export default {
 			this.showGroupBuyList = false
 			this.collageId = collageId
 			this.$refs.refGoodSkuSelect.isShowDetails = true
-		},
-
-		/**
-		 * 设置拼团倒计时
-		 */
-		handleSetDownTime() { // 这个计时器是每秒减去数组中指定字段的时间
-			let productHaveCollageOrder = false
-			// 判断sku组合中是否存在拼单
-			for (const skuValueCodeItem in this.goodsDetail.map) {
-				const collageOrders = this.goodsDetail.map[skuValueCodeItem].collageOrders
-				if (collageOrders && collageOrders.length > 0) {
-					productHaveCollageOrder = true
-					break
-				}
-			}
-			if (!productHaveCollageOrder) return
-			this.shopGroupWorkTicker = setInterval(() => {
-				for (const skuValueCodeItem in this.goodsDetail.map) {
-					const collageOrders = this.goodsDetail.map[skuValueCodeItem].collageOrders
-					if (collageOrders && collageOrders.length > 0) {
-						collageOrders.forEach((collageItem) => {
-							collageItem.time > 0 ? collageItem.time -= 1000 : ''
-						})
-					}
-				}
-			}, 1000)
-		},
-
-		/**
-		 * 根据时间戳获取格式化时间（处理计时器）
-		 * @param remainMillSecs 毫秒，还有多久结束
-		 * @return {string}
-		 */
-
-		handleGetDownTime(remainMillSecs) {
-			if (remainMillSecs <= 0) {
-				clearInterval(this.shopGroupWorkTicker)
-				this.shopGroupWorkTicker = null
-				this.handleGetProductDetail()
-			}
-			const timeFormat = timeFormatting(remainMillSecs / 1000)
-			return `${timeFormat.hour}:${timeFormat.min}:${timeFormat.sec}`
 		},
 
 		// 返回头部
@@ -591,7 +620,6 @@ export default {
 						// 获取拼团滚动数据，传入拼团数据ID
 						const broadCastData = await getBroadCastList({ productId: this.productId, shopGroupWorkId: this.goodsDetail.shopGroupWorkId })
 						this.broadCastList = broadCastData.data
-						this.handleSetDownTime()
 					}
 				})
 				this.viewUpdate = ' ' // 在APP端，有时候网络请求慢，造成等到执行nextTick之前就已经把页面渲染好，导致nextTick回调函数不能触发，无法执行默认选中商品的逻辑。所以这里改变视图层里的数据来强制更新视图。
@@ -615,6 +643,31 @@ export default {
 			this.$refs.beeWxShareRef.share(data, isQuit)
 		},
 
+		// 收藏
+		handleCollect() {
+			if (this.goodsDetail.ifCollect === 0) {
+				updateCollectToCollectApi({
+					productId: parseInt(this.goodsDetail.productId)
+				}).then((res) => {
+					this.goodsDetail.ifCollect = 1
+					uni.showToast({
+						title: '收藏成功',
+						icon: 'success'
+					})
+				})
+			} else {
+				updateCollectCancelPUTApi({
+					ids: [ this.goodsDetail.productId ]
+				}).then((res) => {
+					this.goodsDetail.ifCollect = 0
+					uni.showToast({
+						title: '取消收藏成功',
+						icon: 'success'
+					})
+				})
+			}
+		},
+
 		// 打开客服
 		async handleOpenCustomerService() {
 			const res = await this.$store.dispatch('app/getCustomerServiceAction', {
@@ -632,88 +685,21 @@ export default {
 .goods-details-container {
 	min-height: 100vh;
 	box-sizing: border-box;
-	background-color: #f8f8f8;
+	background-color: #f1f1f1;
 	padding-bottom: 180rpx;
 
 	/deep/ .tui-popup-class.tui-bottom-popup {
 		height: 85vh !important;
 	}
 
-	.express-box {
-		height: 100rpx;
-		padding-left: 30rpx;
-		margin-top: 10rpx;
-		background-color: #FFFFFF;
-
-		image {
-			width: 21rpx;
-			height: 27rpx;
+	.bottom-btn {
+		/deep/ .tui-btn-gray {
+			background: linear-gradient(113deg, #FFCD43 0%, #FF8026 100%) !important;
+			border-radius: 16rpx 0 0 16rpx;
 		}
-
-		.mapName {
-			position: relative;
-
-			&:before {
-				content: '';
-				width: 2rpx;
-				height: 30rpx;
-				background: #CCCCCC;
-				display: block;
-				position: absolute;
-				right: -16rpx;
-				top: 5rpx;
-			}
-		}
-	}
-
-	.chooseSize-box {
-		border-top: 12rpx solid #F8F8F8;
-		background-color: #FFFFFF;
-		margin: 10rpx 0;
-
-		.chooseSize-content {
-			width: 100%;
-		}
-	}
-
-	.questionTit {
-		height: 90rpx;
-		border-bottom: 1rpx solid #EEEEEE;
-		margin-right: 35rpx;
-		color: #333333;
-		font-size: 30rpx;
-
-		.allMoreBox {
-			display: flex;
-			align-items: center;
-			color: #999999;
-			font-size: 24rpx;
-		}
-	}
-
-	.inStore-box {
-		background-color: #FFFFFF;
-		margin-top: 20rpx;
-		padding: 20rpx 30rpx;
-
-		.inStore-logo {
-			width: 70rpx;
-			height: 70rpx;
-		}
-
-		.inStore-but {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			width: 140rpx;
-			height: 60rpx;
-			line-height: 60rpx;
-			text-align: left;
-			font-size: 24rpx;
-			color: #FFEBC4;
-			background: #333333;
-			padding-left: 20rpx;
-			position: relative;
+		/deep/ .tui-btn-black {
+			background: linear-gradient(113deg, #FF2E0E 1%, #FB670B 100%) !important;
+			border-radius: 0 16rpx 16rpx 0;
 		}
 	}
 
@@ -721,21 +707,16 @@ export default {
 		width: 100%;
 		position: fixed;
 		bottom: 0rpx;
-		box-sizing: border-box;
 		z-index: 1;
+		background-color: #FFFFFF;
+		box-sizing: border-box;
 
 		.buygoodsBut-box {
 			display: flex;
 			justify-content: space-between;
-			width: 100%;
+			align-items: center;
 			padding: 20rpx 18rpx;
 			box-shadow: 0rpx 0rpx 10rpx 1rpx #EDEDED;
-			background-color: #FFFFFF;
-			box-sizing: border-box;
-
-			.btns {
-				width: 80rpx;
-			}
 
 			.Cart {
 				position: relative;
@@ -746,11 +727,10 @@ export default {
 					height: 30rpx;
 					line-height: 30rpx;
 					text-align: center;
-					font-size: 17rpx;
+					font-size: 18rpx;
 					color: #FFFFFF;
 					background: #C5AA7B;
 					border-radius: 50%;
-					opacity: 1;
 					z-index: 1;
 				}
 
@@ -759,210 +739,19 @@ export default {
 					right: -6rpx;
 					top: -6rpx;
 				}
-
 				// #endif
 				/* #ifdef H5 */
 				.cartAllNum {
 					right: -10rpx;
 					top: -6rpx;
 				}
-
 				/* #endif */
 				/* #ifdef MP-WEIXIN */
 				.cartAllNum {
 					right: -3rpx;
 					top: 0;
 				}
-
 				/* #endif */
-			}
-		}
-	}
-
-	.returnTopService-box {
-		position: fixed;
-		bottom: 160rpx;
-		right: 30rpx;
-
-		.returnTop-box {
-			width: 88rpx;
-			height: 88rpx;
-			border-radius: 50%;
-			background: #FFFFFF;
-			opacity: 0.8;
-		}
-	}
-
-	.news-box {
-		position: fixed;
-		left: 20rpx;
-		top: 200rpx;
-		z-index: 1;
-
-		.news-bg {
-			width: 450rpx;
-			height: 70rpx;
-			overflow: hidden;
-
-			.news-item {
-				background: rgba(0, 0, 0, 0.75);
-				border-radius: 16rpx;
-				height: 70rpx;
-				color: #FFFFFF;
-				font-size: 24rpx;
-				padding: 0 20rpx;
-				width: 450rpx;
-
-				.item-avatar {
-					width: 50rpx;
-					height: 50rpx;
-					border-radius: 50%;
-					margin-right: 20rpx;
-				}
-			}
-		}
-	}
-
-	.goodsDiscount {
-		.groupBuy {
-			.groupBuyList {
-				.groupBuyItem {
-					padding: 0 30rpx;
-					height: 116rpx;
-					display: flex;
-					align-items: center;
-					justify-content: space-between;
-					border-bottom: 1rpx solid #EEEEEE;
-
-					.leftAvatar {
-						display: flex;
-						align-items: center;
-						width: 50%;
-
-						image {
-							width: 72rpx;
-							height: 72rpx;
-							margin-right: 10rpx;
-							border-radius: 50%;
-						}
-					}
-
-					.rightInfo {
-						display: flex;
-						align-items: center;
-						width: 50%;
-
-						.groupBuyTime {
-							.needPeople {
-								font-size: 28rpx;
-								color: #333333;
-								margin-bottom: 10rpx;
-								font-weight: 400;
-
-								b {
-									color: #C5AA7B;
-									font-weight: 400;
-								}
-							}
-
-							.endDate {
-								color: #666666;
-							}
-						}
-
-						.groupBuyBtn {
-							width: 140rpx;
-							height: 60rpx;
-							line-height: 60rpx;
-							background: #333333;
-							text-align: center;
-							color: #FFEBC4;
-							font-size: 24rpx;
-						}
-					}
-				}
-			}
-		}
-	}
-
-	.popupDiscount {
-		padding-bottom: 70rpx;
-
-		.popupDiscountTit {
-			font-size: 36rpx;
-			color: #333333;
-			height: 105rpx;
-			line-height: 105rpx;
-			text-align: center;
-			border-bottom: 1rpx solid #EEEEEE;
-		}
-
-		.groupBuy {
-			padding-bottom: 80rpx;
-
-			.groupBuyList {
-				.groupBuyItem1 {
-					padding: 0 30rpx;
-					height: 116rpx;
-					display: flex;
-					align-items: center;
-					justify-content: space-between;
-					border-bottom: 1rpx solid #EEEEEE;
-
-					.leftAvatar {
-						display: flex;
-						align-items: center;
-
-						image {
-							width: 72rpx;
-							height: 72rpx;
-							margin-right: 10rpx;
-							border-radius: 50%;
-						}
-
-						.groupBuyTime {
-							margin-right: 80rpx;
-							margin-bottom: 10rpx;
-							width: 320rpx;
-
-							.needPeople {
-								font-size: 26rpx;
-								color: #333333;
-
-								span {
-									color: #333333;
-									padding-right: 10rpx;
-								}
-
-								b {
-									color: #C5AA7B;
-									font-weight: 400;
-								}
-							}
-
-							.endDate {
-								color: #333333;
-								opacity: 0.7;
-								font-size: 24rpx;
-							}
-						}
-					}
-
-					.rightInfo {
-						display: flex;
-						align-items: center;
-
-						.groupBuyBtn {
-							width: 140rpx;
-							height: 70rpx;
-							line-height: 70rpx;
-							background: #333333;
-							text-align: center;
-							color: #FFEBC4;
-							font-weight: 400;
-						}
-					}
-				}
 			}
 		}
 	}

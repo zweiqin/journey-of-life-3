@@ -476,7 +476,9 @@
 		<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
 			<view v-if="showPayTypePopup" style="padding: 60rpx 0 128rpx;">
 				<CashierList
-					:price-pay="rechargeForm.number / 2" show :hui-shi-bao-pay="!!rechargeForm.number"
+					:price-pay="rechargeForm.number / 2" show
+					pay-type-shops
+					:hui-shi-bao-pay="!!rechargeForm.number" show-tonglian-pay
 					:show-commission-pay="!!rechargeForm.number" :show-platform-pay="!!rechargeForm.number"
 					@change="(e) => payInfo = e"
 				/>

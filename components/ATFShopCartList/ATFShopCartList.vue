@@ -34,14 +34,6 @@
 								已满足【{{ item.currentRules.price }}元任选{{ item.currentRules.number }}件】！
 							</view>
 						</view>
-						<!-- <view
-							v-for="(section, count) in shopCartList[index].cartUserList" :key="count" style="padding: 8rpx 0;"
-							>
-							<view>{{ section.name }}</view>
-							<view>
-							<view
-							v-for="(part, number) in section.cartSkuList" :key="number" style="padding: 8rpx 0;"
-							> -->
 						<view style="padding: 0 26rpx 0 32rpx;">
 							<view
 								v-for="(section, count) in shopCartList[index].cartUserList" :key="count" style="padding: 8rpx 0;"

@@ -1,5 +1,5 @@
 <template>
-	<view v-if="selectComposeData && selectComposeData.length > 0" class="group-list">
+	<view v-if="selectComposeData && selectComposeData.length" class="combined-sales-container">
 		<view class="group-warp">
 			<view class="title">
 				<view style="display: flex;align-items: center;">
@@ -310,9 +310,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.group-list {
-	padding: 10rpx 20rpx 60rpx;
-	border-top: 12rpx solid #F8F8F8;
+.combined-sales-container {
+	box-sizing: border-box;
 
 	.group-warp {
 		padding: 32rpx 12rpx 20rpx;
@@ -469,13 +468,11 @@ export default {
 }
 
 .btn-buy {
-	width: 688rpx;
-	height: 84rpx;
+	margin: 30rpx auto 0;
 	background: linear-gradient(88deg, #C5AA7B 0%, #FFEBC4 100%);
 	font-size: 28rpx;
 	color: #333;
 	line-height: 84rpx;
-	margin: 30rpx auto 0;
 	text-align: center;
 }
 

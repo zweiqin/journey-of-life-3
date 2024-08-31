@@ -459,7 +459,9 @@
 					<view v-if="showPayTypePopup" style="padding: 60rpx 0 128rpx;">
 						<CashierList
 							:price-pay="dataList.price" show
-							:hui-shi-bao-pay="dataList.skus.every((b) => !b.platformCurrencyId) && dataList.price ? dataList.shopId : 0"
+							:pay-type-shops="[ dataList.shopId ]"
+							:hui-shi-bao-pay="dataList.skus.every((b) => !b.platformCurrencyId) && dataList.price ? [ dataList.shopId ] : false"
+							show-tonglian-pay
 							:show-commission-pay="dataList.skus.every((b) => !b.platformCurrencyId) && !!dataList.price"
 							:show-platform-pay="dataList.skus.every((b) => !b.platformCurrencyId) && !!dataList.price"
 							:show-transaction-pay="dataList.skus.every((b) => !b.platformCurrencyId) && !!dataList.price"
