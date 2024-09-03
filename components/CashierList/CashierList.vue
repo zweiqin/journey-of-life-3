@@ -444,7 +444,7 @@ export default {
 							if ((Array.isArray(this.payTypeShops) && this.payTypeShops.length) || (Array.isArray(this.huiShiBaoPay) && this.huiShiBaoPay.length)) {
 								if (this.paymentList.find((item) => item.paymentMode === '9')) {
 									this.paymentList.find((item) => item.paymentMode === '9').disabled = (!this.unnecessaryPrices.includes('9') && !this.pricePay) ||
-										(Array.isArray(this.payTypeShops) && this.payTypeShops.length && (!this.detailShopInfoList.length || this.detailShopInfoList.some((i) => !(String(i.payType) === '9')))) ||
+										(Array.isArray(this.payTypeShops) && this.payTypeShops.length && (!this.detailShopInfoList.length || this.detailShopInfoList.some((i) => String(i.payType) !== '9'))) ||
 										(Array.isArray(this.huiShiBaoPay) && this.huiShiBaoPay.length && (!this.detailShopInfoList.length || this.detailShopInfoList.some((i) => !i.hsbMrchId)))
 									if (this.paymentList.find((item) => item.paymentMode === '9').disabled && (this.paymentMode === '9')) this.handleSetAblePay()
 								}
@@ -462,7 +462,7 @@ export default {
 						if (this.payTypeShops) {
 							if (Array.isArray(this.payTypeShops) && this.payTypeShops.length) {
 								if (this.paymentList.find((item) => item.paymentMode === '4')) {
-									this.paymentList.find((item) => item.paymentMode === '4').disabled = Array.isArray(this.payTypeShops) && this.payTypeShops.length && (!this.detailShopInfoList.length || this.detailShopInfoList.some((i) => !(String(i.payType) === '4')))
+									this.paymentList.find((item) => item.paymentMode === '4').disabled = Array.isArray(this.payTypeShops) && this.payTypeShops.length && (!this.detailShopInfoList.length || this.detailShopInfoList.some((i) => String(i.payType) !== '4'))
 									if (this.paymentList.find((item) => item.paymentMode === '4').disabled && (this.paymentMode === '4')) this.handleSetAblePay()
 								}
 							} else if (this.paymentList.find((item) => item.paymentMode === '4')) {
@@ -696,10 +696,10 @@ export default {
 								this.detailShopInfoList = res.data.shopCheckList || []
 							}
 							this.paymentList.find((item) => item.paymentMode === '9').disabled = (!this.unnecessaryPrices.includes('9') && !this.pricePay) ||
-								(Array.isArray(this.payTypeShops) && this.payTypeShops.length && (!this.detailShopInfoList.length || this.detailShopInfoList.some((i) => !(String(i.payType) === '9')))) ||
+								(Array.isArray(this.payTypeShops) && this.payTypeShops.length && (!this.detailShopInfoList.length || this.detailShopInfoList.some((i) => String(i.payType) !== '9'))) ||
 								(Array.isArray(this.huiShiBaoPay) && this.huiShiBaoPay.length && (!this.detailShopInfoList.length || this.detailShopInfoList.some((i) => !i.hsbMrchId)))
 							this.handleSetAblePay()
-							if (((Array.isArray(this.payTypeShops) && this.payTypeShops.length && (!this.detailShopInfoList.length || this.detailShopInfoList.some((i) => !(String(i.payType) === '9')))) ||
+							if (((Array.isArray(this.payTypeShops) && this.payTypeShops.length && (!this.detailShopInfoList.length || this.detailShopInfoList.some((i) => String(i.payType) !== '9'))) ||
 								(Array.isArray(this.huiShiBaoPay) && this.huiShiBaoPay.length && (!this.detailShopInfoList.length || this.detailShopInfoList.some((i) => !i.hsbMrchId)))) &&
 								this.paymentList.find((item) => item.paymentMode === '9')) {
 								this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '9'), 1)
@@ -759,9 +759,9 @@ export default {
 								const res = await getShopCheckListDetailApi({ shopIds: Array.isArray(this.payTypeShops) && this.payTypeShops.join(',') })
 								this.detailShopInfoList = res.data.shopCheckList || []
 							}
-							this.paymentList.find((item) => item.paymentMode === '4').disabled = Array.isArray(this.payTypeShops) && this.payTypeShops.length && (!this.detailShopInfoList.length || this.detailShopInfoList.some((i) => !(String(i.payType) === '4')))
+							this.paymentList.find((item) => item.paymentMode === '4').disabled = Array.isArray(this.payTypeShops) && this.payTypeShops.length && (!this.detailShopInfoList.length || this.detailShopInfoList.some((i) => String(i.payType) !== '4'))
 							this.handleSetAblePay()
-							if ((Array.isArray(this.payTypeShops) && this.payTypeShops.length && (!this.detailShopInfoList.length || this.detailShopInfoList.some((i) => !(String(i.payType) === '4')))) &&
+							if ((Array.isArray(this.payTypeShops) && this.payTypeShops.length && (!this.detailShopInfoList.length || this.detailShopInfoList.some((i) => String(i.payType) !== '4'))) &&
 								this.paymentList.find((item) => item.paymentMode === '4')) {
 								this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '4'), 1)
 							}
@@ -814,7 +814,7 @@ export default {
 					if (this.paymentList.find((item) => item.paymentMode === '9')) {
 						this.paymentList.find((item) => item.paymentMode === '9').disabled = (!this.unnecessaryPrices.includes('9') && !this.pricePay) ||
 							!this.payTypeShops ||
-							(Array.isArray(this.payTypeShops) && this.payTypeShops.length && (!this.detailShopInfoList.length || !this.detailShopInfoList.some((i) => !(String(i.payType) === '9')))) ||
+							(Array.isArray(this.payTypeShops) && this.payTypeShops.length && (!this.detailShopInfoList.length || this.detailShopInfoList.some((i) => String(i.payType) !== '9'))) ||
 							(Array.isArray(this.huiShiBaoPay) && this.huiShiBaoPay.length && (!this.detailShopInfoList.length || this.detailShopInfoList.some((i) => !i.hsbMrchId)))
 						if (!this.paymentList.find((item) => item.paymentMode === '9').disabled) this.paymentMode = '9'
 					}
@@ -824,7 +824,7 @@ export default {
 				if (this.showTonglianPay) {
 					if (this.paymentList.find((item) => item.paymentMode === '4')) {
 						this.paymentList.find((item) => item.paymentMode === '4').disabled = !this.payTypeShops ||
-							(Array.isArray(this.payTypeShops) && this.payTypeShops.length && (!this.detailShopInfoList.length || this.detailShopInfoList.some((i) => !(String(i.payType) === '4'))))
+							(Array.isArray(this.payTypeShops) && this.payTypeShops.length && (!this.detailShopInfoList.length || this.detailShopInfoList.some((i) => String(i.payType) !== '4')))
 						if (!this.paymentList.find((item) => item.paymentMode === '4').disabled) this.paymentMode = '4'
 					}
 				}
@@ -876,7 +876,7 @@ export default {
 				} else if (!this.payTypeShops) {
 					uni.showToast({ title: '不支持惠市宝支付', icon: 'none' }) // 不支持惠市宝支付
 				} else if (Array.isArray(this.payTypeShops) && this.payTypeShops.length) {
-					if (this.detailShopInfoList.some((i) => !(String(i.payType) === '9'))) {
+					if (this.detailShopInfoList.some((i) => String(i.payType) !== '9')) {
 						uni.showToast({ title: '商家未设置惠市宝支付方式', icon: 'none' }) // 商家未设置惠市宝支付方式
 					}
 				} else if (!this.huiShiBaoPay) {
@@ -890,7 +890,7 @@ export default {
 				if (!this.payTypeShops) {
 					uni.showToast({ title: '不支持通联支付', icon: 'none' }) // 不支持通联支付
 				} else if (Array.isArray(this.payTypeShops) && this.payTypeShops.length) {
-					if (this.detailShopInfoList.some((i) => !(String(i.payType) === '4'))) {
+					if (this.detailShopInfoList.some((i) => String(i.payType) !== '4')) {
 						uni.showToast({ title: '商家未设置通联支付方式', icon: 'none' }) // 商家未设置通联支付方式
 					}
 				} else if (!this.showTonglianPay) {

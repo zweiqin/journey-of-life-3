@@ -1,6 +1,6 @@
 <template>
 	<view class="brand-info-container">
-		<view style="display: flex;justify-content: space-between;align-items: center;font-size: 36upx;font-weight: bold;">
+		<view style="display: flex;justify-content: space-between;align-items: center;font-size: 36rpx;font-weight: bold;">
 			<view>{{ brandDetail.shopName || '--' }}</view>
 			<view style="display: flex;align-items: center;">
 				<BeeIcon
@@ -8,19 +8,19 @@
 					:color="brandDetail.ifCollect ? '#ff8000' : '#222229'" @click="handleCollectToggle"
 				></BeeIcon>
 				<BeeWxShare ref="beeWxShareRef" @click="handleShareServe()">
-					<BeeIcon :size="22" color="#333333" name="share" style="margin-left: 24upx;"></BeeIcon>
+					<BeeIcon :size="22" color="#333333" name="share" style="margin-left: 24rpx;"></BeeIcon>
 				</BeeWxShare>
 			</view>
 		</view>
 
 		<view style="display: flex;justify-content: space-between;align-items: center;">
-			<view style="flex: 1;width: 0;margin-right: 10upx;">
-				<view style="padding-top: 6upx;font-size: 24upx;">
+			<view style="flex: 1;width: 0;margin-right: 10rpx;">
+				<view style="padding-top: 6rpx;font-size: 24rpx;">
 					<tui-rate active="#e02208" :size="14" disabled :current="brandDetail.score || 0"></tui-rate>
-					<text style="margin-left: 8upx;color: #e02208;font-size: 26upx;">{{ brandDetail.score || 0 }}</text>
-					<text style="color: #777777;margin-left: 18upx;">销量 {{ brandDetail.monthlySales }}</text>
-					<text style="color: #000000;margin-left: 16upx;">人均{{ brandDetail.perCapita || '：--' }}</text>
-					<text style="color: #777777;margin-left: 20upx;">粉丝数 {{ brandDetail.fansNumber }}</text>
+					<text style="margin-left: 8rpx;color: #e02208;font-size: 26rpx;">{{ brandDetail.score || 0 }}</text>
+					<text style="color: #777777;margin-left: 18rpx;">销量 {{ brandDetail.monthlySales }}</text>
+					<text style="color: #000000;margin-left: 16rpx;">人均{{ brandDetail.perCapita || '：--' }}</text>
+					<text style="color: #777777;margin-left: 20rpx;">粉丝数 {{ brandDetail.fansNumber }}</text>
 				</view>
 				<view v-if="(brandDetail.isBeeCoin === 1) || brandDetail.isVoucher || brandDetail.voucherReturn" class="tags">
 					<view v-if="brandDetail.isBeeCoin === 1" class="tag">支持消费金</view>
@@ -30,36 +30,36 @@
 			</view>
 			<!-- <view style="display: flex;flex-direction: column;align-items: center;" @click="handleOpenCustomerService">
 				<tui-icon name="people-fill" :size="48" unit="rpx" color="#9aedbe"></tui-icon>
-				<text style="font-size: 26upx;color: #8e8e8e;">联系商家</text>
+				<text style="font-size: 26rpx;color: #8e8e8e;">联系商家</text>
 				</view> -->
 		</view>
 
-		<view style="display: flex;align-items: center;margin-top: 10upx;">
+		<view style="display: flex;align-items: center;margin-top: 10rpx;">
 			<BeeIcon name="clock" :size="18" color="#888889" style="width: fit-content;"></BeeIcon>
-			<view style="margin-left: 18upx;font-size: 28upx;color: #222229;">营业状态</view>
-			<view style="margin-left: 20upx;font-size: 28upx;color: #E02208;">{{ brandDetail.trade || '未知' }}</view>
-			<view style="margin-left: 18upx;padding: 2upx 18upx;font-size: 24upx;background-color: #f5f4f6;">
+			<view style="margin-left: 18rpx;font-size: 28rpx;color: #222229;">营业状态</view>
+			<view style="margin-left: 20rpx;font-size: 28rpx;color: #E02208;">{{ brandDetail.trade || '未知' }}</view>
+			<view style="margin-left: 18rpx;padding: 2rpx 18rpx;font-size: 24rpx;background-color: #f5f4f6;">
 				{{ brandDetail.startTime }} 至 {{ brandDetail.endTime }}
 			</view>
 		</view>
 
-		<view v-if="brandDetail.shopLogo" style="margin-top: 22upx;">
+		<view v-if="brandDetail.shopLogo" style="margin-top: 22rpx;">
 			<!-- 轮播图 -->
 			<swiper
 				autoplay :interval="3000" circular :previous-margin="previousMargin"
 				:next-margin="nextMargin"
-				:duration="1000" style="height: 328upx;" @change="handleSwiperChange"
+				:duration="1000" style="height: 328rpx;" @change="handleSwiperChange"
 			>
 				<swiper-item>
 					<tui-lazyload-img
-						mode="scaleToFill" width="600rpx" height="100%" radius="20upx"
+						mode="scaleToFill" width="600rpx" height="100%" radius="20rpx"
 						:src="common.seamingImgUrl(brandDetail.shopLogo)"
 					></tui-lazyload-img>
 				</swiper-item>
 				<template v-if="brandDetail.advertisement">
 					<swiper-item v-for="(item, index) in brandDetail.advertisement.split(',')" :key="index">
 						<tui-lazyload-img
-							mode="scaleToFill" width="600rpx" height="100%" radius="20upx"
+							mode="scaleToFill" width="600rpx" height="100%" radius="20rpx"
 							:src="common.seamingImgUrl(item)"
 						></tui-lazyload-img>
 					</swiper-item>
@@ -227,7 +227,7 @@ export default {
 
 <style lang="less" scoped>
 .brand-info-container {
-	// padding: 28upx 34upx;
+	// padding: 28rpx 34rpx;
 	box-sizing: border-box;
 
 	/deep/ .tui-popup-class.tui-bottom-popup {
@@ -238,16 +238,16 @@ export default {
 		display: flex;
 		align-items: center;
 		flex-wrap: wrap;
-		margin: 10upx 0 0 0;
+		margin: 10rpx 0 0 0;
 
 		.tag {
-			font-size: 26upx;
-			margin-right: 12upx;
-			margin-bottom: 10upx;
-			padding: 4upx 12upx;
+			font-size: 26rpx;
+			margin-right: 12rpx;
+			margin-bottom: 10rpx;
+			padding: 4rpx 12rpx;
 			background-color: #ff8000;
 			color: #ffffff;
-			border-radius: 10upx;
+			border-radius: 10rpx;
 		}
 	}
 
@@ -255,21 +255,21 @@ export default {
 		display: flex;
 		align-items: center;
 		width: 100%;
-		margin-top: 24upx;
+		margin-top: 24rpx;
 
 		.address-detail-info {
 			flex: 1;
 			display: flex;
 			width: 0;
-			font-size: 26upx;
+			font-size: 26rpx;
 
 			.address-text-wrapper {
 				flex: 1;
 				width: 0;
-				margin-left: 10upx;
+				margin-left: 10rpx;
 
 				.address-text {
-					margin-bottom: 6upx;
+					margin-bottom: 6rpx;
 					overflow: hidden;
 					white-space: nowrap;
 					text-overflow: ellipsis;
@@ -287,12 +287,12 @@ export default {
 				display: flex;
 				align-items: center;
 				flex-direction: column;
-				margin-left: 30upx;
+				margin-left: 30rpx;
 
 				text {
-					font-size: 24upx;
+					font-size: 24rpx;
 					color: #888889;
-					margin-top: 4upx;
+					margin-top: 4rpx;
 					white-space: nowrap;
 				}
 			}

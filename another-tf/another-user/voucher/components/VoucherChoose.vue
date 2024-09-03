@@ -1,5 +1,5 @@
 <template>
-	<view class="voucher-choose-container">
+	<view class="voucher-choose-container" :style="{ margin, padding }">
 		<view
 			style="display: flex;align-items: center;justify-content: flex-end;background-color: #ffffff;"
 			:style="{ padding: paddingIn, borderRadius: radius }" @click="isShowPopup = true"
