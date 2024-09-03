@@ -4,7 +4,7 @@
 			:style="{ background: `url(${common.seamingImgUrl('1721380294717-orange-white-bg-color.png')}) no-repeat center top/contain` }"
 		>
 			<JHeader :dark="false" title="签到送代金券" width="50" height="50"></JHeader>
-			<VoucherChoose v-show="false" padding="20rpx 0 0" @change="(e) => (voucherChooseInfo = e) && getVoucherData()">
+			<VoucherChoose v-show="false" @change="(e) => (voucherChooseInfo = e) && getVoucherData()">
 			</VoucherChoose>
 
 			<view style="position: relative;padding: 30rpx 26rpx 0;">

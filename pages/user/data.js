@@ -261,9 +261,9 @@ export const myPreferential = [
   },
   // #endif
   {
-    name: '我的抽奖',
-    icon: require('../../static/images/new-user/menu-icon/zhinenghuace.png'),
-    type: 'participateLottery'
+    name: '签到积分',
+    icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+    url: '/another-tf/another-serve/integral/index'
   },
   // #ifndef APP
   {
@@ -396,9 +396,9 @@ export const otherFunction = [
     url: '/another-tf/another-serve/discount/discount?shopId=186&shopDiscountId=43'
   },
   {
-    name: '签到积分',
-    icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
-    url: '/another-tf/another-serve/integral/index'
+    name: '我的抽奖',
+    icon: require('../../static/images/new-user/menu-icon/zhinenghuace.png'),
+    type: 'participateLottery'
   },
   {
     name: '会员签到',

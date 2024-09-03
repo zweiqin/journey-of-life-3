@@ -995,6 +995,33 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 				uni.showToast({ title: '暂不支持在支付宝小程序使用惠市宝支付', icon: 'none' })
 				// #endif
 			}
+		} else if ([ 10 ].includes(submitInfo.paymentMode)) { // 扫码支付
+			if (isInWx()) {
+				if (store.state.app.isInMiniProgram) {
+					uni.hideLoading()
+					uni.showToast({ title: '暂不支持扫码支付', icon: 'none' })
+				} else {
+					uni.hideLoading()
+					uni.showToast({ title: '暂不支持扫码支付', icon: 'none' })
+				}
+			} else {
+				// #ifdef H5
+				uni.hideLoading()
+				uni.showToast({ title: '暂不支持扫码支付', icon: 'none' })
+				// #endif
+				// #ifdef APP
+				uni.hideLoading()
+				uni.showToast({ title: '暂不支持扫码支付', icon: 'none' })
+				// #endif
+				// #ifdef MP-WEIXIN
+				uni.hideLoading()
+				uni.showToast({ title: '暂不支持扫码支付', icon: 'none' })
+				// #endif
+				// #ifdef MP-ALIPAY
+				uni.hideLoading()
+				uni.showToast({ title: '暂不支持扫码支付', icon: 'none' })
+				// #endif
+			}
 		}
 	}
 }
