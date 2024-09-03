@@ -2,7 +2,7 @@
 	<view class="voucher-transfer-container" :style="{ margin }">
 		<view class="operation-btn">
 			<tui-button type="brown" :size="36" width="280rpx" height="78rpx" margin="0 auto" @click="isShowPopup = true">
-				转赠
+				商家转赠
 			</tui-button>
 		</view>
 
