@@ -17,7 +17,10 @@
 			</view>
 		</view>
 
-		<view style="display: flex;justify-content: space-between;align-items: center;padding: 0 32rpx;margin: 44rpx 0 0;">
+		<view
+			class="middle-tabs"
+			style="display: flex;justify-content: space-between;align-items: center;padding: 0 32rpx;margin: 44rpx 0 0;"
+		>
 			<tui-tabs
 				style="width: 172rpx;padding: 0 0rpx 0 0rpx;overflow: hidden;" :slider-width="80" :slider-height="54"
 				:padding="289" slider-radius="8rpx" item-width="80rpx" selected-color="#ffffff"
@@ -51,6 +54,17 @@
 			</view>
 		</view>
 
+		<view v-if="pageType === 'order'" style="margin-top: 20rpx;padding: 0 20rpx;" class="bottom-tabs">
+			<tui-tabs
+				style="width: 710rpx;padding: 0 0rpx 0 0rpx;overflow: hidden;" :slider-width="142" :padding="20"
+				item-width="142rpx" selected-color="#333333" bold slider-bg-color="#cccccc"
+				background-color="transparent"
+				:tabs="[{ name: '普通订单' }, { name: '消费金' }, { name: '代金券' }, { name: '余额' }, { name: '佣金' }]"
+				:current-tab="activeModeTab"
+				@change="(e) => ((activeModeTab = e.index) || true) && (queryInfo.paymentMode = e.index + 1) && getFinanceStatistics()"
+			></tui-tabs>
+		</view>
+
 		<view style="margin: 36rpx 32rpx 0;">
 			<view style="font-weight: bold;color: #222229;">
 				<text v-if="pageType === 'recharge'">充值</text>
@@ -76,7 +90,8 @@
 					</view>
 					<view style="padding-top: 34rpx; flex:1;">
 						<view style="font-size: 34rpx;font-weight: bold;color: #E02208;">
-							{{ typeof financeStatisticsData.alreadyArrived === 'number' ? financeStatisticsData.alreadyArrived : '--' }}
+							{{ typeof financeStatisticsData.alreadyArrived === 'number' ? financeStatisticsData.alreadyArrived : '--'
+							}}
 						</view>
 						<!-- 已提现金额 -->
 						<view style="margin-top: 14rpx;font-size: 24rpx;">已到账</view>
@@ -234,10 +249,7 @@
 					<view style="display: flex;justify-content: space-between;align-items: center;">
 						<view style="font-size: 32rpx;color: #333333;">提现类型：</view>
 						<view style="flex: 1;">
-							<tui-radio-group
-								:value="withdrawalType"
-								@change="handleChangeType"
-							>
+							<tui-radio-group :value="withdrawalType" @change="handleChangeType">
 								<view style="display: flex;flex-wrap: wrap;align-items: center;">
 									<tui-label
 										v-for="(item, index) in [{ name: '正常支付订单', value: '1' }, { name: '消费金', value: '2' }]"
@@ -313,11 +325,13 @@ export default {
 				finances: []
 			},
 			queryInfo: {
-				paymentMode: '', // 1普通订单2消费金3代金券4余额5佣金
+				paymentMode: 1, // 1普通订单2消费金3代金券4余额5佣金
 				condition: 2,
 				time: ''
 			},
 			isLoading: true,
+			// 类型筛选
+			activeModeTab: 0,
 			// 下拉弹框
 			isShowWithdrawalDetailsPopup: false,
 			isShowCustomBusinessPopup: false,
@@ -340,8 +354,14 @@ export default {
 	methods: {
 		handleCurrentChange(e) {
 			this.currentTab = e.index
-			if (this.currentTab === 0) this.pageType = 'recharge'
-			else if (this.currentTab === 1) this.pageType = 'order'
+			if (this.currentTab === 0) {
+				this.queryInfo.paymentMode = ''
+				this.pageType = 'recharge'
+			} else if (this.currentTab === 1) {
+				this.pageType = 'order'
+				this.activeModeTab = 0
+				this.queryInfo.paymentMode = 1
+			}
 			this.queryInfo.condition = 2
 			this.queryInfo.time = ''
 			this.getFinanceStatistics()
@@ -351,7 +371,6 @@ export default {
 			let api
 			if (this.pageType === 'order') {
 				api = getShopFinanceCountApi
-				this.queryInfo.paymentMode = 1
 			} else if (this.pageType === 'recharge') {
 				api = getShopRechargeCountApi
 			}
@@ -442,13 +461,23 @@ export default {
 	padding-bottom: 42rpx;
 	background-color: #f4f4f4;
 
-	.tui-tabs-view {
-		/deep/ .tui-tabs-slider {
-			margin-left: -289rpx;
-		}
+	.middle-tabs {
+		.tui-tabs-view {
+			/deep/ .tui-tabs-slider {
+				margin-left: -289rpx;
+			}
 
-		/deep/ .tui-tabs-title {
-			font-weight: bold !important;
+			/deep/ .tui-tabs-title {
+				font-weight: bold !important;
+			}
+		}
+	}
+
+	.bottom-tabs {
+		.tui-tabs-view {
+			/deep/ .tui-tabs-slider {
+				margin-left: -20rpx;
+			}
 		}
 	}
 

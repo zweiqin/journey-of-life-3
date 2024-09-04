@@ -1,6 +1,13 @@
 <template>
-	<view class="memberCenter">
+	<view class="integral-container">
 		<JHeader title="我的积分" width="50" height="50"></JHeader>
+		<BeeWxShare ref="beeWxShareRef" @click="handleShareServe()">
+			<view style="padding: 0 16rpx;text-align: right;">
+				<tui-icon name="share" :size="34" unit="rpx" color="#fdbc3d" margin="0 14rpx 0 0"></tui-icon>
+				<text style="color: #fdbc3d;font-weight: bold;">分享</text>
+			</view>
+		</BeeWxShare>
+
 		<view class="memberBox">
 			<view class="posBox">
 				<view class="memberBoxTop">
@@ -45,15 +52,22 @@
 			</view>
 			<tui-icon name="arrowright" :size="48" unit="rpx" color="#C5AA7B"></tui-icon>
 		</view>
-		<view class="signTabs mar-top-30 flex-items">
-			<view :class="{ active: currentTab === 0 }" class="tabItem flex-items flex-center" @click="handleChangeTab(0)">
+		<view style="display: flex;align-items: center;margin-top: 30rpx;">
+			<view
+				:style="{ backgroundColor: currentTab === 0 ? '#333333' : 'transparent', color: currentTab === 0 ? '#ffebc4' : '#999999' }"
+				style="flex: 1;display: flex;align-items: center;justify-content: center;padding: 18rpx 0;"
+				@click="handleChangeTab(0)"
+			>
 				<tui-icon
 					name="order" :size="40" unit="rpx" :color="currentTab === 0 ? '#ffebc4' : '#999999'"
 					margin="0 20rpx 0 0"
 				></tui-icon>
 				<text>积分明细</text>
 			</view>
-			<view :class="{ active: currentTab === 1 }" class="tabItem flex-items flex-center" @click="handleChangeTab(1)">
+			<view
+				:style="{ backgroundColor: currentTab === 1 ? '#333333' : 'transparent', color: currentTab === 1 ? '#ffebc4' : '#999999' }"
+				style="flex: 1;display: flex;align-items: center;justify-content: center;padding: 18rpx 0;" @click="handleChangeTab(1)"
+			>
 				<tui-icon
 					name="exchange" :size="40" unit="rpx" :color="currentTab === 1 ? '#ffebc4' : '#999999'"
 					margin="0 20rpx 0 0"
@@ -139,28 +153,34 @@
 			</view>
 		</view>
 		<tui-modal :show="isConvertible" custom fadein>
-			<view class="Put-box1">
+			<view
+				v-if="isConvertible"
+				style="text-align: right;" @click="isConvertible = false"
+			>
+				<tui-icon name="close" :size="60" unit="rpx" color="#333333"></tui-icon>
+			</view>
+			<view>
 				<view class="text-align fs34 fs-bold">
 					温馨提示
 				</view>
 				<view class="mar-top-40 text-align">
 					您的积分不够哦，请获取更多的积分!
 				</view>
-				<view class="flex-display flex-sp-between">
-					<view class="btn" @click="go('/another-tf/another-serve/integral/sign')">
-						去签到
-					</view>
-				</view>
-				<view v-if="isConvertible" class="cancelDel" @click="isConvertible = false">
-					<tui-icon name="close" :size="60" unit="rpx" color="#f0f0f0"></tui-icon>
-				</view>
+				<tui-button
+					type="black" width="100%" height="80rpx" margin="30rpx 0 10rpx"
+					@click="go('/another-tf/another-serve/integral/sign')"
+				>
+					去签到
+				</tui-button>
 			</view>
 		</tui-modal>
 	</view>
 </template>
 
 <script>
-import { getMemberByMemberLevelIdApi, getSelectCreditCouponListApi, getSelectCreditRecordApi } from '../../../api/anotherTFInterface'
+import { A_TF_MAIN, ENV } from '../../../config'
+import { setMiniprogramShareConfig } from '../../../utils'
+import { getMemberByMemberLevelIdApi, updateShareCreditApi, getSelectCreditCouponListApi, getSelectCreditRecordApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'Integral',
 	data() {
@@ -183,8 +203,8 @@ export default {
 					session: ''
 				},
 				data: [],
-				listTotal: 0, // 列表数据总数
-				isEmpty: false // 列表是否为空
+				listTotal: 0,
+				isEmpty: false
 			},
 			levelInfo: {},
 			isConvertible: false
@@ -196,6 +216,32 @@ export default {
 			this.getIntegralList()
 			this.getMemberByMemberLevel()
 		})
+		if (this.$store.state.app.terminal === 6) {
+			setMiniprogramShareConfig({
+				data: {
+					event: 'sharingPageTurn',
+					webPath: `/another-tf/another-serve/integral/index`,
+					title: `快来查看你的积分吧！`,
+					imageUrl: this.common.seamingImgUrl('1716629235852-feed73b67bb541edb82b41a0937dbdad.png'),
+					promise: new Promise((resolve) => {
+						updateShareCreditApi({})
+							.then((res) => {
+								this.$showToast('分享-成功获得积分！')
+							})
+						resolve({
+							title: `快来查看你的积分吧！`,
+							path: `pages/index/index` + `?type=${ENV === 'development' ? 'test' : ''}&remainParams=` + encodeURIComponent(`&jumpType=sharingPageTurn&code=` + encodeURIComponent('/another-tf/another-serve/integral/index')),
+							imageUrl: this.common.seamingImgUrl('1716629235852-feed73b67bb541edb82b41a0937dbdad.png')
+						})
+					})
+				}
+			})
+		}
+		// #ifdef H5
+		this.$nextTick(() => {
+			this.handleShareServe(true)
+		})
+		// #endif
 	},
 	methods: {
 		handleChangeTab(index) {
@@ -275,6 +321,33 @@ export default {
 					url: `/another-tf/another-serve/exchangeDetail/index?data=${JSON.stringify(item)}`
 				})
 			}
+		},
+
+		handleShareServe(isQuit) {
+			if (!this.isLogin()) return
+			const data = {
+				data: {
+					title: `快来查看你的积分吧！`,
+					desc: '获取积分能兑换精美礼品哦~',
+					link: `${A_TF_MAIN}/#/another-tf/another-serve/integral/index`,
+					imageUrl: this.common.seamingImgUrl('1716629235852-feed73b67bb541edb82b41a0937dbdad.png')
+				},
+				successCb: () => {
+					uni.showLoading({
+						title: '加载中'
+					})
+					updateShareCreditApi({})
+						.then((res) => {
+							uni.hideLoading()
+							this.$showToast('分享-成功获得积分！')
+						})
+						.catch(() => {
+							uni.hideLoading()
+						})
+				},
+				failCb: () => { }
+			}
+			this.$refs.beeWxShareRef.share(data, isQuit)
 		}
 	},
 	onReachBottom() {
@@ -294,10 +367,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.memberCenter {
-	background-color: #F8F8F8;
-	min-height: 100vh;
+.integral-container {
 	padding: 0 20rpx;
+	min-height: 100vh;
+	background-color: #f8f8f8;
+	box-sizing: border-box;
 
 	/deep/ .j-header-wrapper {
 		padding: 24rpx 0 0;
@@ -375,27 +449,6 @@ export default {
 		height: 96rpx;
 		border-radius: 24rpx;
 		padding: 0 20rpx;
-	}
-
-	.signTabs {
-		.tabItem {
-			width: 50%;
-			height: 96rpx;
-			border-radius: 16rpx;
-
-			text {
-				color: #999999;
-				font-size: 28rpx;
-			}
-		}
-
-		.active {
-			background: #333333;
-
-			text {
-				color: #FFEBC4;
-			}
-		}
 	}
 
 	.signInfo {
@@ -495,24 +548,6 @@ export default {
 
 		.exchangeItem:last-child {
 			border-bottom: none;
-		}
-	}
-
-	.cancelDel {
-		position: absolute;
-		bottom: -100rpx;
-		left: 45%;
-	}
-
-	.Put-box1 {
-		.btn {
-			margin-top: 50rpx;
-			width: 100%;
-			height: 84rpx;
-			line-height: 84rpx;
-			text-align: center;
-			background: #333333;
-			color: #FFEBC4;
 		}
 	}
 }

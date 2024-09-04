@@ -285,6 +285,9 @@ export const updateVoucherSignInApi = (data) => AnotherTFRequest('/buyerVoucherS
 export const getVoucherDayListApi = (data) => AnotherTFRequest('/buyerVoucherSigninRecord/voucherDayList', data)
 
 // 积分签到
+// 分享送积分。消费方式：1购买一定金额商品2购买一定数量商品3注册新用户4分享
+export const updateShareCreditApi = (data) => AnotherTFRequest('/credit/shareCredit', data, 'POST')
+
 // 积分兑换优惠券
 export const updateCreditExchangeCouponApi = (data) => AnotherTFRequest('/credit/exchangeCoupon', data, 'POST')
 
@@ -660,17 +663,17 @@ export const submitBuyerVoucherOrderApi = (data) => AnotherTFRequest('/buyerVouc
 // // 充值代金券转赠（旧）
 // export const updateTransferVoucherOrderApi = (data) => AnotherTFRequest('/buyerVoucherOrder/transferVoucher', data, 'POST')
 
-// 充值代金券转赠(独立账号)
-export const updateTransferVoucherOrderApi = (data) => AnotherTFRequest('/buyerVoucherOrderEntryRecord/transferVoucher', data, 'POST')
+// // 充值代金券转赠(独立账号)
+// export const updateTransferVoucherOrderApi = (data) => AnotherTFRequest('/buyerVoucherOrderEntryRecord/transferVoucher', data, 'POST')
 
-// 充值代金券：用户转入商家
-export const updateTransferVoucherIntoApi = (data) => AnotherTFRequest('/shopVoucherExchangeEntryRecord/transferUserVoucherInto', data, 'POST')
+// // 充值代金券：用户转入商家
+// export const updateTransferVoucherIntoApi = (data) => AnotherTFRequest('/shopVoucherExchangeEntryRecord/transferUserVoucherInto', data, 'POST')
 
-// 兑换代金券：用户转入商家
-export const updateByIntoVoucherEntryRecordApi = (data) => AnotherTFRequest('/shopVoucherExchangeEntryRecord/transferVoucherInto', data, 'POST')
+// // 兑换代金券：用户转入商家
+// export const updateByIntoVoucherEntryRecordApi = (data) => AnotherTFRequest('/shopVoucherExchangeEntryRecord/transferVoucherInto', data, 'POST')
 
-// 兑换代金券转赠
-export const updateByUserVoucherEntryRecordApi = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/transfer', data, 'POST')
+// // 兑换代金券转赠
+// export const updateByUserVoucherEntryRecordApi = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/transfer', data, 'POST')
 
 // 兑换代金券入账记录
 export const getBuyerVoucherEntryRecordApi = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/entryRecord', data, 'POST')
@@ -686,6 +689,31 @@ export const getAllOutgoingRecordApi = (data) => AnotherTFRequest('/buyerVoucher
 
 // 分页查询用户充值代金券订单表
 export const getAllBuyerVoucherOrderApi = (data) => AnotherTFRequest('/buyerVoucherOrder/getAll', data)
+
+// 新版代金券
+// 查询商家充值金额（独立账号）
+export const getShopRechargeTotalVoucherApi = (data) => AnotherTFRequest('/shopVoucherEntryRecord/getShopRechargeTotal', data)
+
+// 查询商家兑换金额（独立账号）
+export const getShopExchangeTotalVoucherApi = (data) => AnotherTFRequest('/shopVoucherEntryRecord/getShopExchangeTotal', data)
+
+// 充值代金券：用户转用户转账操作
+export const updateOrderUserToUserTransferApi = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/orderUserToUserTransfer', data)
+
+// 充值代金券：用户转商家转账操作
+export const updateOrderUToShopTransferApi = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/orderUToShopTransfer', data)
+
+// 兑换代金券：用户转商家转账操作
+export const updateUserToShopTransferApi = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/userToShopTransfer', data)
+
+// 兑换代金券：用户转用户转账操作
+export const updateUserToUserTransferApi = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/userToUserTransfer', data)
+
+// 商家充值代金券：商家转用户转账操作
+export const updateOrderShopToUserTransferApi = (data) => AnotherTFRequest('/shopVoucherEntryRecord/orderShopToUserTransfer', data)
+
+// 商家兑换代金券：商家转用户转账操作
+export const updateShopToUserTransferApi = (data) => AnotherTFRequest('/shopVoucherEntryRecord/shopToUserTransfer', data)
 
 // 用户银行卡相关接口
 // 查询用户所有银行卡
