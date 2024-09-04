@@ -18,6 +18,38 @@
 						<tui-icon name="close" color="#767676" size="46" unit="rpx" @click="isShowPopup = false"></tui-icon>
 					</view>
 				</view>
+				<view
+					v-if="$store.state.auth.identityInfo.type.includes(8) || $store.state.auth.identityInfo.type.includes(9)"
+					style="padding: 0 36rpx;"
+				>
+					<view style="display: flex;justify-content: space-between;align-items: center;padding: 8rpx 0;">
+						<text style="font-size: 28rpx;">请选择充值账户</text>
+						<view style="flex: 1;">
+							<tui-radio-group
+								:value="rechargeForm.orderType"
+								@change="(e) => rechargeForm.orderType = e.detail.value"
+							>
+								<view style="display: flex;flex-wrap: wrap;align-items: center;">
+									<tui-label
+										v-for="(item, index) in [{ name: '用户', value: '1' }, { name: '商家', value: '2' }]"
+										:key="index"
+									>
+										<tui-list-cell padding="6rpx 16rpx">
+											<view>
+												<tui-radio
+													:checked="rechargeForm.orderType === item.value" :value="item.value"
+													color="#07c160" border-color="#999"
+												>
+												</tui-radio>
+												<text>{{ item.name }}</text>
+											</view>
+										</tui-list-cell>
+									</tui-label>
+								</view>
+							</tui-radio-group>
+						</view>
+					</view>
+				</view>
 				<view style="padding: 0 36rpx;">
 					<view
 						style="display: flex;align-items: center;flex-wrap: wrap;margin: 0 -12rpx;padding: 12rpx 0 0;text-align: center;"
@@ -168,7 +200,8 @@ export default {
 			rechargeForm: {
 				voucherId: '',
 				number: 50,
-				payGrade: ''
+				payGrade: '',
+				orderType: '1'
 			},
 			showPayTypePopup: false,
 			payInfo: {}
@@ -191,6 +224,7 @@ export default {
 			} else {
 				return this.$showToast('缺少代金券种类')
 			}
+			if (!this.rechargeForm.orderType) return this.$showToast('缺少充值账户')
 			if (typeof this.currentRechargeIndex === 'number') {
 				if (!this.rechargeForm.number) return this.$showToast('缺少代金券数量')
 			} else {
