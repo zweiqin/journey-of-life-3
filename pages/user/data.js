@@ -198,6 +198,12 @@ export const shopServe = [
     icon: require('../../static/images/new-user/menu-icon/shangjiashoukuanma.png'),
     url: '/another-tf/another-user/collection-code/index',
     showRole: ['shop', 'merchantStaff']
+  },
+  {
+    name: '兑换专区',
+    icon: require('../../static/images/new-user/menu-icon/exchange.png'),
+    url: '/another-tf/another-user/exchangeZone/index',
+    showRole: ['shop']
   }
 ]
 

@@ -65,6 +65,10 @@ export default {
 		brandId: {
 			type: Number,
 			required: true
+		},
+		isExchange:{
+			type: Number,
+			required: false
 		}
 	},
 
@@ -141,7 +145,12 @@ export default {
 						if (shopObj.skus.length > 0) addCartSelectedList.push(shopObj)
 					}
 					uni.setStorageSync(T_SKU_ITEM_MSG_LIST, addCartSelectedList)
-					this.go(`/another-tf/another-serve/paymentOrderConfirm/index?type=2&brandId=${this.brandId}`)
+					if(this.isExchange){
+						this.go(`/another-tf/another-serve/paymentOrderConfirm/index?type=1&brandId=${this.brandId}&isExchange=1`)
+					}else{
+						this.go(`/another-tf/another-serve/paymentOrderConfirm/index?type=2&brandId=${this.brandId}`)
+					}
+					
 				} else {
 					this.$showToast('请先勾选商品')
 				}

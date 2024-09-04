@@ -2258,6 +2258,14 @@
           }
         },
         {
+          "path": "another-user/exchangeZone/index",
+          "style": {
+            "navigationBarTitleText": "兑换专区",
+            "navigationBarBackgroundColor": "#fff",
+						"backgroundColor": "#fff"
+          }
+        },
+        {
           "path": "another-user/collection-code/collection-payment-code",
           "style": {
             "navigationBarTitleText": "商家收款"
