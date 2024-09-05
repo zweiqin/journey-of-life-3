@@ -91,6 +91,31 @@
         font-size: 28rpx;
       }
     }
+    .screen{
+      width: 100%;
+      @include flex(center, null,null);
+      .screen-item{
+        flex: 1;
+        height: 88rpx;
+        @include flex(center, null,15rpx);
+        font-size: 28rpx;
+        color: #FFFFFF;
+        .item-icon{
+          position: relative;
+          height: 50rpx;
+          .icon1{
+            position: absolute;
+            top: 0rpx;
+            left:0;
+          }
+          .icon2{
+            position: absolute;
+            top: 16rpx;
+            left:0;
+          }
+        }
+      }
+    }
     .product-list {
       @include flex(space-between, null, null);
       flex-wrap: wrap;

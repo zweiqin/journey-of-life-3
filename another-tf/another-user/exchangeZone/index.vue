@@ -14,13 +14,57 @@
         <view class="top-text">线下兑换</view>
       </view>
       <view class="search-box">
-        <input type="text" v-model="serachName" placeholder="请输入商品名称" />
+        <input
+          type="text"
+          v-model="queryData.search"
+          placeholder="请输入商品名称"
+        />
         <view class="serach" @click="searchList">搜索</view>
+      </view>
+      <view class="screen">
+        <view class="screen-item">
+          <text>价格升序</text>
+          <view class="item-icon" @click="priceScreen">
+            <view class="icon1">
+              <tui-icon
+                name="turningup"
+                :size="20"
+                :color="priceColor(1)"
+              ></tui-icon>
+            </view>
+            <view class="icon2">
+              <tui-icon
+                name="turningdown"
+                :size="20"
+                :color="priceColor(2)"
+              ></tui-icon>
+            </view>
+          </view>
+        </view>
+        <view class="screen-item">
+          <text>销量升序</text>
+          <view class="item-icon" @click="salesScreen">
+            <view class="icon1">
+              <tui-icon
+                name="turningup"
+                :size="20"
+                :color="salesColor(1)"
+              ></tui-icon>
+            </view>
+            <view class="icon2">
+              <tui-icon
+                name="turningdown"
+                :size="20"
+                :color="salesColor(2)"
+              ></tui-icon>
+            </view>
+          </view>
+        </view>
       </view>
       <view class="product-list">
         <view
           class="product-item"
-          v-for="(item, index) in realList"
+          v-for="(item, index) in productList"
           :key="index"
           @click.stop="goGoodsDetsil(item)"
         >
@@ -39,7 +83,9 @@
           <view class="product-text">{{ item.productName }}</view>
           <view class="product-buttom">
             <view class="buttom-price"><text>￥</text>{{ item.price }}</view>
-            <view class="buttom-btn" @click.stop="addCart(item)">加入购物车</view>
+            <view class="buttom-btn" @click.stop="addCart(item)"
+              >加入购物车</view
+            >
           </view>
         </view>
       </view>
@@ -62,6 +108,18 @@ export default {
   created() {
     this.getProductList();
   },
+  computed:{
+    priceColor(type){
+      return function(type){
+        return type  == this.queryData.type ? '#FFFFFF' : 'rgba(255, 255, 255, 0.4)'
+      }
+    },
+    salesColor(type){
+      return function(type){
+        return type  == this.queryData.volume ? '#FFFFFF' : 'rgba(255, 255, 255, 0.4)'
+      }
+    }
+  },
   data() {
     return {
       //  请求商品参数
@@ -74,11 +132,13 @@ export default {
         pageSize: 20,
         groupId: "",
         counterType: "",
+        classifyId:"1593",
+        search:"",
+        type:"",
+        volume:""
       },
-      serachName: "",
       // 商品列表
       productList: [],
-      realList: [],
       total: 0,
       //  组件参数
       brandDetail:{
@@ -88,13 +148,23 @@ export default {
     };
   },
   methods: {
+    //  价格排序
+    priceScreen(){
+      this.queryData.type = this.queryData.type === "" ? "1" : this.queryData.type === "1" ? "2" : "1";
+      this.getProductList(true)
+    },
+    //  销量排序
+    salesScreen(){
+      this.queryData.volume = this.queryData.volume === "" ? "1" : this.queryData.volume === "1" ? "2" : "1";
+      this.getProductList(true)
+    },
     initShopCart() {
 			if (this.brandDetail.shopId && this.$refs.refATFStoreShopCart && this.$refs.refATFStoreShopCart.$refs.refATFShopCartList) {
 				this.$refs.refATFStoreShopCart.$refs.refATFShopCartList.getShopCartData('single')
 			}
 		},
     //  获取兑换专区列表
-    async getProductList() {
+    async getProductList(flag) {
       uni.showLoading({
         title: "加载中...",
       });
@@ -103,24 +173,19 @@ export default {
           data: { page },
         } = await getShopProductsApi(this.queryData);
         this.total = page.total;
-        this.productList = [...this.realList, ...page.list];
-        this.realList = this.productList;
+        if(flag){
+          this.productList = page.list;
+        }else{
+          this.productList = [...this.productList, ...page.list];
+        }
       } finally {
         uni.hideLoading();
       }
     },
     //  搜索
     searchList() {
-      if (this.serachName == "") {
-        this.realList = this.productList;
-        return;
-      }
-      //  过滤查询当前列表有关键字的
-      let list = this.productList.filter((item) =>
-        item.productName.includes(this.serachName)
-      );
-      // console.log(list);
-      this.realList = list;
+      this.queryData.page = 1;
+      this.getProductList(true)
     },
     //  去到详情页面
     goGoodsDetsil(shopItem) {
