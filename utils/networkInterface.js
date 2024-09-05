@@ -549,7 +549,8 @@ export const resolvePlatformCouponItemSelect = (params = {}) => {
 	let isShowPlatformCoupon = isShowPlatformCouponOrigin
 	let selectedPlatformCoupon = JSON.parse(JSON.stringify(selectedPlatformCouponOrigin))
 	let isSuccess = false
-	if (settlement.shops.some((a) => a.skus.some((b) => b.counterType === 1))) return uni.showToast({ title: '包含兑换专柜商品，无法使用平台券！', icon: 'none' })
+	if (settlement.shops.some((a) => a.skus.some((b) => b.exchangeCounterType === 1))) return uni.showToast({ title: '包含兑换专柜商品，无法使用平台券！', icon: 'none' })
+	if (settlement.shops.some((a) => a.skus.some((b) => b.procureCounterType === 1))) return uni.showToast({ title: '包含采购专柜商品，无法使用平台券！', icon: 'none' })
 	if (!couponItem.checked && selectedShopCouponList.length) return uni.showToast({ title: '不可与商家券叠加使用！', icon: 'none' })
 	if (couponItem.checked) { // 已选中的情况下取消选中
 		couponItem.checked = false
@@ -734,13 +735,16 @@ export const resolveSubmitOrder = async (params = {}) => {
 		} else {
 			// 检查提交表单
 			if (hasPrice && (Number(totalPrice) <= 0)) return uni.showToast({ title: shamPriceText, icon: 'none' })
-			if (settlement.shops.some((a) => a.skus.some((b) => b.counterType === 1))) {
+			const isExchangeCounter = settlement.shops.some((a) => a.skus.some((b) => b.exchangeCounterType === 1))
+			const isProcureCounter = settlement.shops.some((a) => a.skus.some((b) => b.procureCounterType === 1))
+			if (isExchangeCounter || isProcureCounter) {
 				if (!settlement.userVoucherDeductLimit) {
 					return uni.showToast({ title: '代金券数量不足！', icon: 'none' })
-				} else if (!settlement.userVoucherDeductLimit) {
+				} else if (!settlement.voucherTotalAll) {
 					return uni.showToast({ title: '商品不支持代金券！', icon: 'none' })
 				} else if (payInfo.paymentMode !== 11) {
-					return uni.showToast({ title: '包含兑换专柜商品，只能用代金券支付！', icon: 'none' })
+					if (isExchangeCounter) return uni.showToast({ title: '包含兑换专柜商品，只能用代金券支付！', icon: 'none' })
+					if (isProcureCounter) return uni.showToast({ title: '包含采购专柜商品，只能用代金券支付！', icon: 'none' })
 				}
 			}
 			if (!payInfo.paymentMode) return uni.showToast({ title: '请选择支付方式', icon: 'none' })
@@ -951,8 +955,9 @@ export const resolveVoucherPaySelect = (params = {}) => {
  */
 
 export const resolveGetOrderSettlement = async (params = {}) => {
-	const { isExchangeCounter, isProductPay, isGroup, fromType, brandId, skuItemInfo, skuItemMsgList, isShowShopCoupons: isShowShopCouponsOrigin, selectedShopCouponList: selectedShopCouponListOrigin, selectedPlatformCoupon } = Object.assign({
+	const { isExchangeCounter, isProcureCounter, isProductPay, isGroup, fromType, brandId, skuItemInfo, skuItemMsgList, isShowShopCoupons: isShowShopCouponsOrigin, selectedShopCouponList: selectedShopCouponListOrigin, selectedPlatformCoupon } = Object.assign({
 		isExchangeCounter: false,
+		isProcureCounter: false,
 		isProductPay: false,
 		isGroup: false,
 		fromType: 0,
@@ -1006,10 +1011,11 @@ export const resolveGetOrderSettlement = async (params = {}) => {
 		// 	{ couponId: 3333, ids: [ 12849 ], couponType: 1, reduceMoney: 6, startTime: 'hvgdfbyhfd', endTime: 'hvgdfbyhfd' }
 		// ]
 		for (let shopIndex = 0; shopIndex < res.data.shops.length; shopIndex++) {
-			if (isExchangeCounter) {
+			if (isExchangeCounter || isProcureCounter) {
 				// 兑换专柜商品只能使用代金券支付
 				res.data.shops[shopIndex].skus.forEach((item) => {
-					item.counterType = 1
+					if (isExchangeCounter) item.exchangeCounterType = 1
+					if (isProcureCounter) item.procureCounterType = 1
 				})
 			} else {
 				// 默认选中商家的第一张优惠券
@@ -1033,7 +1039,7 @@ export const resolveGetOrderSettlement = async (params = {}) => {
 			}
 		}
 		if (res.data.shopType) { // res.data.shopType === 1 // 1品牌商家，2商圈商家
-			if (res.data.shops.some((a) => a.skus.some((b) => !(b.counterType === 1)))) {
+			if (res.data.shops.some((a) => a.skus.some((b) => b.exchangeCounterType !== 1))) {
 				if (isProductPay) { // 如果是付款码商品
 					userAddressInfo = { receiveId: 581 }
 				} else if (res.data.shopType !== 2) {

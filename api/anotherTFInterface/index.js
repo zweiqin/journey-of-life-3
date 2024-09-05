@@ -885,6 +885,9 @@ export const updateDoDrawIdApi = (data) => AnotherTFRequest('/lottery/doDrawId',
 // 中奖记录
 export const getLotteryRecordApi = (data) => AnotherTFRequest('/lotteryRecord/getRecord', data)
 
+// c端抽奖奖项列表
+export const getLotteryItemRecordApi = (data) => AnotherTFRequest('/lotteryItem/getLotteryItemRecord', data)
+
 // 评价
 // 点赞或取消点赞某个评论
 export const updateLikeOrUnLikeCommentApi = (data) => AnotherTFRequest('/comment/like', data, 'POST')

@@ -87,14 +87,15 @@
 						style="display: flex;align-items: center;justify-content: space-around;"
 					>
 						<tui-button
-							type="gray" width="190rpx" height="80rpx" plain
+							v-if="!isProcure" type="gray" width="190rpx" height="80rpx"
+							plain
 							margin="0" :disabled="!selectedSku.stockNumber"
 							style="font-size: 28rpx;color: #333333!important;border-radius: 8rpx;" @click="handleBuyNow"
 						>
 							单独购买
 						</tui-button>
 						<tui-button
-							v-if="!isExchange"
+							v-if="!isExchange && !isProcure"
 							type="black" width="190rpx" height="80rpx" margin="0"
 							:disabled="!selectedSku.stockNumber"
 							style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8rpx;" @click="handleBuyWithGroup"
@@ -112,7 +113,8 @@
 							加入购物车
 						</tui-button>
 						<tui-button
-							type="black" width="190rpx" height="80rpx" margin="0"
+							v-if="!isProcure" type="black" width="190rpx" height="80rpx"
+							margin="0"
 							:disabled="!selectedSku.stockNumber"
 							style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8rpx;" @click="handleBuyNow"
 						>
@@ -191,6 +193,10 @@ export default {
 			default: () => 0
 		},
 		isExchange: {
+			type: Boolean,
+			default: false
+		},
+		isProcure: {
 			type: Boolean,
 			default: false
 		},

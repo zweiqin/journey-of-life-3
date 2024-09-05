@@ -1898,6 +1898,12 @@
           }
         },
         {
+          "path": "another-user/lottery-activities/lottery-awards",
+          "style": {
+            "navigationBarTitleText": "抽奖奖项"
+          }
+        },
+        {
           "path": "another-serve/memberCenter/activityList",
           "style": {
             "navigationBarTitleText": "会员专区"

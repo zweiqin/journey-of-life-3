@@ -14,7 +14,7 @@
 			</view>
 			<!-- v-if="settlement.shopType !== 2" -->
 			<ATFOrderAddressSelect
-				v-if="settlement.shops.some((a) => a.skus.some((b) => !(b.counterType === 1))) && (settlement.shopType !== 2)"
+				v-if="settlement.shops.some((a) => a.skus.some((b) => b.counterType !== 1)) && (settlement.shopType !== 2)"
 				:data="userAddressInfo" padding="20rpx 0 0"
 			></ATFOrderAddressSelect>
 
@@ -62,13 +62,13 @@
 					v-if="settlement.shops.length"
 					show :price-pay="totalPrice"
 					:pay-type-shops="settlement.shops.length ? settlement.shops.map(i => i.shopId) : false"
-					:hui-shi-bao-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && !(b.counterType === 1))) && totalPrice && (settlement.shops.length === 1) ? [ settlement.shops[0].shopId ] : false"
-					:show-tonglian-pay="settlement.shops.every((a) => a.skus.every((b) => !(b.counterType === 1)))"
+					:hui-shi-bao-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && (b.exchangeCounterType !== 1) && (b.procureCounterType !== 1))) && totalPrice && (settlement.shops.length === 1) ? [ settlement.shops[0].shopId ] : false"
+					:show-tonglian-pay="settlement.shops.every((a) => a.skus.every((b) => (b.exchangeCounterType !== 1) && (b.procureCounterType !== 1)))"
 					:voucher-pay="{ voucherTotalAll: settlement.voucherTotalAll, userVoucherDeductLimit: settlement.userVoucherDeductLimit, voucherList: settlement.voucherList, isCanVoucher: voucherObj.isCanVoucher, noVoucherText: voucherObj.noVoucherText }"
-					:show-commission-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && !(b.counterType === 1))) && !!totalPrice"
-					:show-platform-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && !(b.counterType === 1))) && !!totalPrice"
-					:show-transaction-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && !(b.counterType === 1))) && !!totalPrice"
-					:shop-id-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && !(b.counterType === 1))) && totalPrice ? settlement.shops.length === 1 ? settlement.shops[0].shopId : 0 : 0"
+					:show-commission-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && (b.exchangeCounterType !== 1) && (b.procureCounterType !== 1))) && !!totalPrice"
+					:show-platform-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && (b.exchangeCounterType !== 1) && (b.procureCounterType !== 1))) && !!totalPrice"
+					:show-transaction-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && (b.exchangeCounterType !== 1) && (b.procureCounterType !== 1))) && !!totalPrice"
+					:shop-id-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && (b.exchangeCounterType !== 1) && (b.procureCounterType !== 1))) && totalPrice ? settlement.shops.length === 1 ? settlement.shops[0].shopId : 0 : 0"
 					@change="handlePaymentSelect" @voucher-select="(e) => otherInfo.voucherId = e.voucherId"
 				/>
 			</view>
@@ -157,6 +157,8 @@ export default {
 			integralRatio: '', // 积分兑换比例。总积分可减多少元=integralNum*integralRatio
 			// 是否兑换专区商品
 			isExchangeCounter: false,
+			// 是否采购专区商品
+			isProcureCounter: false,
 			// 其它信息
 			otherInfo: {
 				remark: '',
@@ -179,6 +181,7 @@ export default {
 		this.fromType = options.type
 		this.brandId = options.brandId || ''
 		this.isExchangeCounter = Boolean(Number(options.isExchange) || 0)
+		this.isProcureCounter = Boolean(Number(options.isProcure) || 0)
 	},
 	onShow() {
 		if (uni.getStorageSync(T_PAY_ORDER)) {
@@ -204,6 +207,7 @@ export default {
 					this.skuItemMsgList = uni.getStorageSync(T_SKU_ITEM_MSG_LIST)
 					orderSettlementObj = await resolveGetOrderSettlement({
 						isExchangeCounter: this.isExchangeCounter,
+						isProcureCounter: this.isProcureCounter,
 						isGroup: false,
 						fromType: this.fromType,
 						brandId: this.brandId,
@@ -217,6 +221,7 @@ export default {
 					this.skuItemInfo = uni.getStorageSync(T_SKU_ITEM_INFO)
 					orderSettlementObj = await resolveGetOrderSettlement({
 						isExchangeCounter: this.isExchangeCounter,
+						isProcureCounter: this.isProcureCounter,
 						isGroup: true,
 						fromType: this.fromType,
 						brandId: this.brandId,

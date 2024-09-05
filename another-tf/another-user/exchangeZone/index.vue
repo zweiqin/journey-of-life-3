@@ -45,13 +45,13 @@
       </view>
     </view>
     <ATFSpecificationScreen
-			ref="refATFSpecificationScreen" is-splicing
+			ref="refATFSpecificationScreen" is-splicing :splicing-id="initiatedSplicingId"
 			@success="initShopCart"
 		></ATFSpecificationScreen>
     <ATFStoreShopCart
-				ref="refATFStoreShopCart" :brand-id="brandDetail.shopId"
+				ref="refATFStoreShopCart" :brand-id="brandDetail.shopId" :cart-type="1"
         @update-msg="(e) => initiatedSplicingId = (e[0] && e[0].splicingId) || 0"
-        :isExchange="1"
+        is-procure
 			></ATFStoreShopCart>
   </view>
 </template>
@@ -125,7 +125,7 @@ export default {
     //  去到详情页面
     goGoodsDetsil(shopItem) {
       uni.navigateTo({
-        url: `/another-tf/another-serve/goodsDetails/index?shopId=${shopItem.shopId}&productId=${shopItem.productId}&skuId=${shopItem.skuId}`,
+        url: `/another-tf/another-serve/goodsDetails/index?shopId=${shopItem.shopId}&productId=${shopItem.productId}&skuId=${shopItem.skuId}&isProcure=1`,
       });
     },
     //  加入购物车

@@ -254,7 +254,8 @@
 							style="display: flex;align-items: center;justify-content: flex-end;"
 						>
 							<tui-button
-								type="gray" width="190rpx" height="80rpx" plain
+								v-if="!isProcure" type="gray" width="190rpx" height="80rpx"
+								plain
 								margin="0 0 0 16rpx"
 								style="font-size: 28rpx;color: #333333!important;border-radius: 8rpx;"
 								@click="handleShowGoodsSkuSelect(4)"
@@ -262,7 +263,8 @@
 								单独购买
 							</tui-button>
 							<tui-button
-								type="black" width="190rpx" height="80rpx" margin="0 0 0 16rpx"
+								v-if="!isExchange && !isProcure" type="black" width="190rpx" height="80rpx"
+								margin="0 0 0 16rpx"
 								style="font-size: 28rpx;color: #ffebc4!important;border-radius: 8rpx;"
 								@click="handleShowGoodsSkuSelect(3)"
 							>
@@ -276,14 +278,13 @@
 						>
 							<tui-button
 								v-if="!isExchange" type="gray" width="190rpx" height="80rpx"
-								margin="0 0 0 16rpx"
-								@click="handleShowGoodsSkuSelect(1)"
+								margin="0 0 0 16rpx" @click="handleShowGoodsSkuSelect(1)"
 							>
 								加入购物车
 							</tui-button>
 							<tui-button
-								type="black" width="190rpx" height="80rpx" margin="0"
-								@click="handleShowGoodsSkuSelect(2)"
+								v-if="!isProcure" type="black" width="190rpx" height="80rpx"
+								margin="0" @click="handleShowGoodsSkuSelect(2)"
 							>
 								立即购买
 							</tui-button>
@@ -307,7 +308,7 @@
 		<!-- SKU选择器 -->
 		<GoodSkuSelect
 			ref="refGoodSkuSelect" :goods-detail="goodsDetail" :collage-id="collageId" :sku-id="skuId"
-			:is-exchange="Boolean(isExchange)" :splicing-id="splicingId"
+			:is-exchange="Boolean(isExchange)" :is-procure="Boolean(isProcure)" :splicing-id="splicingId"
 			@current-select-sku="handleSelectCurrent" @changeCartNum="(num) => allCartNum = num"
 			@change-goods-detail="(obj) => goodsDetail = obj"
 		/>
@@ -408,6 +409,7 @@ export default {
 			skuId: '', // 产品ID
 			isSelection: 0, // 是否选品
 			isExchange: 0, // 是否兑换专区商品
+			isProcure: 0, // 是否采购专区商品
 			returnTopFlag: false, // 回到顶部
 			// 埋点对象
 			pointOption: {
@@ -481,12 +483,13 @@ export default {
 		this.skuId = Number(options.skuId)
 		this.isSelection = Number(options.isSelection) || 0
 		this.isExchange = Number(options.isExchange) || 0
+		this.isProcure = Number(options.isProcure) || 0
 		this.handleGetProductDetail()
 		getCartListApi({}).then((res) => {
 			this.allCartNum = res.data.reduce((total, value) => total + value.skus.reduce((t, v) => t + (v.shelveState ? v.number : 0), 0), 0)
 		})
 		if (this.allCartNum > 99) this.allCartNum = '...'
-		getShopCartApi({ shopId: this.shopId }).then((res) => {
+		getShopCartApi({ shopId: this.shopId, cartType: 2 }).then((res) => {
 			this.splicingId = (res.data[0] && res.data[0].splicingId) || 0
 		})
 		uni.$on('sendAddressSuccessMsg', (data) => {
