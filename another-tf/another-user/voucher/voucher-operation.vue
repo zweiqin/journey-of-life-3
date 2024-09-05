@@ -112,6 +112,13 @@
 					:purchase-ratio="voucherChooseInfo.purchaseRatio"
 				></VoucherRecharge>
 			</view>
+			<view style="padding-top: 18rpx;">
+				<VoucherTransfer
+					:platform-voucher-id="voucherChooseInfo.platformVoucherId"
+					:purchase-ratio="voucherChooseInfo.purchaseRatio" :c-voucher-total="userVoucherAcount.chongzhiRechargeTotal"
+					:d-voucher-total="userVoucherAcount.duihuanRechargeTotal" @success="getVoucherData()"
+				></VoucherTransfer>
+			</view>
 			<view
 				v-if="$store.state.auth.identityInfo.type.includes(8) || $store.state.auth.identityInfo.type.includes(9)"
 				style="padding-top: 18rpx;"
@@ -121,13 +128,6 @@
 					:purchase-ratio="voucherChooseInfo.purchaseRatio" :c-voucher-total="shopVoucherAcount.chongzhiRechargeTotal"
 					:d-voucher-total="shopVoucherAcount.duihuanRechargeTotal" @success="getVoucherData()"
 				></VoucherShopTransfer>
-			</view>
-			<view v-else style="padding-top: 18rpx;">
-				<VoucherTransfer
-					:platform-voucher-id="voucherChooseInfo.platformVoucherId"
-					:purchase-ratio="voucherChooseInfo.purchaseRatio" :c-voucher-total="userVoucherAcount.chongzhiRechargeTotal"
-					:d-voucher-total="userVoucherAcount.duihuanRechargeTotal" @success="getVoucherData()"
-				></VoucherTransfer>
 			</view>
 			<view class="operation-btn" style="padding-top: 18rpx;">
 				<tui-button
