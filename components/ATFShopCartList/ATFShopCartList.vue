@@ -245,6 +245,10 @@ export default {
 		shopId: {
 			type: Number
 		},
+		cartType: {
+			type: Number,
+			default: 2 // 1兑换专区购物车，2普通购物车
+		},
 		isSubDelete: {
 			type: Boolean,
 			default: false
@@ -295,7 +299,7 @@ export default {
 						})
 					})
 				} else if (type === 'single') {
-					res = await getShopCartApi({ shopId: this.shopId })
+					res = await getShopCartApi({ shopId: this.shopId, cartType: this.cartType })
 					res.data.forEach((shopObj) => {
 						shopObj.priceNumber = 0
 						shopObj.rules = []

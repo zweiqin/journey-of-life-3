@@ -17,7 +17,7 @@
 					</view>
 					<ATFShopCartList
 						ref="refATFShopCartList" type="single" :shop-id="brandId" is-sub-delete
-						@update-msg="handleUpdateMoneyAndNum"
+						:cart-type="cartType" @update-msg="handleUpdateMoneyAndNum"
 					></ATFShopCartList>
 				</view>
 			</tui-drawer>
@@ -65,6 +65,14 @@ export default {
 		brandId: {
 			type: Number,
 			required: true
+		},
+		cartType: {
+			type: Number,
+			default: 2
+		},
+		isProcure: {
+			type: Boolean,
+			default: false
 		}
 	},
 
@@ -141,7 +149,11 @@ export default {
 						if (shopObj.skus.length > 0) addCartSelectedList.push(shopObj)
 					}
 					uni.setStorageSync(T_SKU_ITEM_MSG_LIST, addCartSelectedList)
-					this.go(`/another-tf/another-serve/paymentOrderConfirm/index?type=2&brandId=${this.brandId}`)
+					if (this.isProcure) {
+						this.go(`/another-tf/another-serve/paymentOrderConfirm/index?type=2&brandId=${this.brandId}&isProcure=1`)
+					} else {
+						this.go(`/another-tf/another-serve/paymentOrderConfirm/index?type=2&brandId=${this.brandId}`)
+					}
 				} else {
 					this.$showToast('请先勾选商品')
 				}

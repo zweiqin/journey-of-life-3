@@ -63,6 +63,13 @@
 					</view>
 					<view style="display: flex;align-items: center;justify-content: flex-end;margin-top: 12rpx;">
 						<tui-button
+							type="primary" width="174rpx" height="60rpx"
+							shape="circle" margin="0 10rpx 0 0"
+							@click="go(`/another-tf/another-user/lottery-activities/lottery-awards?id=${item.id}`)"
+						>
+							抽奖奖项
+						</tui-button>
+						<tui-button
 							v-if="item.link" type="warning" width="286rpx" height="60rpx"
 							shape="circle"
 							margin="0 10rpx 0 0" @click="$copy(item.link)"

@@ -35,10 +35,9 @@
 						>
 							券
 						</view>
-						<view style="margin-top: 44rpx;font-size: 28rpx">总代金券</view>
+						<view style="margin-top: 44rpx;font-size: 28rpx">用户总代金券</view>
 						<view style="margin-top: 36rpx;font-size: 64rpx">
-							￥{{ Number.parseFloat(voucherAcount.chongzhiRechargeTotal + voucherAcount.duihuanRechargeTotal).toFixed(2)
-							}}
+							￥{{ Number.parseFloat(userVoucherAcount.chongzhiRechargeTotal + userVoucherAcount.duihuanRechargeTotal).toFixed(2) }}
 						</view>
 					</view>
 				</view>
@@ -48,42 +47,59 @@
 		<view
 			style="display: flex;justify-content: space-evenly;align-items: stretch;flex-wrap: wrap;padding-top: 42rpx;text-align: center;"
 		>
-			<view style="margin-top: 30rpx;">
+			<view style="flex: 1;margin-top: 30rpx;">
 				<view
 					style="display: flex;align-items: center;justify-content: center;"
 					@click="(isShowTipsModal = true) && (showTipsType = '1')"
 				>
-					<text
-						v-if="$store.state.auth.identityInfo.type.includes(8) || $store.state.auth.identityInfo.type.includes(9)"
-					>
-						商家充值代金券
-					</text>
-					<text v-else>充值代金券</text>
+					<text>充值代金券</text>
 					<tui-icon name="explain" color="#3D3D3D" size="26" unit="rpx" margin="0 0 0 10rpx"></tui-icon>
 				</view>
 				<view style="margin-top: 20rpx;font-size: 50rpx;font-weight: bold;">
-					￥{{ typeof voucherAcount.chongzhiRechargeTotal === 'number'
-						? Number.parseFloat(Number(voucherAcount.chongzhiRechargeTotal)).toFixed(2)
+					￥{{ typeof userVoucherAcount.chongzhiRechargeTotal === 'number'
+						? Number.parseFloat(Number(userVoucherAcount.chongzhiRechargeTotal)).toFixed(2)
 						: '--' }}
 				</view>
 			</view>
 			<view style="margin: 40rpx 0 10rpx;width: 2rpx;background-color: #979797;"></view>
-			<view style="margin-top: 30rpx;">
+			<view style="flex: 1;margin-top: 30rpx;">
 				<view
 					style="display: flex;align-items: center;justify-content: center;"
 					@click="(isShowTipsModal = true) && (showTipsType = '2')"
 				>
-					<text
-						v-if="$store.state.auth.identityInfo.type.includes(8) || $store.state.auth.identityInfo.type.includes(9)"
-					>
-						商家兑换代金券
-					</text>
-					<text v-else>兑换代金券</text>
+					<text>兑换代金券</text>
 					<tui-icon name="explain" color="#3D3D3D" size="26" unit="rpx" margin="0 0 0 10rpx"></tui-icon>
 				</view>
 				<view style="margin-top: 20rpx;font-size: 50rpx;font-weight: bold;">
-					￥{{ typeof voucherAcount.duihuanRechargeTotal === 'number'
-						? Number.parseFloat(Number(voucherAcount.duihuanRechargeTotal)).toFixed(2)
+					￥{{ typeof userVoucherAcount.duihuanRechargeTotal === 'number'
+						? Number.parseFloat(Number(userVoucherAcount.duihuanRechargeTotal)).toFixed(2)
+						: '--' }}
+				</view>
+			</view>
+		</view>
+
+		<view
+			v-if="$store.state.auth.identityInfo.type.includes(8) || $store.state.auth.identityInfo.type.includes(9)"
+			style="display: flex;justify-content: space-evenly;align-items: stretch;flex-wrap: wrap;padding-top: 42rpx;text-align: center;"
+		>
+			<view style="flex: 1;margin-top: 30rpx;">
+				<view style="display: flex;align-items: center;justify-content: center;">
+					商家充值代金券
+				</view>
+				<view style="margin-top: 20rpx;font-size: 50rpx;font-weight: bold;">
+					￥{{ typeof shopVoucherAcount.chongzhiRechargeTotal === 'number'
+						? Number.parseFloat(Number(shopVoucherAcount.chongzhiRechargeTotal)).toFixed(2)
+						: '--' }}
+				</view>
+			</view>
+			<view style="margin: 40rpx 0 10rpx;width: 2rpx;background-color: #979797;"></view>
+			<view style="flex: 1;margin-top: 30rpx;">
+				<view style="display: flex;align-items: center;justify-content: center;">
+					商家兑换代金券
+				</view>
+				<view style="margin-top: 20rpx;font-size: 50rpx;font-weight: bold;">
+					￥{{ typeof shopVoucherAcount.duihuanRechargeTotal === 'number'
+						? Number.parseFloat(Number(shopVoucherAcount.duihuanRechargeTotal)).toFixed(2)
 						: '--' }}
 				</view>
 			</view>
@@ -96,22 +112,22 @@
 					:purchase-ratio="voucherChooseInfo.purchaseRatio"
 				></VoucherRecharge>
 			</view>
+			<view style="padding-top: 18rpx;">
+				<VoucherTransfer
+					:platform-voucher-id="voucherChooseInfo.platformVoucherId"
+					:purchase-ratio="voucherChooseInfo.purchaseRatio" :c-voucher-total="userVoucherAcount.chongzhiRechargeTotal"
+					:d-voucher-total="userVoucherAcount.duihuanRechargeTotal" @success="getVoucherData()"
+				></VoucherTransfer>
+			</view>
 			<view
 				v-if="$store.state.auth.identityInfo.type.includes(8) || $store.state.auth.identityInfo.type.includes(9)"
 				style="padding-top: 18rpx;"
 			>
 				<VoucherShopTransfer
 					:platform-voucher-id="voucherChooseInfo.platformVoucherId"
-					:purchase-ratio="voucherChooseInfo.purchaseRatio" :c-voucher-total="voucherAcount.chongzhiRechargeTotal"
-					:d-voucher-total="voucherAcount.duihuanRechargeTotal" @success="getVoucherData()"
+					:purchase-ratio="voucherChooseInfo.purchaseRatio" :c-voucher-total="shopVoucherAcount.chongzhiRechargeTotal"
+					:d-voucher-total="shopVoucherAcount.duihuanRechargeTotal" @success="getVoucherData()"
 				></VoucherShopTransfer>
-			</view>
-			<view v-else style="padding-top: 18rpx;">
-				<VoucherTransfer
-					:platform-voucher-id="voucherChooseInfo.platformVoucherId"
-					:purchase-ratio="voucherChooseInfo.purchaseRatio" :c-voucher-total="voucherAcount.chongzhiRechargeTotal"
-					:d-voucher-total="voucherAcount.duihuanRechargeTotal" @success="getVoucherData()"
-				></VoucherTransfer>
 			</view>
 			<view class="operation-btn" style="padding-top: 18rpx;">
 				<tui-button
@@ -196,7 +212,11 @@ export default {
 			},
 			// 账户数据
 			isFirstLoading: true,
-			voucherAcount: {
+			userVoucherAcount: {
+				chongzhiRechargeTotal: 0,
+				duihuanRechargeTotal: 0
+			},
+			shopVoucherAcount: {
 				chongzhiRechargeTotal: 0,
 				duihuanRechargeTotal: 0
 			},
@@ -215,62 +235,72 @@ export default {
 					if (this.voucherChooseInfo.platformVoucherId) {
 						this.getVoucherData()
 					} else {
-						this.voucherAcount = { chongzhiRechargeTotal: 0, duihuanRechargeTotal: 0 }
+						this.userVoucherAcount = { chongzhiRechargeTotal: 0, duihuanRechargeTotal: 0 }
+						this.shopVoucherAcount = { chongzhiRechargeTotal: 0, duihuanRechargeTotal: 0 }
 					}
 				})
 			} else if (!this.isFirstLoading) {
 				if (this.voucherChooseInfo.platformVoucherId) {
 					this.getVoucherData()
 				} else {
-					this.voucherAcount = { chongzhiRechargeTotal: 0, duihuanRechargeTotal: 0 }
+					this.userVoucherAcount = { chongzhiRechargeTotal: 0, duihuanRechargeTotal: 0 }
+					this.shopVoucherAcount = { chongzhiRechargeTotal: 0, duihuanRechargeTotal: 0 }
 				}
 			}
 		},
 		getVoucherData() {
-			uni.showLoading()
 			if (this.$store.state.auth.identityInfo.type.includes(8) || this.$store.state.auth.identityInfo.type.includes(9)) {
-				getShopRechargeTotalVoucherApi({})
-					.then((res) => {
-						this.voucherAcount.chongzhiRechargeTotal = Number(res.data)
-						this.isFirstLoading = false
-						uni.hideLoading()
-					})
-					.catch((e) => {
-						this.isFirstLoading = false
-						uni.hideLoading()
-					})
-				getShopExchangeTotalVoucherApi({})
-					.then((res) => {
-						this.voucherAcount.duihuanRechargeTotal = Number(res.data.rechargeTotal)
-						this.isFirstLoading = false
-						uni.hideLoading()
-					})
-					.catch((e) => {
-						this.isFirstLoading = false
-						uni.hideLoading()
-					})
+				this.getUserVoucherData()
+				this.getShopVoucherData()
 			} else {
-				getByUserOrderVoucherOrderApi({})
-					.then((res) => {
-						this.voucherAcount.chongzhiRechargeTotal = Number(res.data)
-						this.isFirstLoading = false
-						uni.hideLoading()
-					})
-					.catch((e) => {
-						this.isFirstLoading = false
-						uni.hideLoading()
-					})
-				getBuyerTotalVoucherEntryRecordApi({})
-					.then((res) => {
-						this.voucherAcount.duihuanRechargeTotal = Number(res.data.rechargeTotal)
-						this.isFirstLoading = false
-						uni.hideLoading()
-					})
-					.catch((e) => {
-						this.isFirstLoading = false
-						uni.hideLoading()
-					})
+				this.getUserVoucherData()
 			}
+		},
+		getUserVoucherData() {
+			uni.showLoading()
+			getByUserOrderVoucherOrderApi({})
+				.then((res) => {
+					this.userVoucherAcount.chongzhiRechargeTotal = Number(res.data)
+					this.isFirstLoading = false
+					uni.hideLoading()
+				})
+				.catch((e) => {
+					this.isFirstLoading = false
+					uni.hideLoading()
+				})
+			getBuyerTotalVoucherEntryRecordApi({})
+				.then((res) => {
+					this.userVoucherAcount.duihuanRechargeTotal = Number(res.data.rechargeTotal)
+					this.isFirstLoading = false
+					uni.hideLoading()
+				})
+				.catch((e) => {
+					this.isFirstLoading = false
+					uni.hideLoading()
+				})
+		},
+		getShopVoucherData() {
+			uni.showLoading()
+			getShopRechargeTotalVoucherApi({})
+				.then((res) => {
+					this.shopVoucherAcount.chongzhiRechargeTotal = Number(res.data)
+					this.isFirstLoading = false
+					uni.hideLoading()
+				})
+				.catch((e) => {
+					this.isFirstLoading = false
+					uni.hideLoading()
+				})
+			getShopExchangeTotalVoucherApi({})
+				.then((res) => {
+					this.shopVoucherAcount.duihuanRechargeTotal = Number(res.data)
+					this.isFirstLoading = false
+					uni.hideLoading()
+				})
+				.catch((e) => {
+					this.isFirstLoading = false
+					uni.hideLoading()
+				})
 		}
 	}
 }

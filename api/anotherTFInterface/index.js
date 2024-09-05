@@ -692,16 +692,16 @@ export const getAllBuyerVoucherOrderApi = (data) => AnotherTFRequest('/buyerVouc
 
 // 新版代金券
 // 查询商家充值金额（独立账号）
-export const getShopRechargeTotalVoucherApi = (data) => AnotherTFRequest('/shopVoucherEntryRecord/getShopRechargeTotal', data)
+export const getShopRechargeTotalVoucherApi = (data) => AnotherTFRequest('/shopVoucherEntryRecord/getShopExchangeTotal', data)
 
 // 查询商家兑换金额（独立账号）
-export const getShopExchangeTotalVoucherApi = (data) => AnotherTFRequest('/shopVoucherEntryRecord/getShopExchangeTotal', data)
+export const getShopExchangeTotalVoucherApi = (data) => AnotherTFRequest('/shopVoucherEntryRecord/getShopRechargeTotal', data)
 
 // 充值代金券：用户转用户转账操作
-export const updateOrderUserToUserTransferApi = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/orderUserToUserTransfer', data)
+export const updateOrderUserToUserTransferApi = (data) => AnotherTFRequest('/buyerVoucherOrderEntryRecord/orderUserToUserTransfer', data)
 
 // 充值代金券：用户转商家转账操作
-export const updateOrderUToShopTransferApi = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/orderUToShopTransfer', data)
+export const updateOrderUToShopTransferApi = (data) => AnotherTFRequest('/buyerVoucherOrderEntryRecord/orderUToShopTransfer', data)
 
 // 兑换代金券：用户转商家转账操作
 export const updateUserToShopTransferApi = (data) => AnotherTFRequest('/buyerVoucherEntryRecord/userToShopTransfer', data)
@@ -884,6 +884,9 @@ export const updateDoDrawIdApi = (data) => AnotherTFRequest('/lottery/doDrawId',
 
 // 中奖记录
 export const getLotteryRecordApi = (data) => AnotherTFRequest('/lotteryRecord/getRecord', data)
+
+// c端抽奖奖项列表
+export const getLotteryItemRecordApi = (data) => AnotherTFRequest('/lotteryItem/getLotteryItemRecord', data)
 
 // 评价
 // 点赞或取消点赞某个评论

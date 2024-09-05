@@ -79,7 +79,8 @@
 									style="margin-top: 20rpx;font-size: 28rpx;"
 									:style="{ color: currentRechargeIndex === index ? '#222229' : '#888889' }"
 								>
-									代金券{{ item.voucherNum || '' }}
+									<view>赠送</view>
+									<view>代金券{{ item.voucherNum || '' }}</view>
 								</view>
 							</view>
 							<view

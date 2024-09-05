@@ -278,7 +278,7 @@ export default {
 							if (this.isSplicing) {
 								splicingId = this.splicingId
 							} else {
-								await getShopCartApi({ shopId: this.goodsDetail.shopId }).then((res) => {
+								await getShopCartApi({ shopId: this.goodsDetail.shopId, cartType: 2 }).then((res) => {
 									splicingId = (res.data[0] && res.data[0].splicingId) || 0
 								})
 							}

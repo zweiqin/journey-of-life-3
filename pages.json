@@ -1898,6 +1898,12 @@
           }
         },
         {
+          "path": "another-user/lottery-activities/lottery-awards",
+          "style": {
+            "navigationBarTitleText": "抽奖奖项"
+          }
+        },
+        {
           "path": "another-serve/memberCenter/activityList",
           "style": {
             "navigationBarTitleText": "会员专区"
@@ -2255,6 +2261,14 @@
           "path": "another-user/collection-code/index",
           "style": {
             "navigationBarTitleText": "商家点单码"
+          }
+        },
+        {
+          "path": "another-user/exchangeZone/index",
+          "style": {
+            "navigationBarTitleText": "兑换专区",
+            "navigationBarBackgroundColor": "#fff",
+						"backgroundColor": "#fff"
           }
         },
         {
