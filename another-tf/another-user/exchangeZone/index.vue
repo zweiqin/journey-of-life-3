@@ -135,7 +135,8 @@ export default {
         page: 1,
         pageSize: 20,
         groupId: "",
-        counterType: "1",
+        counterType: "",
+        classifyId:"1593",
         search:"",
         type:"",
         volume:""
