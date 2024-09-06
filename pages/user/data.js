@@ -200,7 +200,7 @@ export const shopServe = [
     showRole: ['shop', 'merchantStaff']
   },
   {
-    name: '兑换专区',
+    name: '采购专区',
     icon: require('../../static/images/new-user/menu-icon/exchange.png'),
     url: '/another-tf/another-user/exchangeZone/index',
     showRole: ['shop']
