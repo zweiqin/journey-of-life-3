@@ -114,7 +114,7 @@ export default {
       queryData: {
         page: 1,
         pageSize: 10,
-        orderType: 2,
+        orderType: 1,
         procureType: 1,
         state: "",
       },
