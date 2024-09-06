@@ -2272,7 +2272,7 @@
         {
           "path": "another-user/exchangeZone/index",
           "style": {
-            "navigationBarTitleText": "兑换专区",
+            "navigationBarTitleText": "采购专区",
             "navigationBarBackgroundColor": "#fff",
 						"backgroundColor": "#fff"
           }

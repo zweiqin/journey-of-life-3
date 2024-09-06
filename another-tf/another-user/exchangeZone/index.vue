@@ -147,6 +147,9 @@ export default {
 			initiatedSplicingId: 0
     };
   },
+	onShow() {
+		this.initShopCart()
+	},
   methods: {
     //  价格排序
     priceScreen(){
@@ -163,7 +166,7 @@ export default {
 				this.$refs.refATFStoreShopCart.$refs.refATFShopCartList.getShopCartData('single')
 			}
 		},
-    //  获取兑换专区列表
+    //  获取采购专区列表
     async getProductList(flag) {
       uni.showLoading({
         title: "加载中...",

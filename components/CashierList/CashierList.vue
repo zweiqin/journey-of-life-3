@@ -1068,7 +1068,7 @@ export default {
 			getIsPwdBuyerUserExtendApi({})
 				.then((res) => {
 					uni.hideLoading()
-					if ('res.data') {
+					if (res.data) {
 						this.passwordInput = ''
 						this.isShowPasswordDialog = true
 					} else {
