@@ -214,7 +214,7 @@ export const shopServe = [
   {
     name: '货柜列表',
     icon: require('../../static/images/new-user/menu-icon/counterList.png'),
-    url: '/another-tf/another-user/purchaseOrder/index',
+    url: '/another-tf/another-user/counterList/index',
     showRole: ['shop']
   }
 ]
