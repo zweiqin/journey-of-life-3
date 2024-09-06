@@ -70,7 +70,7 @@
 									<text style="color: #dc362e;">是不是太难了，换一个</text>
 								</template>
 								<template #tips>拖动下方滑块完成拼图</template>
-								<template #question>请尽快完成滑动自定义提示</template>
+								<template #question>请尽快完成滑动</template>
 							</SliderCaptcha>
 						</view>
 						<!-- <view style="display: flex;justify-content: center;margin-top: 28rpx;">
@@ -274,7 +274,7 @@ export default {
 		handleConfirmSlide({ sliderKey, sliderX, done, error }) {
 			this.slideLoading = true
 			console.log(sliderX, this.slideOptions.sliderY)
-			getVerifyCodeApi({ phone: this.phone, x: sliderX, y: this.slideOptions.sliderY, xxx: sliderKey })
+			getVerifyCodeApi({ phone: this.phone, x: Math.floor(sliderX), y: this.slideOptions.sliderY, xxx: sliderKey })
 				.then((res) => {
 					this.$emit('success-verify', true)
 					this.slideLoading = false

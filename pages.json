@@ -1529,6 +1529,12 @@
           }
         },
         {
+          "path": "another-serve/personalDetails/payment-password-form",
+          "style": {
+            "navigationBarTitleText": "支付密码"
+          }
+        },
+        {
           "path": "another-user/cropper/index",
           "style": {
             "navigationBarTitleText": "图片裁剪"

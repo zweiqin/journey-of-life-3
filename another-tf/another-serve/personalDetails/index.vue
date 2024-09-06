@@ -89,7 +89,14 @@
 		</view>
 
 		<view style="margin-top: 30rpx;background-color: #ffffff;">
-			<view style="padding: 28rpx 38rpx;" @click="isShowResettingPasswordDialog = true">重置密码 ></view>
+			<view style="padding: 28rpx 38rpx;" @click="isShowResettingPasswordDialog = true">重置登录密码 ></view>
+			<view
+				style="display: flex;justify-content: space-between;align-items: center;padding: 20rpx 32rpx;"
+				@click="go('/another-tf/another-serve/personalDetails/payment-password-form')"
+			>
+				<text>支付密码 ></text>
+				<text v-if="isSetPaymentPassword">已设置</text>
+			</view>
 		</view>
 
 		<view class="mar-top-100">
@@ -158,7 +165,7 @@
 </template>
 
 <script>
-import { updateWxPhoneAppApi, updateAliPhoneAppApi, updateForgetPasswordUserApi } from '../../../api/anotherTFInterface'
+import { updateWxPhoneAppApi, updateAliPhoneAppApi, updateForgetPasswordUserApi, getIsPwdBuyerUserExtendApi } from '../../../api/anotherTFInterface'
 import { getUrlCode } from '../../../utils'
 import { SYSTEM_VERSION, APPLY_NAME } from '../../../config'
 
@@ -186,6 +193,7 @@ export default {
 				verificationCode: ''
 			},
 			isShowResettingPasswordDialog: false,
+			isSetPaymentPassword: false,
 
 			// 微信绑定
 			bindWXFormData: {
@@ -209,6 +217,10 @@ export default {
 			const code = getUrlCode().code
 			if (code) this.handleWXBind()
 		}
+		getIsPwdBuyerUserExtendApi({})
+			.then((res) => {
+				this.isSetPaymentPassword = res.data || false
+			})
 	},
 	mounted() {
 		// 获取手机的屏幕高度

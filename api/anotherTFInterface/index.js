@@ -65,6 +65,12 @@ export const updatePasswordUserApi = (data) => AnotherTFRequest('/user/updatePas
 // 重置密码
 export const updateForgetPasswordUserApi = (data) => AnotherTFRequest('/user/forgetPassword', data, 'POST')
 
+// 判断用户是否设置支付密码
+export const getIsPwdBuyerUserExtendApi = (data) => AnotherTFRequest('/buyerUserExtend/isPwd', data)
+
+// 设置用户验证密码
+export const updateSetUpPwdBuyerUserExtendApi = (data) => AnotherTFRequest('/buyerUserExtend/setUpPwd', data)
+
 // 用户信息查询，用户代金券查询(新)
 export const getBandUserInfoApi = (data) => AnotherTFRequest('/user/getBandUser', data)
 

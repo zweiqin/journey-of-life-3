@@ -158,7 +158,7 @@ export default {
 		},
 		shopData: {
 			type: Object,
-			default: () => ({ shopType: '', shops: [] })
+			default: () => ({ shopType: '', orderShops: [] })
 		}
 	},
 	data() {
@@ -214,8 +214,8 @@ export default {
 	watch: {
 		shopData: {
 			handler(newValue, oldValue) {
-				console.log(newValue)
-				if ((newValue.shopType !== oldValue.shopType) || (newValue.shops !== oldValue.shops)) {
+				if ((newValue.shopType !== oldValue.shopType) || (JSON.stringify(newValue.orderShops) !== JSON.stringify(oldValue.orderShops))) {
+					console.log(newValue)
 					this.initData()
 				}
 			},
@@ -268,12 +268,19 @@ export default {
 	created() {
 		this.initData(true)
 	},
+	beforeDestroy() {
+		this.$emit('change', {
+			benefitinFranchiseesPhone: '',
+			communityPhone: '',
+			commissionSharingRatio: ['', '', '']
+		})
+	},
 	methods: {
 		async initData(isGetRatio) {
 			let storePhone = ''
-			if (this.shopData.shops && (this.shopData.shops.length === 1)) {
+			if (this.shopData.orderShops && (this.shopData.orderShops.length === 1)) {
 				await getIndexShopDetailApi({
-					shopId: this.shopData.shops[0].shopId,
+					shopId: this.shopData.orderShops[0],
 					longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
 					latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
 				})

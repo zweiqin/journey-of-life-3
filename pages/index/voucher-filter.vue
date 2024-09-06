@@ -35,10 +35,9 @@
 
     <view class="goods-list">
       <!-- <VoucherDeatilGoodsPane v-for="item in $data._list" :key="item.id" :goodsInfo="item"></VoucherDeatilGoodsPane> -->
-
       <view class="goods-wrapper">
         <view class="goods-item"
-          @click="go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)"
+          @click="handleClickProduct(item)"
           v-for=" item  in  $data._list " :key="item.id">
           <tui-lazyload-img :style="{ background: `url(${common.seamingImgUrl(item.image)})`, margin: 0 }" mode="aspectFit"
             :src="common.seamingImgUrl(item.image)"></tui-lazyload-img>
@@ -147,12 +146,10 @@ export default {
       const res = await getFirstClassifyApi({
         classifyId: '822'
       })
-
       if (res.data) {
         const currentCategoryList = res.data.find(item => {
           return item.classifyId == this.currentCategoryId
         })
-
         if (currentCategoryList) {
           this.categoryList = currentCategoryList.childs
           this.currentFilterCategoryId = this.categoryList[0].classifyId
@@ -175,9 +172,17 @@ export default {
         this.$data._query.type = 1
         this.$data._query.volume = 1
       }
-
       this.currentFilterInfo.name = filterInfo.name
       this._loadData()
+    },
+
+    // 点筛选
+    handleClickProduct(item) {
+			if (this.currentFilterCategoryId && this.categoryList.find(i => i.classifyId === this.currentFilterCategoryId).classifyName === '线下兑换货架') {
+				this.$showToast('请到线下或商家采购专区目录 进行兑换')
+			} else {
+				this.go(`/another-tf/another-serve/goodsDetails/index?shopId=${item.shopId}&productId=${item.productId}&skuId=${item.skuId}`)
+			}
     },
 
     // 点击搜索
@@ -187,10 +192,8 @@ export default {
           type: "info",
           title: "请输入搜索关键字"
         })
-
         return
       }
-
       this.$data._query.productName = this.searchValue
       this._loadData()
     }

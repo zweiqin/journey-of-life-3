@@ -86,10 +86,11 @@
 						<view style="color: #222229;">自定义代金券：</view>
 						<view style="border-bottom: 2rpx solid #bebebe;">
 							<tui-input
-								v-model="customRecharge" type="number" label="券" :label-size="48"
+								:value="customRecharge" type="number" label="券" :label-size="48"
 								label-color="#000000"
 								:label-width="80" placeholder="输入自定义代金券" :border-bottom="false" padding="18rpx 2rpx 10rpx"
-								placeholder-style="color: #979797;font-size: 30rpx;" @focus="handleSelectRechargeCustom"
+								placeholder-style="color: #979797;font-size: 30rpx;"
+								@input="(e) => (customRecharge = e) && ((currentRechargeIndex = '') || (rechargeForm.number = e))"
 							>
 								<template #right>
 									<text v-if="purchaseRatio" style="font-size: 30rpx;color: #979797;">
@@ -147,14 +148,16 @@
 		<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
 			<view v-if="showPayTypePopup" style="padding: 60rpx 0 128rpx;">
 				<CashierList
+					ref="refCashierList"
 					:price-pay="rechargeForm.number / 2" show pay-type-shops :hui-shi-bao-pay="!!rechargeForm.number"
 					show-tonglian-pay :show-commission-pay="!!rechargeForm.number" :show-platform-pay="!!rechargeForm.number"
 					@change="(e) => payInfo = e"
+					@password-input="(e) => (payInfo.pwd = e.pwd) && handlePaymentPassword()"
 				/>
 				<tui-button
 					type="warning" width="168rpx" height="64rpx" margin="30rpx auto 0"
 					shape="circle"
-					@click="handleRecharge"
+					@click="handlePaymentPassword"
 				>
 					确认支付
 				</tui-button>
@@ -234,19 +237,23 @@ export default {
 			this.isShowVoucherModal = true
 		},
 
-		handleRecharge() {
-			uni.showLoading()
-			this.rechargeForm.payGrade = this.rechargeForm.number / this.purchaseRatio
-			submitBuyerVoucherOrderApi({ ...this.rechargeForm })
-				.then(async (res) => {
-					await handleDoPay({ ...res.data, ...this.payInfo }, 4, '')
-					uni.hideLoading()
-					this.isShowVoucherModal = false
-					this.isShowPopup = false
-				})
-				.catch(() => {
-					uni.hideLoading()
-				})
+		handlePaymentPassword() {
+			if ((this.payInfo.paymentMode !== 9) && (this.payInfo.paymentMode !== 4) && !this.payInfo.pwd) {
+				this.$refs.refCashierList && this.$refs.refCashierList.handleInputPaymentPassword()
+			} else {
+				uni.showLoading()
+				this.rechargeForm.payGrade = this.rechargeForm.number / this.purchaseRatio
+				submitBuyerVoucherOrderApi({ ...this.rechargeForm })
+					.then(async (res) => {
+						await handleDoPay({ ...res.data, ...this.payInfo }, 4, '')
+						uni.hideLoading()
+						this.isShowVoucherModal = false
+						this.isShowPopup = false
+					})
+					.catch(() => {
+						uni.hideLoading()
+					})
+			}
 		}
 	}
 }
@@ -255,6 +262,14 @@ export default {
 <style lang="less" scoped>
 .voucher-recharge-container {
 	box-sizing: border-box;
+
+	/deep/ .tui-bottom-popup {
+		overflow: visible;
+		.tui-dialog {
+			top: auto;
+			bottom: 32vh;
+		}
+	}
 
 	.operation-btn {
 		/deep/ .tui-btn {

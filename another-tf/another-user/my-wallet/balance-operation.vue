@@ -93,7 +93,7 @@
 					</view>
 					<view style="margin-top: 20rpx;">
 						<view style="color: #222229;">自定义金额：</view>
-						<view style="border-bottom: 2upx solid #bebebe;">
+						<view style="border-bottom: 2rpx solid #bebebe;">
 							<tui-input
 								v-model="customRecharge" type="number" label="￥" :label-size="48"
 								label-color="#000000"
@@ -152,7 +152,7 @@
 		</tui-modal>
 
 		<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
-			<view v-if="showPayTypePopup" style="padding: 60upx 0 128upx;">
+			<view v-if="showPayTypePopup" style="padding: 60rpx 0 128rpx;">
 				<CashierList
 					:price-pay="rechargeForm.amounts || 0" show
 					pay-type-shops
@@ -160,7 +160,7 @@
 					@change="(e) => payInfo = e"
 				/>
 				<tui-button
-					type="warning" width="168upx" height="64upx" margin="30upx auto 0"
+					type="warning" width="168rpx" height="64rpx" margin="30rpx auto 0"
 					shape="circle"
 					@click="handleRecharge"
 				>

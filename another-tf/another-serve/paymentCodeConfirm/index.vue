@@ -112,24 +112,27 @@
 
 			<ATFCommunityAssociation
 				padding="20rpx 0 0" :community-address-info="userAddressInfo"
-				:shop-data="{ shopType: settlement.shopType, shops: settlement.shops }"
+				:shop-data="{ shopType: settlement.shopType, orderShops: settlement.shops.map(i => i.shopId) }"
 				@change="(e) => otherInfo = { ...otherInfo, ...e }"
 			></ATFCommunityAssociation>
 
 			<view style="margin-top: 20rpx;">
 				<CashierList
-					v-if="settlement.shops.length"
+					v-if="settlement.shops.length" ref="refCashierList"
 					padding="8rpx 26rpx 6rpx" radius="24rpx" show :price-pay="totalPrice"
 					:unnecessary-prices="[ '9' ]" missing-price-text="请输入金额"
 					:pay-type-shops="settlement.shops.length ? settlement.shops.map(i => i.shopId) : false"
 					:hui-shi-bao-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) && (settlement.shops.length === 1) ? [ settlement.shops[0].shopId ] : false"
 					show-tonglian-pay
-					:voucher-pay="{ voucherTotalAll: settlement.voucherTotalAll, userVoucherDeductLimit: settlement.userVoucherDeductLimit, voucherList: settlement.voucherList, isCanVoucher: voucherObj.isCanVoucher, noVoucherText: voucherObj.noVoucherText }"
+					:voucher-list="settlement.voucherList"
+					:voucher-pay="{ voucherTotalAll: settlement.shops.some((a) => a.skus.some((b) => b.procureCounterType === 1)) ? 0 : settlement.voucherTotalAll, userVoucherDeductLimit: settlement.userVoucherDeductLimit, isCanVoucher: voucherObj.isCanVoucher, noVoucherText: voucherObj.noVoucherText }"
+					:voucher-shop-pay="{ voucherTotalAll: settlement.shops.some((a) => a.skus.some((b) => b.procureCounterType !== 1)) ? 0 : settlement.voucherTotalAll, shopVoucherDeductLimit: settlement.shopVoucherDeductLimit, isCanVoucher: voucherShopObj.isCanVoucher, noVoucherText: voucherShopObj.noVoucherText }"
 					:show-commission-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))"
 					:show-platform-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))"
 					:show-transaction-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))"
 					:shop-id-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) ? settlement.shops.length === 1 ? settlement.shops[0].shopId : 0 : 0"
 					@change="handlePaymentSelect"
+					@password-input="(e) => (payInfo.pwd = e.pwd) && handlePaymentPassword()"
 				>
 					<template #header="obj">
 						<view v-if="obj.paymentList && (obj.paymentList.length > 1)" style="padding-top: 20rpx;">
@@ -147,7 +150,7 @@
 				type="warning" width="auto" height="86rpx" margin="10rpx 16rpx 0"
 				:size="28"
 				:disabled="settlement.shops.some(i => i.receiveNotMatch)"
-				@click="resolveSubmitOrder({ isPayImmediately: !!otherInfo.orderId, settlement, userAddressInfo, skuItemMsgList, skuItemInfo, selectedPlatformCoupon, selectIntegral, integralRatio, totalPrice, otherInfo, payInfo, hasPrice: true, shamPriceText: '请输入金额' })"
+				@click="handlePaymentPassword"
 			>
 				付款
 			</tui-button>
@@ -200,6 +203,7 @@ export default {
 			settlement: {
 				shopType: '',
 				userVoucherDeductLimit: 0,
+				shopVoucherDeductLimit: 0,
 				voucherTotalAll: 0,
 				voucherList: [],
 				coupons: [],
@@ -210,7 +214,7 @@ export default {
 			skuItemMsgList: [],
 			totalPrice: 0, // 合计
 			userAddressInfo: { receiveId: '' },
-			payInfo: { paymentMode: '', huabeiPeriod: -1 }, // 支付相关
+			payInfo: { paymentMode: '', huabeiPeriod: -1, pwd: '' }, // 支付相关
 			// 拼团相关
 			skuItemInfo: {},
 			// 店铺优惠券相关
@@ -219,6 +223,7 @@ export default {
 			selectedShopCouponList: [], // 已选择店铺优惠券
 			// 代金券相关
 			voucherObj: { isCanVoucher: false, noVoucherText: '无法使用代金券支付' },
+			voucherShopObj: { isCanVoucher: false, noVoucherText: '无法使用商家代金券支付' },
 			// 平台优惠券相关
 			isShowPlatformCoupon: false,
 			shopIndex: 0, // 选中的店铺使用店铺优惠券
@@ -439,8 +444,9 @@ export default {
 				}
 			})
 			this.selectIntegral = false
-			const voucherDataObj = resolveVoucherData({ settlement: this.settlement, voucherObj: this.voucherObj })
+			const voucherDataObj = resolveVoucherData({ settlement: this.settlement, voucherObj: this.voucherObj, voucherShopObj: this.voucherShopObj })
 			this.voucherObj = voucherDataObj.voucherObj
+			this.voucherShopObj = voucherDataObj.voucherShopObj
 			this.getOrderTotal({ settlement: this.settlement, selectedPlatformCoupon: this.selectedPlatformCoupon, integralRatio: this.integralRatio, selectIntegral: this.selectIntegral })
 		},
 		handleConfirmKeyboard(value, shopIndex) {
@@ -453,7 +459,6 @@ export default {
 			this.handlePriceInput()
 		},
 
-		resolveSubmitOrder,
 		async handleOnShow() {
 			if (uni.getStorageSync(T_SKU_ITEM_MSG_LIST) || uni.getStorageSync(T_SKU_ITEM_INFO)) {
 				let orderSettlementObj
@@ -554,7 +559,7 @@ export default {
 			// this.payInfo = e // 该方式结合在视图层展示payInfo信息会出现死循环
 			this.payInfo.paymentMode = e.paymentMode
 			this.payInfo.huabeiPeriod = e.huabeiPeriod
-			if (this.payInfo.paymentMode === 11) {
+			if ((this.payInfo.paymentMode === 11) || (this.payInfo.paymentMode === 12)) {
 				const voucherPaySelectObj = resolveVoucherPaySelect({
 					settlement: this.settlement,
 					selectedPlatformCoupon: this.selectedPlatformCoupon,
@@ -579,6 +584,28 @@ export default {
 			this.integralNum = orderTotalObj.integralNum
 			this.selectIntegral = orderTotalObj.selectIntegral
 			this.totalPrice = orderTotalObj.totalPrice
+		},
+
+		handlePaymentPassword() {
+			if ((this.payInfo.paymentMode !== 9) && (this.payInfo.paymentMode !== 4) && !this.payInfo.pwd) {
+				this.$refs.refCashierList && this.$refs.refCashierList.handleInputPaymentPassword()
+			} else {
+				resolveSubmitOrder({
+					isPayImmediately: !!this.otherInfo.orderId,
+					settlement: this.settlement,
+					userAddressInfo: this.userAddressInfo,
+					skuItemMsgList: this.skuItemMsgList,
+					skuItemInfo: this.skuItemInfo,
+					selectedPlatformCoupon: this.selectedPlatformCoupon,
+					selectIntegral: this.selectIntegral,
+					integralRatio: this.integralRatio,
+					totalPrice: this.totalPrice,
+					otherInfo: this.otherInfo,
+					payInfo: this.payInfo,
+					hasPrice: true,
+					shamPriceText: '请输入金额'
+				})
+			}
 		}
 	}
 }

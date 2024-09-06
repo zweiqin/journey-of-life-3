@@ -52,24 +52,28 @@
 			></ATFOrderIntegral>
 
 			<ATFCommunityAssociation
+				v-if="settlement.shops.length && settlement.shops.every((a) => a.skus.every((b) => (b.exchangeCounterType !== 1) && (b.procureCounterType !== 1)))"
 				padding="20rpx 0 0" :community-address-info="userAddressInfo"
-				:shop-data="{ shopType: settlement.shopType, shops: settlement.shops }"
+				:shop-data="{ shopType: settlement.shopType, orderShops: settlement.shops.map(i => i.shopId) }"
 				@change="(e) => otherInfo = { ...otherInfo, ...e }"
 			></ATFCommunityAssociation>
 
 			<view style="margin-top: 20rpx;">
 				<CashierList
 					v-if="settlement.shops.length"
-					show :price-pay="totalPrice"
+					ref="refCashierList" show :price-pay="totalPrice"
 					:pay-type-shops="settlement.shops.length ? settlement.shops.map(i => i.shopId) : false"
 					:hui-shi-bao-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && (b.exchangeCounterType !== 1) && (b.procureCounterType !== 1))) && totalPrice && (settlement.shops.length === 1) ? [ settlement.shops[0].shopId ] : false"
 					:show-tonglian-pay="settlement.shops.every((a) => a.skus.every((b) => (b.exchangeCounterType !== 1) && (b.procureCounterType !== 1)))"
-					:voucher-pay="{ voucherTotalAll: settlement.voucherTotalAll, userVoucherDeductLimit: settlement.userVoucherDeductLimit, voucherList: settlement.voucherList, isCanVoucher: voucherObj.isCanVoucher, noVoucherText: voucherObj.noVoucherText }"
+					:voucher-list="settlement.voucherList"
+					:voucher-pay="{ voucherTotalAll: settlement.shops.some((a) => a.skus.some((b) => b.procureCounterType === 1)) ? 0 : settlement.voucherTotalAll, userVoucherDeductLimit: settlement.userVoucherDeductLimit, isCanVoucher: voucherObj.isCanVoucher, noVoucherText: voucherObj.noVoucherText }"
+					:voucher-shop-pay="{ voucherTotalAll: settlement.shops.some((a) => a.skus.some((b) => b.procureCounterType !== 1)) ? 0 : settlement.voucherTotalAll, shopVoucherDeductLimit: settlement.shopVoucherDeductLimit, isCanVoucher: voucherShopObj.isCanVoucher, noVoucherText: voucherShopObj.noVoucherText }"
 					:show-commission-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && (b.exchangeCounterType !== 1) && (b.procureCounterType !== 1))) && !!totalPrice"
 					:show-platform-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && (b.exchangeCounterType !== 1) && (b.procureCounterType !== 1))) && !!totalPrice"
 					:show-transaction-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && (b.exchangeCounterType !== 1) && (b.procureCounterType !== 1))) && !!totalPrice"
 					:shop-id-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && (b.exchangeCounterType !== 1) && (b.procureCounterType !== 1))) && totalPrice ? settlement.shops.length === 1 ? settlement.shops[0].shopId : 0 : 0"
 					@change="handlePaymentSelect" @voucher-select="(e) => otherInfo.voucherId = e.voucherId"
+					@password-input="(e) => (payInfo.pwd = e.pwd) && handlePaymentPassword()"
 				/>
 			</view>
 			<view style="margin-top: 20rpx;font-size: 24rpx;color: #999;">
@@ -105,7 +109,7 @@
 				type="black" width="auto" height="86rpx" margin="10rpx 16rpx 0"
 				:size="28"
 				:disabled="settlement.shops.some(i => i.receiveNotMatch)"
-				@click="resolveSubmitOrder({ settlement, userAddressInfo, skuItemMsgList, skuItemInfo, selectedPlatformCoupon, selectIntegral, integralRatio, totalPrice, otherInfo, payInfo })"
+				@click="handlePaymentPassword"
 			>
 				提交订单
 			</tui-button>
@@ -128,6 +132,7 @@ export default {
 			settlement: {
 				shopType: '',
 				userVoucherDeductLimit: 0,
+				shopVoucherDeductLimit: 0,
 				voucherTotalAll: 0,
 				voucherList: [],
 				coupons: [],
@@ -138,7 +143,7 @@ export default {
 			skuItemMsgList: [],
 			totalPrice: 0, // 合计
 			userAddressInfo: { receiveId: '' },
-			payInfo: { paymentMode: '', huabeiPeriod: -1 }, // 支付相关
+			payInfo: { paymentMode: '', huabeiPeriod: -1, pwd: '' }, // 支付相关
 			// 拼团相关
 			skuItemInfo: {},
 			// 店铺优惠券相关
@@ -147,6 +152,7 @@ export default {
 			selectedShopCouponList: [], // 已选择店铺优惠券
 			// 代金券相关
 			voucherObj: { isCanVoucher: false, noVoucherText: '无法使用代金券支付' },
+			voucherShopObj: { isCanVoucher: false, noVoucherText: '无法使用商家代金券支付' },
 			// 平台优惠券相关
 			isShowPlatformCoupon: false,
 			shopIndex: 0, // 选中的店铺使用店铺优惠券
@@ -199,7 +205,6 @@ export default {
 		}
 	},
 	methods: {
-		resolveSubmitOrder,
 		async handleOnShow() {
 			if (uni.getStorageSync(T_SKU_ITEM_MSG_LIST) || uni.getStorageSync(T_SKU_ITEM_INFO)) {
 				let orderSettlementObj
@@ -238,8 +243,9 @@ export default {
 				this.isShowShopCoupons = orderSettlementObj.isShowShopCoupons
 				this.selectedShopCouponList = orderSettlementObj.selectedShopCouponList
 				if (orderSettlementObj.isSuccess) {
-					const voucherDataObj = resolveVoucherData({ settlement: this.settlement, voucherObj: this.voucherObj })
+					const voucherDataObj = resolveVoucherData({ settlement: this.settlement, voucherObj: this.voucherObj, voucherShopObj: this.voucherShopObj })
 					this.voucherObj = voucherDataObj.voucherObj
+					this.voucherShopObj = voucherDataObj.voucherShopObj
 					this.getOrderTotal({ settlement: this.settlement, selectedPlatformCoupon: this.selectedPlatformCoupon, integralRatio: this.integralRatio, selectIntegral: this.selectIntegral })
 				}
 				console.log(this.settlement)
@@ -297,7 +303,7 @@ export default {
 		// 选择支付
 		handlePaymentSelect(e) {
 			this.payInfo = e
-			if (this.payInfo.paymentMode === 11) {
+			if ((this.payInfo.paymentMode === 11) || (this.payInfo.paymentMode === 12)) {
 				const voucherPaySelectObj = resolveVoucherPaySelect({
 					settlement: this.settlement,
 					selectedPlatformCoupon: this.selectedPlatformCoupon,
@@ -322,6 +328,25 @@ export default {
 			this.integralNum = orderTotalObj.integralNum
 			this.selectIntegral = orderTotalObj.selectIntegral
 			this.totalPrice = orderTotalObj.totalPrice
+		},
+
+		handlePaymentPassword() {
+			if ((this.payInfo.paymentMode !== 9) && (this.payInfo.paymentMode !== 4) && !this.payInfo.pwd) {
+				this.$refs.refCashierList && this.$refs.refCashierList.handleInputPaymentPassword()
+			} else {
+				resolveSubmitOrder({
+					settlement: this.settlement,
+					userAddressInfo: this.userAddressInfo,
+					skuItemMsgList: this.skuItemMsgList,
+					skuItemInfo: this.skuItemInfo,
+					selectedPlatformCoupon: this.selectedPlatformCoupon,
+					selectIntegral: this.selectIntegral,
+					integralRatio: this.integralRatio,
+					totalPrice: this.totalPrice,
+					otherInfo: this.otherInfo,
+					payInfo: this.payInfo
+				})
+			}
 		},
 
 		handleShare() {

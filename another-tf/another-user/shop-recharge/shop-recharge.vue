@@ -74,16 +74,17 @@
 		<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
 			<view v-if="showPayTypePopup" style="padding: 60upx 0 128upx;">
 				<CashierList
-					:price-pay="currentRechargeCount" show
+					ref="refCashierList" :price-pay="currentRechargeCount" show
 					pay-type-shops
 					:hui-shi-bao-pay="!!currentRechargeCount" show-tonglian-pay
 					:show-commission-pay="!!currentRechargeCount" :show-platform-pay="!!currentRechargeCount"
 					@change="(e) => payInfo = e"
+					@password-input="(e) => (payInfo.pwd = e.pwd) && handlePaymentPassword()"
 				/>
 				<tui-button
 					type="warning" width="168upx" height="64upx" margin="30upx auto 0"
 					shape="circle"
-					@click="handleRecharge"
+					@click="handlePaymentPassword"
 				>
 					确认支付
 				</tui-button>
@@ -98,6 +99,7 @@ import { getRechargeSubmitApi, addRechargeSubmitApi, getRechargeTotalCustomersAp
 import { handleDoPay } from '@/utils/payUtil'
 
 export default {
+	name: 'ShopRecharge',
   data() {
     return {
       shopId: '',
@@ -160,29 +162,30 @@ export default {
       console.log(this.currentRechargeType,this.currentRechargeCount);
     },
 
-    handleRecharge() {
-      if (!this.currentRechargeCount) {
-        this.ttoast({
-          type: "fail",
-          title: '请选择要充值的金额'
-        })
-        return
-      }
-
-      addRechargeSubmitApi({
-        shopId: this.shopId,
-        amountId: this.rechargePriceList[this.currentRechargeType].amountId,
-        rechargeBalance: this.currentRechargeCount,
-        remark: 'normal'
-      }).then(res => {
-        handleDoPay({ ...res.data, ...this.payInfo }, 7, '')
-        console.log(res);
-      }).catch(err => {
-        console.log(err);
-      })
-
-      console.log("八嘎雅鹿，你滴良心，大大滴坏。");
-    },
+		handlePaymentPassword() {
+			if ((this.payInfo.paymentMode !== 9) && (this.payInfo.paymentMode !== 4) && !this.payInfo.pwd) {
+				this.$refs.refCashierList && this.$refs.refCashierList.handleInputPaymentPassword()
+			} else {
+				if (!this.currentRechargeCount) {
+					this.ttoast({
+						type: "fail",
+						title: '请选择要充值的金额'
+					})
+					return
+				}
+				addRechargeSubmitApi({
+					shopId: this.shopId,
+					amountId: this.rechargePriceList[this.currentRechargeType].amountId,
+					rechargeBalance: this.currentRechargeCount,
+					remark: 'normal'
+				}).then(res => {
+					handleDoPay({ ...res.data, ...this.payInfo }, 7, '')
+					console.log(res);
+				}).catch(err => {
+					console.log(err);
+				})
+			}
+		},
 
     handleSearchSop() {
       if (!this.searchShopValue) {
@@ -242,6 +245,13 @@ export default {
         }
     }
 .shop-recharge-container {
+	/deep/ .tui-bottom-popup {
+		overflow: visible;
+		.tui-dialog {
+			top: auto;
+			bottom: 32vh;
+		}
+	}
   .total-pane {
     z-index: 1;
     position: relative;
