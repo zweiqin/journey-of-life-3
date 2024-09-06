@@ -24,6 +24,7 @@
 								</text>
 								<text v-if="(payment.paymentMode === '6')">（余额：{{ priceShopInfo.current }}）</text>
 								<text v-if="(payment.paymentMode === '11')">（余额：{{ voucherPay.userVoucherDeductLimit }}）</text>
+								<text v-if="(payment.paymentMode === '12')">（余额：{{ voucherShopPay.shopVoucherDeductLimit }}）</text>
 								<text v-if="(paymentMode === '3') && (paymentMode === payment.paymentMode)">
 									（手续费：￥{{ flowerInfo.hbServiceChargeTotal }}）
 								</text>
@@ -59,11 +60,11 @@
 								</tui-radio-group>
 							</view>
 							<!-- 代金券选择 -->
-							<view v-if="paymentMode === '11'">
-								<view v-if="voucherPay.voucherList && voucherPay.voucherList.length">
-									<view v-show="voucherPay.voucherList.length !== 1" style="padding: 4rpx 20rpx 10rpx;">
+							<view v-if="(paymentMode === '11') || (paymentMode === '12')">
+								<view v-if="voucherList && voucherList.length">
+									<view v-show="voucherList.length !== 1" style="padding: 4rpx 20rpx 10rpx;">
 										<tui-radio-group :value="String(voucherInfo.voucherId)" @change="handleChangeVoucher">
-											<tui-label v-for="(voucherItem, index) in voucherPay.voucherList" :key="index">
+											<tui-label v-for="(voucherItem, index) in voucherList" :key="index">
 												<tui-list-cell padding="14rpx 0">
 													<view>
 														<tui-radio
@@ -92,11 +93,35 @@
 				<tui-no-data :fixed="false" style="padding-top: 60rpx;">没有可用的支付方式～</tui-no-data>
 			</view>
 		</view>
+
+		<view style="position: relative;z-index: 888;">
+			<tui-dialog :buttons="[]" :show="isShowPasswordDialog" title="">
+				<template #content>
+					<view>
+						<view style="padding: 12rpx 0 0;text-align: left;">
+							<tui-icon
+								name="shut" color="#000000" size="46"
+								unit="rpx" @click="isShowPasswordDialog = false"
+							></tui-icon>
+						</view>
+						<tui-input
+							v-model="passwordInput" label="" type="password"
+							placeholder="请输入支付密码" focus
+						></tui-input>
+						<view style="display: flex;align-items: center;justify-content: center;margin-top: 28rpx;">
+							<tui-button type="warning" width="60%" height="66rpx" margin="0" :size="28" @click="handleConfirmPaymentPassword">
+								确 认
+							</tui-button>
+						</view>
+					</view>
+				</template>
+			</tui-dialog>
+		</view>
 	</view>
 </template>
 
 <script>
-import { getOrderHuabeiConfigApi, getPricePlatformAllApi, getRechargeTotalCustomersApi, getShopCheckListDetailApi } from '../../api/anotherTFInterface'
+import { getOrderHuabeiConfigApi, getPricePlatformAllApi, getRechargeTotalCustomersApi, getShopCheckListDetailApi, getIsPwdBuyerUserExtendApi } from '../../api/anotherTFInterface'
 
 export default {
 	name: 'CashierList',
@@ -158,11 +183,21 @@ export default {
 			type: Boolean,
 			default: false
 		},
+		// 代金券种类列表
+		voucherList: {
+			type: Array,
+			default: () => []
+		},
 		// 代金券支付
 		voucherPay: {
 			type: Object,
 			// 所有商品可使用多少代金券抵扣，用户代金券余额，是否可以使用代金券支付，不能使用代金券支付的说明
-			default: () => ({ voucherTotalAll: 0, userVoucherDeductLimit: 0, voucherList: [], isCanVoucher: false, noVoucherText: '无法使用代金券支付' })
+			default: () => ({ voucherTotalAll: 0, userVoucherDeductLimit: 0, isCanVoucher: false, noVoucherText: '无法使用代金券支付' })
+		},
+		// 商家代金券支付
+		voucherShopPay: {
+			type: Object,
+			default: () => ({ voucherTotalAll: 0, shopVoucherDeductLimit: 0, isCanVoucher: false, noVoucherText: '无法使用商家代金券支付' })
 		},
 		// 佣金支付
 		showCommissionPay: {
@@ -235,7 +270,10 @@ export default {
 			// 用户的商家充值的余额相关
 			priceShopInfo: {
 				current: 0
-			}
+			},
+
+			isShowPasswordDialog: false,
+			passwordInput: ''
 		}
 	},
 	watch: { // 对于watch，按书写顺序执行（如果由同步代码触发）。shopIdPay->pricePay
@@ -283,6 +321,31 @@ export default {
 					} else if (!newValue.voucherTotalAll) {
 						if (this.paymentMode === '11') this.handleSetAblePay()
 						if (this.paymentList.find((item) => item.paymentMode === '11')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '11'), 1)
+						this.handleNoticeFather()
+					}
+				}
+			},
+			immediate: false,
+			deep: true
+		},
+		voucherShopPay: {
+			handler(newValue, oldValue) {
+				if (newValue.voucherTotalAll !== oldValue.voucherTotalAll) {
+					if (newValue.voucherTotalAll) {
+						if (!this.paymentList.find((item) => item.paymentMode === '12')) {
+							this.paymentList.push({
+								label: '商家代金券支付',
+								paymentMode: '12',
+								icon: require('../../static/images/user/pay/shangjiadaijinquan.png'),
+								disabled: true
+							})
+						}
+						this.paymentList.find((item) => item.paymentMode === '12').disabled = (!this.unnecessaryPrices.includes('12') && !this.pricePay) || !this.voucherShopPay.isCanVoucher
+						this.handleSetAblePay()
+						this.handleNoticeFather()
+					} else if (!newValue.voucherTotalAll) {
+						if (this.paymentMode === '12') this.handleSetAblePay()
+						if (this.paymentList.find((item) => item.paymentMode === '12')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '12'), 1)
 						this.handleNoticeFather()
 					}
 				}
@@ -481,6 +544,12 @@ export default {
 					} else if (!this.voucherPay.voucherTotalAll && (this.paymentMode === '11')) {
 						this.handleSetAblePay()
 					}
+					if (this.voucherShopPay.voucherTotalAll) {
+						this.paymentList.find((item) => item.paymentMode === '12').disabled = (!this.unnecessaryPrices.includes('12') && !this.pricePay) || !this.voucherShopPay.isCanVoucher
+						if (this.paymentList.find((item) => item.paymentMode === '12').disabled && (this.paymentMode === '12')) this.handleSetAblePay()
+					} else if (!this.voucherShopPay.voucherTotalAll && (this.paymentMode === '12')) {
+						this.handleSetAblePay()
+					}
 					if (this.showCommissionPay) {
 						this.paymentList.find((item) => item.paymentMode === '7').disabled = (!this.unnecessaryPrices.includes('7') && !this.pricePay) || (this.pricePay > this.pricePlatformInfo.commissionPrice)
 						if (this.paymentList.find((item) => item.paymentMode === '7').disabled && (this.paymentMode === '7')) this.handleSetAblePay()
@@ -606,6 +675,19 @@ export default {
 					})
 				}
 				this.paymentList.find((item) => item.paymentMode === '11').disabled = (!this.unnecessaryPrices.includes('11') && !this.pricePay) || !this.voucherPay.isCanVoucher
+				this.handleSetAblePay()
+				this.handleNoticeFather()
+			}
+			if (this.voucherShopPay.voucherTotalAll) {
+				if (!this.paymentList.find((item) => item.paymentMode === '12')) {
+					this.paymentList.push({
+						label: '商家代金券支付',
+						paymentMode: '12',
+						icon: require('../../static/images/user/pay/shangjiadaijinquan.png'),
+						disabled: true
+					})
+				}
+				this.paymentList.find((item) => item.paymentMode === '12').disabled = (!this.unnecessaryPrices.includes('12') && !this.pricePay) || !this.voucherShopPay.isCanVoucher
 				this.handleSetAblePay()
 				this.handleNoticeFather()
 			}
@@ -837,6 +919,14 @@ export default {
 					}
 				}
 			}
+			if (!this.paymentMode) {
+				if (this.voucherShopPay.voucherTotalAll) {
+					if (this.paymentList.find((item) => item.paymentMode === '12')) {
+						this.paymentList.find((item) => item.paymentMode === '12').disabled = (!this.unnecessaryPrices.includes('12') && !this.pricePay) || !this.voucherShopPay.isCanVoucher
+						if (!this.paymentList.find((item) => item.paymentMode === '12').disabled) this.paymentMode = '12'
+					}
+				}
+			}
 			console.log(this.paymentMode)
 		},
 
@@ -857,9 +947,9 @@ export default {
 					item.disabled = true
 				})
 			}
-			if (this.paymentMode === '11') {
-				if (this.voucherPay.voucherList && this.voucherPay.voucherList.length && !this.voucherInfo.voucherId) {
-					this.voucherInfo.voucherId = this.voucherPay.voucherList[0].platformVoucherId
+			if ((this.paymentMode === '11') || (this.paymentMode === '12')) {
+				if (this.voucherList && this.voucherList.length && !this.voucherInfo.voucherId) {
+					this.voucherInfo.voucherId = this.voucherList[0].platformVoucherId
 				}
 				this.$emit('voucher-select', this.voucherInfo)
 			} else {
@@ -901,6 +991,12 @@ export default {
 					uni.showToast({ title: this.missingPriceText, icon: 'none' })
 				} else if (!this.voucherPay.isCanVoucher) {
 					uni.showToast({ title: this.voucherPay.noVoucherText, icon: 'none' }) // 无法使用代金券支付
+				}
+			} else if (payment.paymentMode === '12') {
+				if (!this.unnecessaryPrices.includes('12') && !this.pricePay) {
+					uni.showToast({ title: this.missingPriceText, icon: 'none' })
+				} else if (!this.voucherShopPay.isCanVoucher) {
+					uni.showToast({ title: this.voucherShopPay.noVoucherText, icon: 'none' }) // 无法使用商家代金券支付
 				}
 			} else if (payment.paymentMode === '7') {
 				if (!this.unnecessaryPrices.includes('7') && !this.pricePay) {
@@ -965,6 +1061,43 @@ export default {
 				paymentMode: Number(this.paymentMode),
 				huabeiPeriod: this.paymentMode === '3' ? Number(this.flowerInfo.hbByStagesPeriods) : -1
 			})
+		},
+
+		handleInputPaymentPassword() {
+			uni.showLoading()
+			getIsPwdBuyerUserExtendApi({})
+				.then((res) => {
+					uni.hideLoading()
+					if ('res.data') {
+						this.passwordInput = ''
+						this.isShowPasswordDialog = true
+					} else {
+						uni.showModal({
+							title: '温馨提示',
+							content: '系统检测到您未设置支付密码，部分支付将无法使用，是否现在去设置？',
+							confirmText: '现在设置',
+							cancelText: '暂不设置',
+							success: (res) => {
+								if (res.confirm) {
+									uni.navigateTo({
+										url: '/another-tf/another-serve/personalDetails/payment-password-form'
+									})
+								}
+							}
+						})
+					}
+				})
+				.catch((e) => {
+					uni.hideLoading()
+				})
+		},
+		handleConfirmPaymentPassword() {
+			if (!this.passwordInput) return this.$showToast('请填写密码')
+			this.$emit('password-input', {
+				pwd: this.passwordInput
+			})
+			this.passwordInput = ''
+			this.isShowPasswordDialog = false
 		}
 	}
 }
@@ -975,6 +1108,20 @@ export default {
 	width: 100%;
 	box-sizing: border-box;
 	background: #fff;
+
+	/deep/ .tui-dialog {
+		max-height: none;
+		left: 68rpx;
+		right: 68rpx;
+
+		.tui-dialog__hd {
+			display: none;
+		}
+
+		.tui-dialog__ft {
+			display: none;
+		}
+	}
 
 	.cashier {
 		border-bottom: 2rpx solid #d0d0d0;

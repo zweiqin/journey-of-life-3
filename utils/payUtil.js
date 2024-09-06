@@ -951,7 +951,7 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 				uni.showToast({ title: '暂不支持在支付宝小程序使用通联支付', icon: 'none' })
 				// #endif
 			}
-		} else if ([5, 6, 7, 8, 11].includes(submitInfo.paymentMode)) { // 佣金支付、平台余额支付、商家余额支付、消费金支付、代金券支付
+		} else if ([5, 6, 7, 8, 11, 12].includes(submitInfo.paymentMode)) { // 佣金支付、平台余额支付、商家余额支付、消费金支付、代金券支付、商家代金券支付
 			if (isInWx()) {
 				if (store.state.app.isInMiniProgram) {
 					await h5CommissionPay(submitResult, purchaseMode, type, otherArgs)

@@ -93,7 +93,7 @@
 		<tui-bottom-popup :show="payObj.showPayPopup" @close="payObj.showPayPopup = false">
 			<view v-if="payObj.showPayPopup" style="padding: 60rpx 0 128rpx;">
 				<CashierList
-					:price-pay="payObj.pricePay" show
+					ref="refCashierList" :price-pay="payObj.pricePay" show
 					:pay-type-shops="[ payObj.shopId ]"
 					:hui-shi-bao-pay="payObj.skus.every((b) => !b.platformCurrencyId) && payObj.pricePay ? [ payObj.shopId ] : false"
 					show-tonglian-pay
@@ -102,11 +102,12 @@
 					:show-transaction-pay="payObj.skus.every((b) => !b.platformCurrencyId) && !!payObj.pricePay"
 					:shop-id-pay="payObj.skus.every((b) => !b.platformCurrencyId) && payObj.pricePay ? payObj.shopId : 0"
 					@change="(e) => payObj.payInfo = { ...payObj.payInfo, ...e }"
+					@password-input="(e) => (payObj.payInfo.pwd = e.pwd) && handlePaymentPassword()"
 				/>
 				<tui-button
 					type="warning" width="168rpx" height="64rpx" margin="30rpx auto 0"
 					shape="circle"
-					@click="handleShopGoPay"
+					@click="handlePaymentPassword"
 				>
 					确认支付
 				</tui-button>
@@ -577,14 +578,18 @@ export default {
 			}
 		},
 
-		async handleShopGoPay() {
-			await handleDoPay(this.payObj.payInfo, 1, '')
-			this.payObj = {
-				showPayPopup: false,
-				pricePay: 0,
-				shopId: '',
-				skus: [],
-				payInfo: {}
+		async handlePaymentPassword() {
+			if ((this.payObj.payInfo.paymentMode !== 9) && (this.payObj.payInfo.paymentMode !== 4) && !this.payObj.payInfo.pwd) {
+				this.$refs.refCashierList && this.$refs.refCashierList.handleInputPaymentPassword()
+			} else {
+				await handleDoPay(this.payObj.payInfo, 1, '')
+				this.payObj = {
+					showPayPopup: false,
+					pricePay: 0,
+					shopId: '',
+					skus: [],
+					payInfo: {}
+				}
 			}
 		}
 	},
@@ -629,11 +634,19 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 /deep/ .tui-lazyload__img {
 	width: 140rpx !important;
 	height: 140rpx !important;
 	background-color: #ccc;
+}
+
+/deep/ .tui-bottom-popup {
+	overflow: visible;
+	.tui-dialog {
+		top: auto;
+		bottom: 32vh;
+	}
 }
 
 @keyframes fade {

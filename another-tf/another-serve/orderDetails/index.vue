@@ -458,7 +458,7 @@
 				<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
 					<view v-if="showPayTypePopup" style="padding: 60rpx 0 128rpx;">
 						<CashierList
-							:price-pay="dataList.price" show
+							ref="refCashierList" :price-pay="dataList.price" show
 							:pay-type-shops="[ dataList.shopId ]"
 							:hui-shi-bao-pay="dataList.skus.every((b) => !b.platformCurrencyId) && dataList.price ? [ dataList.shopId ] : false"
 							show-tonglian-pay
@@ -467,11 +467,12 @@
 							:show-transaction-pay="dataList.skus.every((b) => !b.platformCurrencyId) && !!dataList.price"
 							:shop-id-pay="dataList.skus.every((b) => !b.platformCurrencyId) && dataList.price ? dataList.shopId : 0"
 							@change="(e) => payInfo = e"
+							@password-input="(e) => (payInfo.pwd = e.pwd) && handlePaymentPassword()"
 						/>
 						<tui-button
 							type="warning" width="168rpx" height="64rpx" margin="30rpx auto 0"
 							shape="circle"
-							@click="handleShopGoPay"
+							@click="handlePaymentPassword"
 						>
 							确认支付
 						</tui-button>
@@ -794,16 +795,20 @@ export default {
 			})
 		},
 
-		async handleShopGoPay() {
-			await handleDoPay({
-				collageId: this.dataList.collageId,
-				money: this.dataList.price,
-				orderId: this.dataList.orderId,
-				orderFormid: this.dataList.orderFormid,
-				orderSn: this.dataList.orderFormid,
-				type: 2,
-				...this.payInfo
-			}, 1, '')
+		async handlePaymentPassword() {
+			if ((this.payInfo.paymentMode !== 9) && (this.payInfo.paymentMode !== 4) && !this.payInfo.pwd) {
+				this.$refs.refCashierList && this.$refs.refCashierList.handleInputPaymentPassword()
+			} else {
+				await handleDoPay({
+					collageId: this.dataList.collageId,
+					money: this.dataList.price,
+					orderId: this.dataList.orderId,
+					orderFormid: this.dataList.orderFormid,
+					orderSn: this.dataList.orderFormid,
+					type: 2,
+					...this.payInfo
+				}, 1, '')
+			}
 		},
 
 		// 打开客服
@@ -832,6 +837,11 @@ export default {
 
 	/deep/ .tui-popup-class.tui-bottom-popup {
 		height: 85vh !important;
+		overflow: visible;
+		.tui-dialog {
+			top: auto;
+			bottom: 32vh;
+		}
 	}
 
 	.write-off-bg {

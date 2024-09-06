@@ -358,7 +358,7 @@ export const resolveIntegralSelect = (params = {}) => {
 	}, params)
 	let selectIntegral = selectIntegralOrigin
 	let totalPrice = totalPriceOrigin
-	if ((payInfo.paymentMode === 11) && (selectIntegral === false)) {
+	if (((payInfo.paymentMode === 11) || (payInfo.paymentMode === 12)) && (selectIntegral === false)) {
 		selectIntegral = true
 		vm && vm.$nextTick && vm.$nextTick(() => {
 			vm.selectIntegral = false
@@ -652,7 +652,8 @@ export const resolveOrderPackageData = (params = {}) => {
 		franchiseeRule: otherInfo.commissionSharingRatio || [], // 小区店和加盟商分佣比例。
 		// voucherId: settlement.voucherList[0] && settlement.voucherList[0].platformVoucherId || ''
 		voucherId: otherInfo.voucherId || '', // 选择代金券支付后选择的代金券Id
-		splicingId: 0
+		splicingId: 0,
+		procureType: 2 // 是否商家采购专区。1是2不是
 	}
 	if (skuItemMsgList && skuItemMsgList.length) {
 		data.splicingId = skuItemMsgList[0].splicingId || 0
@@ -679,6 +680,7 @@ export const resolveOrderPackageData = (params = {}) => {
 		for (let m = 0; m < settlement.shops[shopIndex].skus.length; m++) {
 			const skusobj = {}
 			const curSku = settlement.shops[shopIndex].skus[m]
+			if (curSku.procureCounterType === 1) data.procureType = 1
 			skusobj.skuId = curSku.skuId
 			skusobj.number = curSku.number
 			skusobj.ifLogistics = curSku.ifLogistics
@@ -738,13 +740,22 @@ export const resolveSubmitOrder = async (params = {}) => {
 			const isExchangeCounter = settlement.shops.some((a) => a.skus.some((b) => b.exchangeCounterType === 1))
 			const isProcureCounter = settlement.shops.some((a) => a.skus.some((b) => b.procureCounterType === 1))
 			if (isExchangeCounter || isProcureCounter) {
-				if (!settlement.userVoucherDeductLimit) {
-					return uni.showToast({ title: '代金券数量不足！', icon: 'none' })
-				} else if (!settlement.voucherTotalAll) {
+				if (isExchangeCounter) {
+					if (!settlement.userVoucherDeductLimit) {
+						return uni.showToast({ title: '代金券数量不足！', icon: 'none' })
+					} else if (payInfo.paymentMode !== 11) {
+						return uni.showToast({ title: '包含兑换专柜商品，只能用代金券支付！', icon: 'none' })
+					}
+				}
+				if (isProcureCounter) {
+					if (!settlement.shopVoucherDeductLimit) {
+						return uni.showToast({ title: '商家代金券数量不足！', icon: 'none' })
+					} else if (payInfo.paymentMode !== 12) {
+						return uni.showToast({ title: '包含采购专柜商品，只能用商家代金券支付！', icon: 'none' })
+					}
+				}
+				if (!settlement.voucherTotalAll) {
 					return uni.showToast({ title: '商品不支持代金券！', icon: 'none' })
-				} else if (payInfo.paymentMode !== 11) {
-					if (isExchangeCounter) return uni.showToast({ title: '包含兑换专柜商品，只能用代金券支付！', icon: 'none' })
-					if (isProcureCounter) return uni.showToast({ title: '包含采购专柜商品，只能用代金券支付！', icon: 'none' })
 				}
 			}
 			if (!payInfo.paymentMode) return uni.showToast({ title: '请选择支付方式', icon: 'none' })
@@ -802,29 +813,52 @@ export const resolveSubmitOrder = async (params = {}) => {
  */
 
 export const resolveVoucherData = (params = {}) => {
-	const { settlement, voucherObj: voucherObjOrigin } = Object.assign({
+	const { settlement, voucherObj: voucherObjOrigin, voucherShopObj: voucherShopObjOrigin } = Object.assign({
 		settlement: { shops: [] },
-		voucherObj: { isCanVoucher: false, noVoucherText: '无法使用代金券支付' }
+		voucherObj: { isCanVoucher: false, noVoucherText: '无法使用代金券支付' },
+		voucherShopObj: { isCanVoucher: false, noVoucherText: '无法使用商家代金券支付' }
 	}, params)
 	let voucherObj = JSON.parse(JSON.stringify(voucherObjOrigin))
+	let voucherShopObj = JSON.parse(JSON.stringify(voucherShopObjOrigin))
 	if (settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))) {
 		if (settlement.shops.every((a) => a.skus.every((b) => !b.platformComposeId))) {
 			if (settlement.voucherTotalAll) { // 所有商品可使用多少代金券抵扣
-				if (settlement.shops.some((item) => settlement.userVoucherDeductLimit >= item.voucherTotal)) { // 用户代金券余额-某个店铺的所有订单商品可使用多少代金券抵扣
+				if (settlement.shops.some((a) => a.skus.some((b) => b.procureCounterType !== 1))) {
+					if (settlement.shops.some((item) => settlement.userVoucherDeductLimit >= item.voucherTotal)) {
+						voucherObj = { isCanVoucher: true, noVoucherText: '' }
+						voucherShopObj = { isCanVoucher: false, noVoucherText: '存在商品不支持商家代金券！' }
+					} else {
+						voucherObj = { isCanVoucher: false, noVoucherText: '代金券数量不足！' }
+						voucherShopObj = { isCanVoucher: false, noVoucherText: '存在商品不支持商家代金券！' }
+					}
+				} else if (settlement.shops.some((item) => settlement.shopVoucherDeductLimit >= item.voucherTotal)) { // 商家代金券余额-某个店铺的所有订单商品可使用多少代金券抵扣
+					if (settlement.shops.some((item) => settlement.userVoucherDeductLimit >= item.voucherTotal)) { // 用户代金券余额-某个店铺的所有订单商品可使用多少代金券抵扣
+						voucherObj = { isCanVoucher: true, noVoucherText: '' }
+						voucherShopObj = { isCanVoucher: true, noVoucherText: '' }
+					} else {
+						voucherObj = { isCanVoucher: false, noVoucherText: '代金券数量不足！' }
+						voucherShopObj = { isCanVoucher: true, noVoucherText: '' }
+					}
+				} else if (settlement.shops.some((item) => settlement.userVoucherDeductLimit >= item.voucherTotal)) {
 					voucherObj = { isCanVoucher: true, noVoucherText: '' }
+					voucherShopObj = { isCanVoucher: false, noVoucherText: '商家代金券数量不足！' }
 				} else {
 					voucherObj = { isCanVoucher: false, noVoucherText: '代金券数量不足！' }
+					voucherShopObj = { isCanVoucher: false, noVoucherText: '商家代金券数量不足！' }
 				}
 			} else {
 				voucherObj = { isCanVoucher: false, noVoucherText: '商品不支持代金券！' }
+				voucherShopObj = { isCanVoucher: false, noVoucherText: '商品不支持商家代金券！' }
 			}
 		} else {
 			voucherObj = { isCanVoucher: false, noVoucherText: '包含组合活动商品，无法使用代金券！' }
+			voucherShopObj = { isCanVoucher: false, noVoucherText: '包含组合活动商品，无法使用商家代金券！' }
 		}
 	} else {
 		voucherObj = { isCanVoucher: false, noVoucherText: '包含消费金活动商品，无法使用代金券！' }
+		voucherShopObj = { isCanVoucher: false, noVoucherText: '包含消费金活动商品，无法使用商家代金券！' }
 	}
-	return { voucherObj }
+	return { voucherObj, voucherShopObj }
 }
 
 /**
@@ -1012,7 +1046,7 @@ export const resolveGetOrderSettlement = async (params = {}) => {
 		// ]
 		for (let shopIndex = 0; shopIndex < res.data.shops.length; shopIndex++) {
 			if (isExchangeCounter || isProcureCounter) {
-				// 兑换专柜商品只能使用代金券支付
+				// 专柜商品只能使用代金券支付
 				res.data.shops[shopIndex].skus.forEach((item) => {
 					if (isExchangeCounter) item.exchangeCounterType = 1
 					if (isProcureCounter) item.procureCounterType = 1
