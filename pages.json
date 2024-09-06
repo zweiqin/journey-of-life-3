@@ -2278,6 +2278,22 @@
           }
         },
         {
+          "path": "another-user/purchaseOrder/index",
+          "style": {
+            "navigationBarTitleText": "采购单列表",
+            "navigationBarBackgroundColor": "#fff",
+						"backgroundColor": "#fff"
+          }
+        },
+        {
+          "path": "another-user/counterList/index",
+          "style": {
+            "navigationBarTitleText": "货柜列表",
+            "navigationBarBackgroundColor": "#fff",
+						"backgroundColor": "#fff"
+          }
+        },
+        {
           "path": "another-user/collection-code/collection-payment-code",
           "style": {
             "navigationBarTitleText": "商家收款"
