@@ -195,6 +195,7 @@
       @include flex(space-between, null, null);
       flex-wrap: wrap;
       padding: 0 30rpx;
+      padding-bottom: 130rpx;
       box-sizing: border-box;
       .product-item {
         width: 333rpx;
