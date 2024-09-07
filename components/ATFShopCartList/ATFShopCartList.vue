@@ -247,7 +247,7 @@ export default {
 		},
 		cartType: {
 			type: Number,
-			default: 2 // 1兑换专区购物车，2普通购物车
+			default: 2 // 1采购专区购物车，2普通购物车
 		},
 		isSubDelete: {
 			type: Boolean,

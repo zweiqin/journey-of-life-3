@@ -2272,7 +2272,23 @@
         {
           "path": "another-user/exchangeZone/index",
           "style": {
-            "navigationBarTitleText": "兑换专区",
+            "navigationBarTitleText": "采购专区",
+            "navigationBarBackgroundColor": "#fff",
+						"backgroundColor": "#fff"
+          }
+        },
+        {
+          "path": "another-user/purchaseOrder/index",
+          "style": {
+            "navigationBarTitleText": "采购单列表",
+            "navigationBarBackgroundColor": "#fff",
+						"backgroundColor": "#fff"
+          }
+        },
+        {
+          "path": "another-user/counterList/index",
+          "style": {
+            "navigationBarTitleText": "货柜列表",
             "navigationBarBackgroundColor": "#fff",
 						"backgroundColor": "#fff"
           }

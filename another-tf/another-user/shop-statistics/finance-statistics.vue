@@ -252,7 +252,7 @@
 							<tui-radio-group :value="withdrawalType" @change="handleChangeType">
 								<view style="display: flex;flex-wrap: wrap;align-items: center;">
 									<tui-label
-										v-for="(item, index) in [{ name: '正常支付订单', value: '1' }, { name: '消费金', value: '2' }]"
+										v-for="(item, index) in [{ name: '正常支付订单', value: '1' }, { name: '消费金', value: '2' }, { name: '代金券', value: '3' }, { name: '余额', value: '4' }, { name: '佣金', value: '5' }]"
 										:key="index"
 									>
 										<tui-list-cell padding="16rpx">
@@ -390,7 +390,7 @@ export default {
 		handleToAssociatedOrder(item) {
 			if (!item.orderFormids || !item.orderFormids.length) return this.$showToast('该流水暂无关联订单')
 			uni.showLoading()
-			getAllOrderListApi({ orderFormids: item.orderFormids, page: 1, pageSize: 9999, orderType: 1, state: '' })
+			getAllOrderListApi({ orderFormids: item.orderFormids, page: 1, pageSize: 9999, orderType: 1, procureType: 2, state: '' })
 				.then((res) => {
 					this.orderTotal = res.data.total
 					this.orderList = res.data.list
@@ -405,11 +405,18 @@ export default {
 
 		handleChangeType(e) {
 			this.withdrawalType = e.detail.value
-			if (this.withdrawalType === '1') {
-				this.rechargeNum = this.financeStatisticsData.withdrawableMoney || ''
-			} else if (this.withdrawalType === '2') {
-				this.rechargeNum = this.financeStatisticsData.beeWithdrawal || ''
+			let api
+			let paymentMode = ''
+			if (this.pageType === 'order') {
+				api = getShopFinanceCountApi
+				paymentMode = this.withdrawalType
+			} else if (this.pageType === 'recharge') {
+				api = getShopRechargeCountApi
 			}
+			api({ ...this.queryInfo, paymentMode })
+				.then((res) => {
+					this.rechargeNum = res.data.withdrawableMoney || ''
+				})
 		},
 		handleRechargeDialog(e) {
 			if (e.index === 0) {

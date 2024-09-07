@@ -200,9 +200,21 @@ export const shopServe = [
     showRole: ['shop', 'merchantStaff']
   },
   {
-    name: '兑换专区',
+    name: '采购专区',
     icon: require('../../static/images/new-user/menu-icon/exchange.png'),
     url: '/another-tf/another-user/exchangeZone/index',
+    showRole: ['shop']
+  },
+  {
+    name: '采购单列表',
+    icon: require('../../static/images/new-user/menu-icon/purchaseOrder.png'),
+    url: '/another-tf/another-user/purchaseOrder/index',
+    showRole: ['shop']
+  },
+  {
+    name: '货柜列表',
+    icon: require('../../static/images/new-user/menu-icon/counterList.png'),
+    url: '/another-tf/another-user/counterList/index',
     showRole: ['shop']
   }
 ]
