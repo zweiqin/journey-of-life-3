@@ -24,94 +24,169 @@
     left: 0;
     z-index: 0;
     width: 100%;
-    height: 660rpx;
-    background: linear-gradient(
-      180deg,
-      #fe6f22 24%,
-      rgba(254, 111, 34, 0) 100%
-    );
+    height: 490rpx;
+    // background: linear-gradient(124deg, #FF9155 0%, #FF6D2D 99%);
+    // background: linear-gradient(
+    //   180deg,
+    //   #fe6f22 24%,
+    //   rgba(254, 111, 34, 0) 100%
+    // );
   }
   .container {
     width: 100%;
     position: relative;
-    padding: 0 30rpx;
-    box-sizing: border-box;
+    // padding: 0 30rpx;
+    // box-sizing: border-box;
     z-index: 5;
-    .top-tab {
-      width: 100%;
-      height: 100rpx;
-      @include flex(flex-start, null, null);
-      color: #ffffff;
-      position: relative;
-      box-sizing: border-box;
-      view {
-        &:first-of-type {
-          position: relative;
-          z-index: 999;
+    .bg-container{
+    background: linear-gradient(124deg, #FF9155 0%, #FF6D2D 99%);
+      .top-tab {
+        width: 100%;
+        height: 100rpx;
+        @include flex(flex-start, null, null);
+        color: #ffffff;
+        position: relative;
+        box-sizing: border-box;
+        view {
+          &:first-of-type {
+            position: relative;
+            z-index: 999;
+          }
+        }
+        .top-text {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          @include flex(center, null null);
         }
       }
-      .top-text {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        @include flex(center, null null);
-      }
-    }
-    .search-box {
-      margin-top: 20rpx;
-      width: 100%;
-      height: 88rpx;
-      border-radius: 204rpx;
-      background: rgba(255, 255, 255, 0.74);
-      box-sizing: border-box;
-      position: relative;
-      padding-right: 130rpx;
-      box-sizing: border-box;
-      .serach {
-        width: 120rpx;
-        height: 72rpx;
-        text-align: center;
-        line-height: 72rpx;
-        font-size: 28rpx;
-        color: #ffffff;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        right: 8rpx;
-        background: linear-gradient(120deg, #ffa279 0%, #ef530e 99%);
-        border-radius: 200rpx;
-      }
-      input {
-        width: 100%;
-        height: 100%;
-        padding-left: 24rpx;
+      .search-container {
+        padding: 0 30rpx;
         box-sizing: border-box;
-        font-size: 28rpx;
-      }
-    }
-    .screen{
-      width: 100%;
-      @include flex(center, null,null);
-      .screen-item{
-        flex: 1;
-        height: 88rpx;
-        @include flex(center, null,15rpx);
-        font-size: 28rpx;
-        color: #FFFFFF;
-        .item-icon{
+        .search-box {
+          margin-top: 20rpx;
+          width: 100%;
+          height: 88rpx;
+          border-radius: 204rpx;
+          background: rgba(255, 255, 255, 0.74);
+          box-sizing: border-box;
           position: relative;
-          height: 50rpx;
-          .icon1{
+          padding-right: 130rpx;
+          box-sizing: border-box;
+          .serach {
+            width: 120rpx;
+            height: 72rpx;
+            text-align: center;
+            line-height: 72rpx;
+            font-size: 28rpx;
+            color: #ffffff;
             position: absolute;
-            top: 0rpx;
-            left:0;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 8rpx;
+            background: linear-gradient(120deg, #ffa279 0%, #ef530e 99%);
+            border-radius: 200rpx;
           }
-          .icon2{
-            position: absolute;
-            top: 16rpx;
-            left:0;
+          input {
+            width: 100%;
+            height: 100%;
+            padding-left: 24rpx;
+            box-sizing: border-box;
+            font-size: 28rpx;
+          }
+        }
+      }
+  
+      .primary-class {
+        padding: 0 30rpx;
+        box-sizing: border-box;
+        .other-bottom {
+          // padding: 32rpx 0;
+          white-space: nowrap;
+          width: 100%;
+          .bottom-item {
+            height: 112rpx;
+            line-height: 112rpx;
+            display: inline-block;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 32rpx;
+            margin-left: 64rpx;
+            &:first-of-type {
+              margin-left: 0;
+            }
+            &.act {
+              color: #ffffff;
+              position: relative;
+              &::after {
+                content: "";
+                width: 44rpx;
+                height: 8rpx;
+                border-radius: 200rpx;
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: 16rpx;
+                background-color: #ffffff;
+              }
+            }
+          }
+        }
+      } 
+    }
+    .second-bg{
+      background: linear-gradient(180deg, #FFF8F5 0%, #FFFFFF 100%);
+      .secondary-class {
+        .secondary-bottom {
+          white-space: nowrap;
+          width: 100%;
+          padding: 24rpx 0;
+          background-color: #ffffff;
+          .secondary-item {
+            display: inline-block;
+            width: 146rpx;
+            height: 52rpx;
+            text-align: center;
+            line-height: 52rpx;
+            background-color: #f4f2f2;
+            color: rgba(0, 0, 0, 0.6);
+            font-size: 24rpx;
+            border-radius: 147rpx;
+            margin-left: 16rpx;
+            &:first-of-type{
+              margin-left: 30rpx;
+            }
+            &.act{
+              background: rgba(234, 92, 30, 0.17);
+              color: #FF550B;
+            }
+          }
+        }
+      }
+      .screen {
+        width: 100%;
+        @include flex(center, null, null);
+        .screen-item {
+          flex: 1;
+          height: 88rpx;
+          @include flex(center, null, 15rpx);
+          font-size: 28rpx;
+          // color: #ffffff;
+          color: #000000;
+          .item-icon {
+            position: relative;
+            height: 50rpx;
+            .icon1 {
+              position: absolute;
+              top: 0rpx;
+              left: 0;
+            }
+            .icon2 {
+              position: absolute;
+              top: 16rpx;
+              left: 0;
+            }
           }
         }
       }
@@ -119,6 +194,8 @@
     .product-list {
       @include flex(space-between, null, null);
       flex-wrap: wrap;
+      padding: 0 30rpx;
+      box-sizing: border-box;
       .product-item {
         width: 333rpx;
         height: 460rpx;
