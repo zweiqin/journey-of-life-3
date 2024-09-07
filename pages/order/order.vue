@@ -197,7 +197,8 @@ export default {
 			shoppingQueryInfo: {
 				page: 1,
 				pageSize: 10,
-				orderType: 1
+				orderType: 1,
+				procureType: 2
 			},
 			shoppingOrderList: [],
 			shoppingListTotal: 0,
@@ -206,7 +207,8 @@ export default {
 			businessQueryInfo: {
 				page: 1,
 				pageSize: 10,
-				orderType: 2
+				orderType: 2,
+				procureType: 2
 			},
 			businessOrderList: [],
 			businessListTotal: 0,

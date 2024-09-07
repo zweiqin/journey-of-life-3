@@ -35,7 +35,7 @@ export const MER_TF_INTERFACE = 'https://nsbusinessapi.tuanfengkeji.cn' // 线�
 // export const IMG_UPLOAD_URL = 'https://test.tuanfengkeji.cn/dts-app-api/wx/storage/upload' // 测试，旧团蜂文件上传接口
 
 // --------------------------------------------------
-export const SYSTEM_VERSION = '1.0.31' // 版本。用于回溯历史版本，在真正发布当版APP在各大平台的时候才确认更改。
+export const SYSTEM_VERSION = '1.0.32' // 版本。用于回溯历史版本，在真正发布当版APP在各大平台的时候才确认更改。
 export const APPLY_NAME = '团蜂' // 应用名称
 export const ENV = A_TF_MAIN.includes('test') ? 'development' : 'production' // 环境
 
