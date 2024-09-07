@@ -230,6 +230,9 @@ export default {
 						uni.hideLoading()
 						this.getCounCodeByDetailAddress(res.data.receiveAdress)
 					})
+						.catch((e) => {
+							uni.hideLoading()
+						})
 				} else if (newValue && this.communityAddressInfo.receiveId && this.communityAddressInfo.receiveAdress) { // 优先根据地址获取社区店列表
 					this.getCounCodeByDetailAddress(this.communityAddressInfo.receiveAdress)
 				} else if (newValue && !this.communityAddressInfo.receiveId) {
@@ -252,6 +255,9 @@ export default {
 						uni.hideLoading()
 						this.getCounCodeByDetailAddress(res.data.receiveAdress)
 					})
+						.catch((e) => {
+							uni.hideLoading()
+						})
 				} else if (this.benefitinFranchiseesPhone && newValue.receiveId && newValue.receiveAdress) { // 优先根据地址获取社区店列表
 					this.getCounCodeByDetailAddress(newValue.receiveAdress)
 				} else if (this.benefitinFranchiseesPhone && !newValue.receiveId) {
@@ -352,12 +358,10 @@ export default {
 			uni.showLoading()
 			getCommunityListApi(this.queryInfo)
 				.then((res1) => {
-					uni.hideLoading()
 					if (res1 && res1.version) {
 						if (res1.statusCode === 20000) {
 							this.communityListTotal = res1.data.total
 							// 获取查询出的社区的地址
-							uni.showLoading()
 							getAreaDetailInfoApi({
 								codeTownsStr: res1.data.records.map((item) => item.areaId).join(','),
 								pageNo: 1,
@@ -395,9 +399,11 @@ export default {
 								})
 						} else {
 							console.log('接口报错', res1)
+							uni.hideLoading()
 							this.$showToast(res1.statusMsg)
 						}
 					} else {
+						uni.hideLoading()
 						this.$showToast(`请求错误`)
 					}
 				})

@@ -8,29 +8,32 @@
 						v-for="payment in paymentList" :key="payment.paymentMode" class="cashier"
 						@click="handleClickPaymentMode(payment)"
 					>
+						<view>{{ payment.paymentMode }}，{{ payment.disabled }}，</view>
 						<view class="cashier-item">
 							<view class="icon-text">
 								<image style="width: 50rpx;height: 50rpx;margin-right: 15rpx;" :src="payment.icon" mode="widthFix" />
 								<text>{{ payment.label }}</text>
 								<text v-if="(payment.paymentMode === '7')">
-									（佣金：{{
-										Number.parseFloat(Number(pricePlatformInfo.commissionPrice || 0)).toFixed(2) }}）
+									（佣金：{{ Number.parseFloat(Number(pricePlatformInfo.commissionPrice || 0)).toFixed(2) }}）
 								</text>
-								<text v-if="(payment.paymentMode === '5')">
+								<text v-else-if="(payment.paymentMode === '5')">
 									（余额：{{ Number.parseFloat(Number(pricePlatformInfo.rechargePrice || 0)).toFixed(2) }}）
 								</text>
-								<text v-if="(payment.paymentMode === '8')">
+								<text v-else-if="(payment.paymentMode === '8')">
 									（余额：{{ Number.parseFloat(Number(pricePlatformInfo.beeCoinPrice || 0)).toFixed(2) }}）
 								</text>
-								<text v-if="(payment.paymentMode === '6')">（余额：{{ priceShopInfo.current }}）</text>
-								<text v-if="(payment.paymentMode === '11')">（余额：{{ voucherPay.userVoucherDeductLimit }}）</text>
-								<text v-if="(payment.paymentMode === '12')">（余额：{{ voucherShopPay.shopVoucherDeductLimit }}）</text>
-								<text v-if="(paymentMode === '3') && (paymentMode === payment.paymentMode)">
+								<text v-else-if="(payment.paymentMode === '6')">（余额：{{ priceShopInfo.current }}）</text>
+								<text v-else-if="(payment.paymentMode === '11')">（余额：{{ voucherPay.userVoucherDeductLimit }}）</text>
+								<text v-else-if="(payment.paymentMode === '12')">（余额：{{ voucherShopPay.shopVoucherDeductLimit }}）</text>
+								<text v-else-if="(paymentMode === '3') && (paymentMode === payment.paymentMode)">
 									（手续费：￥{{ flowerInfo.hbServiceChargeTotal }}）
 								</text>
 							</view>
 							<view>
-								<tui-icon v-if="payment.disabled" name="circle" :size="18" color="#d4d4d4"></tui-icon>
+								<tui-icon
+									v-if="!!payment.disabled" name="circle" :size="36" unit="rpx"
+									color="#d4d4d4"
+								></tui-icon>
 								<tui-radio
 									v-else :checked="false" :disabled="payment.disabled" :value="payment.paymentMode"
 									color="#ef530e" border-color="#979797" :scale-ratio="0.8"
@@ -815,6 +818,7 @@ export default {
 			}
 		},
 		async handleShow4Pay() {
+			uni.showLoading()
 			if (this.showTonglianPay) {
 				if (this.payTypeShops) {
 					if (!this.paymentList.find((item) => item.paymentMode === '4')) {
