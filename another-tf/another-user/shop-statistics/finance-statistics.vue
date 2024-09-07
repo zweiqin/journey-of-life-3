@@ -390,7 +390,7 @@ export default {
 		handleToAssociatedOrder(item) {
 			if (!item.orderFormids || !item.orderFormids.length) return this.$showToast('该流水暂无关联订单')
 			uni.showLoading()
-			getAllOrderListApi({ orderFormids: item.orderFormids, page: 1, pageSize: 9999, orderType: 1, state: '' })
+			getAllOrderListApi({ orderFormids: item.orderFormids, page: 1, pageSize: 9999, orderType: 1, procureType: 2, state: '' })
 				.then((res) => {
 					this.orderTotal = res.data.total
 					this.orderList = res.data.list

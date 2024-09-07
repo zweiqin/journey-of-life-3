@@ -222,18 +222,18 @@ export default {
 					event: 'sharingPageTurn',
 					webPath: `/another-tf/another-serve/integral/index`,
 					title: `快来查看你的积分吧！`,
-					imageUrl: this.common.seamingImgUrl('1716629235852-feed73b67bb541edb82b41a0937dbdad.png'),
-					promise: new Promise((resolve) => {
-						updateShareCreditApi({})
-							.then((res) => {
-								this.$showToast('分享-成功获得积分！')
-							})
-						resolve({
-							title: `快来查看你的积分吧！`,
-							path: `pages/index/index` + `?type=${ENV === 'development' ? 'test' : ''}&remainParams=` + encodeURIComponent(`&jumpType=sharingPageTurn&code=` + encodeURIComponent('/another-tf/another-serve/integral/index')),
-							imageUrl: this.common.seamingImgUrl('1716629235852-feed73b67bb541edb82b41a0937dbdad.png')
-						})
-					})
+					imageUrl: this.common.seamingImgUrl('1716629235852-feed73b67bb541edb82b41a0937dbdad.png')
+					// promise: new Promise((resolve) => { // 无效。会转为空对象
+					// 	updateShareCreditApi({})
+					// 		.then((res) => {
+					// 			this.$showToast('分享-成功获得积分！')
+					// 		})
+					// 	resolve({
+					// 		title: `快来查看你的积分吧！`,
+					// 		path: `pages/index/index` + `?type=${ENV === 'development' ? 'test' : ''}&remainParams=` + encodeURIComponent(`&jumpType=sharingPageTurn&code=` + encodeURIComponent('/another-tf/another-serve/integral/index')),
+					// 		imageUrl: this.common.seamingImgUrl('1716629235852-feed73b67bb541edb82b41a0937dbdad.png')
+					// 	})
+					// })
 				}
 			})
 		}
