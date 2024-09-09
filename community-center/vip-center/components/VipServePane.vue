@@ -20,8 +20,8 @@
               >
               </tui-radio>
               <text class="tui-text">{{
-                item.serverContent.replaceAll
-                  ? item.serverContent.replaceAll("\n", "")
+                item.serverContent.replace
+                  ? item.serverContent.replace(/\n/g, '')
                   : item.serverContent
               }}</text>
             </view>

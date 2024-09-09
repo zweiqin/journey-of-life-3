@@ -99,7 +99,7 @@ export default {
       // this.spStr =
       //   str +
       //   this.number +
-      //   (this.data.info.unit + "").replaceAll("‘", "").replaceAll("’", "");
+      //   (this.data.info.unit + "").replace(/‘/g, '').replace(/’/g, '');
 
       this.spStr = str + this.number + this.data.info.unit
     },

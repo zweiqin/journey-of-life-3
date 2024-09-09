@@ -192,8 +192,8 @@ export default {
 				const data = await bankCardAnalysisApi({
 					imageUrl
 				})
-				this.bankName = (data.cardName + '').replaceAll(' ', '')
-				this.cardNum = (data.cardNum + '').replaceAll(' ', '')
+				this.bankName = (data.cardName + '').replace(/\s*/g, '')
+				this.cardNum = (data.cardNum + '').replace(/\s*/g, '')
 			} catch (err) {
 				this.ttoast({
 					type: 'fail',

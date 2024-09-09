@@ -8,7 +8,6 @@
 						v-for="payment in paymentList" :key="payment.paymentMode" class="cashier"
 						@click="handleClickPaymentMode(payment)"
 					>
-						<view>{{ payment.paymentMode }}，{{ payment.disabled }}，</view>
 						<view class="cashier-item">
 							<view class="icon-text">
 								<image style="width: 50rpx;height: 50rpx;margin-right: 15rpx;" :src="payment.icon" mode="widthFix" />
@@ -31,14 +30,18 @@
 							</view>
 							<view>
 								<tui-icon
-									v-if="!!payment.disabled" name="circle" :size="36" unit="rpx"
+									v-if="payment.disabled" name="circle" :size="36" unit="rpx"
 									color="#d4d4d4"
 								></tui-icon>
-								<tui-radio
-									v-else :checked="false" :disabled="payment.disabled" :value="payment.paymentMode"
-									color="#ef530e" border-color="#979797" :scale-ratio="0.8"
-								>
-								</tui-radio>
+								<!-- <view v-if="payment.disabled">11</view> -->
+								<view v-else>
+									<tui-radio
+										:checked="false" :disabled="payment.disabled" :value="payment.paymentMode"
+										color="#ef530e" border-color="#979797" :scale-ratio="0.8"
+									>
+									</tui-radio>
+									<!-- 22 -->
+								</view>
 							</view>
 						</view>
 						<view v-if="paymentMode === payment.paymentMode">
@@ -618,6 +621,7 @@ export default {
 			this.handleShow9Pay()
 			this.handleShow4Pay()
 		},
+		// eslint-disable-next-line complexity
 		handleInitNormalPayment() {
 			if (this.showWechatPay) {
 				if (!this.paymentList.find((item) => item.paymentMode === '1')) {
@@ -876,6 +880,7 @@ export default {
 				if (this.paymentMode === '4') this.handleSetAblePay()
 				if (this.paymentList.find((item) => item.paymentMode === '4')) this.paymentList.splice(this.paymentList.findIndex((item) => item.paymentMode === '4'), 1)
 				this.handleNoticeFather()
+				uni.hideLoading()
 			}
 		},
 
@@ -931,6 +936,7 @@ export default {
 					}
 				}
 			}
+			this.$forceUpdate()
 			console.log(this.paymentMode)
 		},
 
