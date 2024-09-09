@@ -227,7 +227,7 @@ export default {
       //  重新赋值 classifyId
       this.queryData.classifyId = this.firstClassify[index].classifyId;
       //  请求商品
-      this.getProductList();
+      this.getProductList(true);
     },
     //  二级分类修改
     changeSecound(index) {
@@ -235,7 +235,7 @@ export default {
       //  重新赋值 classifyId
       this.queryData.classifyId = this.secoundClass[index].classifyId;
       //  请求商品
-      this.getProductList();
+      this.getProductList(true);
     },
     //  价格排序
     priceScreen() {
