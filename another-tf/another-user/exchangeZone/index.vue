@@ -38,7 +38,7 @@
         </view>
       </view>
       <view class="second-bg">
-        <view class="secondary-class">
+        <view class="secondary-class" v-if="firstIdx != 0">
           <scroll-view scroll-x="true" class="secondary-bottom">
             <view
               class="secondary-item"
@@ -214,9 +214,10 @@ export default {
     //  请求一级分类
     async getFirst() {
       let res = await getFirstClassifyApi({ classifyId: "1598" });
-      this.firstClassify = res.data;
+      console.log(res.data)
+      this.firstClassify = [{classifyId:"1598" ,classifyName:"全部"},...res.data];
       // //  请求商品列表
-      this.queryData.classifyId = this.firstClassify[0].classifyId;
+      this.queryData.classifyId = "1598";
       // //  请求商品
       this.getProductList();
     },
