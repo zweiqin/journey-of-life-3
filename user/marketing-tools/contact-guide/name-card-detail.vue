@@ -117,7 +117,7 @@
         <view class="pane-title">业务简介</view>
         <view
           class="content"
-          v-html="nameCardDetail.intro.replaceAll('\n', '<br/>')"
+          v-html="nameCardDetail.intro.replace(/\n/g, '<br/>')"
         ></view>
       </view>
 
@@ -125,7 +125,7 @@
         <view class="pane-title">公司简介</view>
         <view
           class="content"
-          v-html="nameCardDetail.companyProfile.replaceAll('\n', '<br/>')"
+          v-html="nameCardDetail.companyProfile.replace(/\n/g, '<br/>')"
         ></view>
       </view>
 

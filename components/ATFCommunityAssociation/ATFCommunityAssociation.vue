@@ -334,7 +334,7 @@ export default {
 		},
 		getCounCodeByDetailAddress(detailAddress) {
 			uni.showLoading()
-			getCounCodeByDetailAddressApi({ detailAddress: detailAddress.replaceAll('-', '') })
+			getCounCodeByDetailAddressApi({ detailAddress: detailAddress.replace(/-/g, '') })
 				.then((res) => {
 					uni.hideLoading()
 					if (res && res.version) {

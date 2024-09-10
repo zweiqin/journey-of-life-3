@@ -372,7 +372,7 @@ export default {
     const backUrl = params.backUrl;
     this.isUnLimit = params.isUnLimit === 'true'
     if (backUrl) {
-      this.backUrl = backUrl.replaceAll('_', '?').replaceAll('|', '/');
+      this.backUrl = backUrl.replace(/_/g, '?').replace(/|/g, '/');
     }
     console.log(backUrl);
   },
