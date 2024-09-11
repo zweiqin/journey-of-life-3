@@ -721,6 +721,18 @@ export const updateOrderShopToUserTransferApi = (data) => AnotherTFRequest('/sho
 // 商家兑换代金券：商家转用户转账操作
 export const updateShopToUserTransferApi = (data) => AnotherTFRequest('/shopVoucherEntryRecord/shopToUserTransfer', data)
 
+// 商家兑换代金券入账记录
+export const getShopVoucherExchangeEntryRecordApi = (data) => AnotherTFRequest('/shopVoucherExchangeEntryRecord/shopVoucherEntry', data, 'POST')
+
+// 商家兑换代金券出账记录
+export const getShopVoucherExchangeOutgoingRecordApi = (data) => AnotherTFRequest('/shopVoucherExchangeOutgoingRecord/shopVoucherOutgoing', data, 'POST')
+
+// 商家充值代金券入账记录
+export const getShopVoucherEntryRecordApi = (data) => AnotherTFRequest('/shopVoucherEntryRecord/shopVoucherInEntry', data, 'POST')
+
+// 商家充值代金券出账记录
+export const getShopVoucherOutgoingRecordApi = (data) => AnotherTFRequest('/shopVoucherOutgoingRecord/shopVoucherInOutgoing', data, 'POST')
+
 // 用户银行卡相关接口
 // 查询用户所有银行卡
 export const getAllBankcardListApi = (data) => AnotherTFRequest('/bank/getAll', data)

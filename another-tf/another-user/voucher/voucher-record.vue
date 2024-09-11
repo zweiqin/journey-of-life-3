@@ -24,6 +24,18 @@
 						<text v-else-if="[ 5 ].includes(queryType)">
 							充值代金券订单
 						</text>
+						<text v-else-if="[ 6 ].includes(queryType)">
+							商家兑换代金券入账记录
+						</text>
+						<text v-else-if="[ 7 ].includes(queryType)">
+							商家兑换代金券出账记录
+						</text>
+						<text v-else-if="[ 8 ].includes(queryType)">
+							商家充值代金券入账记录
+						</text>
+						<text v-else-if="[ 9 ].includes(queryType)">
+							商家充值代金券出账记录
+						</text>
 						<tui-icon name="arrowdown" color="#000000" :size="28" unit="rpx" margin="0 0 0 10rpx"></tui-icon>
 					</view>
 				</tui-button>
@@ -374,24 +386,259 @@
 						<tui-no-data v-if="orderInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据~</tui-no-data>
 					</view>
 				</view>
+				<view v-else-if="[ 6 ].includes(queryType)">
+					<view v-if="exchangeShopAccountingInfo.data.length > 0">
+						<view
+							v-for="(item, index) in exchangeShopAccountingInfo.data" :key="item.id"
+							style="display: flex;align-items: center;justify-content: space-between;margin-bottom: 38rpx;"
+							@click="handleClickVoucherRecord(item)"
+						>
+							<view style="flex: 1;display: flex;align-items: center;">
+								<view
+									style="padding: 18rpx;font-size: 38rpx;font-weight: bold;color: #ffffff;border-radius: 50%;line-height: 1;background-color: #ef530e;"
+								>
+									<text>收</text>
+								</view>
+								<view style="flex: 1;width: 0;margin-left: 14rpx;">
+									<view style="font-size: 28rpx;font-weight: bold;color: #222229;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+										<text>
+											代金券
+											<text v-if="item.waterType === 1">充值</text>
+											<text v-else-if="item.waterType === 2">活动</text>
+											<text v-else-if="item.waterType === 3">用户兑换</text>
+											<text v-else-if="item.waterType === 4">转入</text>
+											<text v-else>--</text>
+										</text>
+										<text>
+											-
+											<text v-if="item.sourceType === 1">平台</text>
+											<text v-else-if="item.sourceType === 2">商家</text>
+											<text v-else-if="item.sourceType === 3">用户</text>
+											<text v-else>--</text>
+										</text>
+									</view>
+									<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">{{ item.createTime }}</view>
+								</view>
+							</view>
+							<view style="margin-left: 12rpx;text-align: right;">
+								<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
+									来源：{{ item.sourceName || '--' }}
+								</view>
+								<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">
+									<text>代金券：+{{ item.number }}</text>
+								</view>
+							</view>
+						</view>
+					</view>
+					<view style="padding-bottom: 45rpx;">
+						<LoadingMore
+							:status="!exchangeShopAccountingInfo.isEmpty && !exchangeShopAccountingInfo.data.length
+								? 'loading' : !exchangeShopAccountingInfo.isEmpty && exchangeShopAccountingInfo.data.length && (exchangeShopAccountingInfo.data.length >= exchangeShopAccountingInfo.listTotal) ? 'no-more' : ''"
+						>
+						</LoadingMore>
+						<tui-no-data v-if="exchangeShopAccountingInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据~</tui-no-data>
+					</view>
+				</view>
+				<view v-else-if="[ 7 ].includes(queryType)">
+					<view v-if="exchangeShopOutgoingInfo.data.length > 0">
+						<view
+							v-for="(item, index) in exchangeShopOutgoingInfo.data" :key="item.id"
+							style="display: flex;align-items: center;justify-content: space-between;margin-bottom: 38rpx;"
+							@click="handleClickVoucherRecord(item)"
+						>
+							<view style="flex: 1;display: flex;align-items: center;">
+								<view
+									style="padding: 18rpx;font-size: 38rpx;font-weight: bold;color: #ffffff;border-radius: 50%;line-height: 1;background-color: #208f57;"
+								>
+									<text>支</text>
+								</view>
+								<view style="flex: 1;width: 0;margin-left: 14rpx;">
+									<view style="font-size: 28rpx;font-weight: bold;color: #222229;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+										<text>
+											代金券
+											<text v-if="item.waterType === 1">专区兑换</text>
+											<text v-else-if="item.waterType === 2">社区兑换</text>
+											<text v-else-if="item.waterType === 3">转出</text>
+											<text v-else>--</text>
+										</text>
+										<text v-if="item.orderFormid">
+											-{{ item.orderFormid }}
+										</text>
+									</view>
+									<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">{{ item.createTime }}</view>
+								</view>
+							</view>
+							<view style="margin-left: 12rpx;text-align: right;">
+								<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
+									目标：{{ item.destinationName || '--' }}
+								</view>
+								<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">
+									<text>代金券：-{{ item.number }}</text>
+								</view>
+							</view>
+						</view>
+					</view>
+					<view style="padding-bottom: 45rpx;">
+						<LoadingMore
+							:status="!exchangeShopOutgoingInfo.isEmpty && !exchangeShopOutgoingInfo.data.length
+								? 'loading' : !exchangeShopOutgoingInfo.isEmpty && exchangeShopOutgoingInfo.data.length && (exchangeShopOutgoingInfo.data.length >= exchangeShopOutgoingInfo.listTotal) ? 'no-more' : ''"
+						>
+						</LoadingMore>
+						<tui-no-data v-if="exchangeShopOutgoingInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据~</tui-no-data>
+					</view>
+				</view>
+				<view v-else-if="[ 8 ].includes(queryType)">
+					<view v-if="rechargeShopAccountingInfo.data.length > 0">
+						<view
+							v-for="(item, index) in rechargeShopAccountingInfo.data" :key="item.id"
+							style="display: flex;align-items: center;justify-content: space-between;margin-bottom: 38rpx;"
+							@click="handleClickVoucherRecord(item)"
+						>
+							<view style="flex: 1;display: flex;align-items: center;">
+								<view
+									style="padding: 18rpx;font-size: 38rpx;font-weight: bold;color: #ffffff;border-radius: 50%;line-height: 1;background-color: #ef530e;"
+								>
+									<text>收</text>
+								</view>
+								<view style="flex: 1;width: 0;margin-left: 14rpx;">
+									<view style="font-size: 28rpx;font-weight: bold;color: #222229;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+										<text>
+											代金券
+											<text v-if="item.waterType === 1">充值</text>
+											<text v-else-if="item.waterType === 2">活动</text>
+											<text v-else-if="item.waterType === 3">用户兑换</text>
+											<text v-else-if="item.waterType === 4">转入</text>
+											<text v-else>--</text>
+										</text>
+										<text>
+											-
+											<text v-if="item.sourceType === 1">平台</text>
+											<text v-else-if="item.sourceType === 2">商家</text>
+											<text v-else-if="item.sourceType === 3">用户</text>
+											<text v-else>--</text>
+										</text>
+									</view>
+									<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">{{ item.createTime }}</view>
+								</view>
+							</view>
+							<view style="margin-left: 12rpx;text-align: right;">
+								<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
+									来源：{{ item.sourceName || '--' }}
+								</view>
+								<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">
+									<text>代金券：+{{ item.number }}</text>
+								</view>
+							</view>
+						</view>
+					</view>
+					<view style="padding-bottom: 45rpx;">
+						<LoadingMore
+							:status="!rechargeShopAccountingInfo.isEmpty && !rechargeShopAccountingInfo.data.length
+								? 'loading' : !rechargeShopAccountingInfo.isEmpty && rechargeShopAccountingInfo.data.length && (rechargeShopAccountingInfo.data.length >= rechargeShopAccountingInfo.listTotal) ? 'no-more' : ''"
+						>
+						</LoadingMore>
+						<tui-no-data v-if="rechargeShopAccountingInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据~</tui-no-data>
+					</view>
+				</view>
+				<view v-else-if="[ 9 ].includes(queryType)">
+					<view v-if="rechargeShopOutgoingInfo.data.length > 0">
+						<view
+							v-for="(item, index) in rechargeShopOutgoingInfo.data" :key="item.id"
+							style="display: flex;align-items: center;justify-content: space-between;margin-bottom: 38rpx;"
+							@click="handleClickVoucherRecord(item)"
+						>
+							<view style="flex: 1;display: flex;align-items: center;">
+								<view
+									style="padding: 18rpx;font-size: 38rpx;font-weight: bold;color: #ffffff;border-radius: 50%;line-height: 1;background-color: #208f57;"
+								>
+									<text>支</text>
+								</view>
+								<view style="flex: 1;width: 0;margin-left: 14rpx;">
+									<view style="font-size: 28rpx;font-weight: bold;color: #222229;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+										<text>
+											代金券
+											<text v-if="item.waterType === 1">专区兑换</text>
+											<text v-else-if="item.waterType === 2">社区兑换</text>
+											<text v-else-if="item.waterType === 3">转出</text>
+											<text v-else>--</text>
+										</text>
+										<text v-if="item.orderFormid">
+											-{{ item.orderFormid }}
+										</text>
+									</view>
+									<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">{{ item.createTime }}</view>
+								</view>
+							</view>
+							<view style="margin-left: 12rpx;text-align: right;">
+								<view style="font-size: 28rpx;font-weight: bold;color: #222229;">
+									目标：{{ item.destinationName || '--' }}
+								</view>
+								<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">
+									<text>代金券：-{{ item.number }}</text>
+								</view>
+							</view>
+						</view>
+					</view>
+					<view style="padding-bottom: 45rpx;">
+						<LoadingMore
+							:status="!rechargeShopOutgoingInfo.isEmpty && !rechargeShopOutgoingInfo.data.length
+								? 'loading' : !rechargeShopOutgoingInfo.isEmpty && rechargeShopOutgoingInfo.data.length && (rechargeShopOutgoingInfo.data.length >= rechargeShopOutgoingInfo.listTotal) ? 'no-more' : ''"
+						>
+						</LoadingMore>
+						<tui-no-data v-if="rechargeShopOutgoingInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无数据~</tui-no-data>
+					</view>
+				</view>
 			</view>
 		</view>
 
 		<tui-bottom-popup :show="isShowTypePopup" @close="isShowTypePopup = false">
 			<view style="padding: 26rpx 20rpx;">
-				<view style="padding: 0 36rpx;">
-					<view style="position: relative;color: #222229;text-align: center;">
-						<text>选择筛选项</text>
-						<view style="position: absolute;top: -14rpx;right: -16rpx;">
-							<tui-icon name="close" color="#767676" size="46" unit="rpx" @click="isShowTypePopup = false"></tui-icon>
-						</view>
+				<view style="position: relative;color: #222229;text-align: center;">
+					<text>选择筛选项</text>
+					<view style="position: absolute;top: -14rpx;right: -16rpx;">
+						<tui-icon name="close" color="#767676" size="46" unit="rpx" @click="isShowTypePopup = false"></tui-icon>
 					</view>
-					<view style="padding: 0 0 202rpx;">
-						<view style="padding-top: 40rpx;">
-							<view style="font-size: 28rpx;">收支类型</view>
-							<view style="display: flex;align-items: center;flex-wrap: wrap;margin-top: 10rpx;text-align: center;">
+				</view>
+				<view style="padding: 0 0 202rpx;">
+					<view style="padding-top: 40rpx;">
+						<view style="font-size: 34rpx;font-weight: bold;">收支类型</view>
+						<view style="padding: 10rpx 36rpx 0;">
+							<view style="font-size: 28rpx;">用户</view>
+							<view style="display: flex;align-items: center;flex-wrap: wrap;text-align: center;">
 								<view
 									v-for="(item, index) in [{ name: '兑换代金券入账记录', value: 1 }, { name: '兑换代金券出账记录', value: 2 }, { name: '充值代金券入账记录', value: 3 }, { name: '充值代金券出账记录', value: 4 }, { name: '充值代金券订单', value: 5 }]"
+									:key="index"
+									style="padding: 10rpx 34rpx;margin: 18rpx 6rpx 0;font-size: 26rpx;background-color: #f4f4f4;border-radius: 16rpx;"
+									:style="{
+										border: queryType === item.value ? '2rpx solid #ff4b10' : '2rpx solid #fff1ec',
+										color: queryType === item.value ? '#ff4b10' : '#000000'
+									}" @click="handleSelectTypeActive(item)"
+								>
+									{{ item.name }}
+								</view>
+							</view>
+						</view>
+						<view style="padding: 10rpx 36rpx 0;">
+							<view style="font-size: 28rpx;">商家</view>
+							<view style="display: flex;align-items: center;flex-wrap: wrap;text-align: center;">
+								<view
+									v-for="(item, index) in [{ name: '商家兑换代金券入账记录', value: 6 }, { name: '商家兑换代金券出账记录', value: 7 }, { name: '商家充值代金券入账记录', value: 8 }, { name: '商家充值代金券出账记录', value: 9 }]"
+									:key="index"
+									style="padding: 10rpx 34rpx;margin: 18rpx 6rpx 0;font-size: 26rpx;background-color: #f4f4f4;border-radius: 16rpx;"
+									:style="{
+										border: queryType === item.value ? '2rpx solid #ff4b10' : '2rpx solid #fff1ec',
+										color: queryType === item.value ? '#ff4b10' : '#000000'
+									}" @click="handleSelectTypeActive(item)"
+								>
+									{{ item.name }}
+								</view>
+							</view>
+						</view>
+						<view style="padding: 10rpx 36rpx 0;">
+							<view style="font-size: 28rpx;">其它</view>
+							<view style="display: flex;align-items: center;flex-wrap: wrap;text-align: center;">
+								<view
+									v-for="(item, index) in [ { name: '充值代金券订单', value: 5 } ]"
 									:key="index"
 									style="padding: 10rpx 34rpx;margin: 18rpx 6rpx 0;font-size: 26rpx;background-color: #f4f4f4;border-radius: 16rpx;"
 									:style="{
@@ -411,7 +658,7 @@
 </template>
 
 <script>
-import { getBuyerVoucherEntryRecordApi, getBuyerVoucherOutgoingRecordApi, getAllBuyerVoucherOrderApi, getAllEntryRecordApi, getAllOutgoingRecordApi } from '../../../api/anotherTFInterface'
+import { getBuyerVoucherEntryRecordApi, getBuyerVoucherOutgoingRecordApi, getAllBuyerVoucherOrderApi, getAllEntryRecordApi, getAllOutgoingRecordApi, getShopVoucherExchangeEntryRecordApi, getShopVoucherExchangeOutgoingRecordApi, getShopVoucherEntryRecordApi, getShopVoucherOutgoingRecordApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'VoucherRecord',
 	components: {
@@ -472,6 +719,42 @@ export default {
 				data: [],
 				listTotal: 0,
 				isEmpty: false
+			},
+			exchangeShopAccountingInfo: {
+				query: {
+					page: 1,
+					pageSize: 20
+				},
+				data: [],
+				listTotal: 0,
+				isEmpty: false
+			},
+			exchangeShopOutgoingInfo: {
+				query: {
+					page: 1,
+					pageSize: 20
+				},
+				data: [],
+				listTotal: 0,
+				isEmpty: false
+			},
+			rechargeShopAccountingInfo: {
+				query: {
+					page: 1,
+					pageSize: 20
+				},
+				data: [],
+				listTotal: 0,
+				isEmpty: false
+			},
+			rechargeShopOutgoingInfo: {
+				query: {
+					page: 1,
+					pageSize: 20
+				},
+				data: [],
+				listTotal: 0,
+				isEmpty: false
 			}
 		}
 	},
@@ -491,6 +774,18 @@ export default {
 		} else if ([ 5 ].includes(this.queryType)) {
 			this.orderInfo.query.page = 1
 			this.getAllVoucherOrderList()
+		} else if ([ 6 ].includes(this.queryType)) {
+			this.exchangeShopAccountingInfo.query.page = 1
+			this.getShopExchangeAccountingList()
+		} else if ([ 7 ].includes(this.queryType)) {
+			this.exchangeShopOutgoingInfo.query.page = 1
+			this.getShopExchangeOutgoingList()
+		} else if ([ 8 ].includes(this.queryType)) {
+			this.rechargeShopAccountingInfo.query.page = 1
+			this.getShopRechargeAccountingList()
+		} else if ([ 9 ].includes(this.queryType)) {
+			this.rechargeShopOutgoingInfo.query.page = 1
+			this.getShopRechargeOutgoingList()
 		}
 	},
 	methods: {
@@ -562,6 +857,76 @@ export default {
 					uni.hideLoading()
 				})
 		},
+
+		getShopExchangeAccountingList(isLoadmore) {
+			uni.showLoading()
+			getShopVoucherExchangeEntryRecordApi({ ...this.exchangeShopAccountingInfo.query })
+				.then((res) => {
+					this.exchangeShopAccountingInfo.listTotal = res.data.total
+					if (isLoadmore) {
+						this.exchangeShopAccountingInfo.data.push(...res.data.list)
+					} else {
+						this.exchangeShopAccountingInfo.data = res.data.list
+					}
+					this.exchangeShopAccountingInfo.isEmpty = this.exchangeShopAccountingInfo.data.length === 0
+					uni.hideLoading()
+				})
+				.catch(() => {
+					uni.hideLoading()
+				})
+		},
+		getShopExchangeOutgoingList(isLoadmore) {
+			uni.showLoading()
+			getShopVoucherExchangeOutgoingRecordApi({ ...this.exchangeShopOutgoingInfo.query })
+				.then((res) => {
+					this.exchangeShopOutgoingInfo.listTotal = res.data.total
+					if (isLoadmore) {
+						this.exchangeShopOutgoingInfo.data.push(...res.data.list)
+					} else {
+						this.exchangeShopOutgoingInfo.data = res.data.list
+					}
+					this.exchangeShopOutgoingInfo.isEmpty = this.exchangeShopOutgoingInfo.data.length === 0
+					uni.hideLoading()
+				})
+				.catch(() => {
+					uni.hideLoading()
+				})
+		},
+		getShopRechargeAccountingList(isLoadmore) {
+			uni.showLoading()
+			getShopVoucherEntryRecordApi({ ...this.rechargeShopAccountingInfo.query })
+				.then((res) => {
+					this.rechargeShopAccountingInfo.listTotal = res.data.total
+					if (isLoadmore) {
+						this.rechargeShopAccountingInfo.data.push(...res.data.list)
+					} else {
+						this.rechargeShopAccountingInfo.data = res.data.list
+					}
+					this.rechargeShopAccountingInfo.isEmpty = this.rechargeShopAccountingInfo.data.length === 0
+					uni.hideLoading()
+				})
+				.catch(() => {
+					uni.hideLoading()
+				})
+		},
+		getShopRechargeOutgoingList(isLoadmore) {
+			uni.showLoading()
+			getShopVoucherOutgoingRecordApi({ ...this.rechargeShopOutgoingInfo.query })
+				.then((res) => {
+					this.rechargeShopOutgoingInfo.listTotal = res.data.total
+					if (isLoadmore) {
+						this.rechargeShopOutgoingInfo.data.push(...res.data.list)
+					} else {
+						this.rechargeShopOutgoingInfo.data = res.data.list
+					}
+					this.rechargeShopOutgoingInfo.isEmpty = this.rechargeShopOutgoingInfo.data.length === 0
+					uni.hideLoading()
+				})
+				.catch(() => {
+					uni.hideLoading()
+				})
+		},
+
 		getAllVoucherOrderList(isLoadmore) {
 			uni.showLoading()
 			getAllBuyerVoucherOrderApi({ ...this.orderInfo.query })
@@ -579,6 +944,7 @@ export default {
 					uni.hideLoading()
 				})
 		},
+
 		handleSelectTypeActive(item) {
 			if (this.queryType === item.value) return
 			this.queryType = item.value
@@ -616,6 +982,34 @@ export default {
 				this.orderInfo.listTotal = 0
 				this.orderInfo.isEmpty = false
 				this.getAllVoucherOrderList()
+				this.isShowTypePopup = false
+			} else if ([ 6 ].includes(this.queryType)) {
+				this.exchangeShopAccountingInfo.query.page = 1
+				this.exchangeShopAccountingInfo.data = []
+				this.exchangeShopAccountingInfo.listTotal = 0
+				this.exchangeShopAccountingInfo.isEmpty = false
+				this.getShopExchangeAccountingList()
+				this.isShowTypePopup = false
+			} else if ([ 7 ].includes(this.queryType)) {
+				this.exchangeShopOutgoingInfo.query.page = 1
+				this.exchangeShopOutgoingInfo.data = []
+				this.exchangeShopOutgoingInfo.listTotal = 0
+				this.exchangeShopOutgoingInfo.isEmpty = false
+				this.getShopExchangeOutgoingList()
+				this.isShowTypePopup = false
+			} else if ([ 8 ].includes(this.queryType)) {
+				this.rechargeShopAccountingInfo.query.page = 1
+				this.rechargeShopAccountingInfo.data = []
+				this.rechargeShopAccountingInfo.listTotal = 0
+				this.rechargeShopAccountingInfo.isEmpty = false
+				this.getShopRechargeAccountingList()
+				this.isShowTypePopup = false
+			} else if ([ 9 ].includes(this.queryType)) {
+				this.rechargeShopOutgoingInfo.query.page = 1
+				this.rechargeShopOutgoingInfo.data = []
+				this.rechargeShopOutgoingInfo.listTotal = 0
+				this.rechargeShopOutgoingInfo.isEmpty = false
+				this.getShopRechargeOutgoingList()
 				this.isShowTypePopup = false
 			}
 		},
@@ -660,6 +1054,34 @@ export default {
 				this.orderInfo.isEmpty = false
 				this.getAllVoucherOrderList()
 				this.timeDropdownShow = false
+			} else if ([ 6 ].includes(this.queryType)) {
+				this.exchangeShopAccountingInfo.query.page = 1
+				this.exchangeShopAccountingInfo.data = []
+				this.exchangeShopAccountingInfo.listTotal = 0
+				this.exchangeShopAccountingInfo.isEmpty = false
+				this.getShopExchangeAccountingList()
+				this.timeDropdownShow = false
+			} else if ([ 7 ].includes(this.queryType)) {
+				this.exchangeShopOutgoingInfo.query.page = 1
+				this.exchangeShopOutgoingInfo.data = []
+				this.exchangeShopOutgoingInfo.listTotal = 0
+				this.exchangeShopOutgoingInfo.isEmpty = false
+				this.getShopExchangeOutgoingList()
+				this.timeDropdownShow = false
+			} else if ([ 8 ].includes(this.queryType)) {
+				this.rechargeShopAccountingInfo.query.page = 1
+				this.rechargeShopAccountingInfo.data = []
+				this.rechargeShopAccountingInfo.listTotal = 0
+				this.rechargeShopAccountingInfo.isEmpty = false
+				this.getShopRechargeAccountingList()
+				this.timeDropdownShow = false
+			} else if ([ 9 ].includes(this.queryType)) {
+				this.rechargeShopOutgoingInfo.query.page = 1
+				this.rechargeShopOutgoingInfo.data = []
+				this.rechargeShopOutgoingInfo.listTotal = 0
+				this.rechargeShopOutgoingInfo.isEmpty = false
+				this.getShopRechargeOutgoingList()
+				this.timeDropdownShow = false
 			}
 		},
 		handleClickVoucherRecord(item) {
@@ -698,6 +1120,26 @@ export default {
 			if (this.orderInfo.data.length < this.orderInfo.listTotal) {
 				++this.orderInfo.query.page
 				this.getAllVoucherOrderList(true)
+			}
+		} else if ([ 6 ].includes(this.queryType)) {
+			if (this.exchangeShopAccountingInfo.data.length < this.exchangeShopAccountingInfo.listTotal) {
+				++this.exchangeShopAccountingInfo.query.page
+				this.getShopExchangeAccountingList(true)
+			}
+		} else if ([ 7 ].includes(this.queryType)) {
+			if (this.exchangeShopOutgoingInfo.data.length < this.exchangeShopOutgoingInfo.listTotal) {
+				++this.exchangeShopOutgoingInfo.query.page
+				this.getShopExchangeOutgoingList(true)
+			}
+		} else if ([ 8 ].includes(this.queryType)) {
+			if (this.rechargeShopAccountingInfo.data.length < this.rechargeShopAccountingInfo.listTotal) {
+				++this.rechargeShopAccountingInfo.query.page
+				this.getShopRechargeAccountingList(true)
+			}
+		} else if ([ 9 ].includes(this.queryType)) {
+			if (this.rechargeShopOutgoingInfo.data.length < this.rechargeShopOutgoingInfo.listTotal) {
+				++this.rechargeShopOutgoingInfo.query.page
+				this.getShopRechargeOutgoingList(true)
 			}
 		}
 	}
