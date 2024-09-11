@@ -364,12 +364,18 @@ export const resolveIntegralSelect = (params = {}) => {
 			vm.selectIntegral = false
 		})
 		uni.showToast({ title: '已选择代金券支付，无法使用其它优惠', icon: 'none' })
-	} else if (settlement.shops.some((a) => a.skus.some((b) => b.counterType === 1)) && (selectIntegral === false)) {
+	} else if (settlement.shops.some((a) => a.skus.some((b) => b.exchangeCounterType === 1)) && (selectIntegral === false)) {
 		selectIntegral = true
 		vm && vm.$nextTick && vm.$nextTick(() => {
 			vm.selectIntegral = false
 		})
 		uni.showToast({ title: '包含兑换专柜商品，无法使用积分！', icon: 'none' })
+	} else if (settlement.shops.some((a) => a.skus.some((b) => b.procureCounterType === 1)) && (selectIntegral === false)) {
+		selectIntegral = true
+		vm && vm.$nextTick && vm.$nextTick(() => {
+			vm.selectIntegral = false
+		})
+		uni.showToast({ title: '包含采购专柜商品，无法使用积分！', icon: 'none' })
 	} else {
 		selectIntegral = !selectIntegral
 		if (selectIntegral) {
@@ -496,8 +502,10 @@ export const resolveShopCouponItemSelect = (params = {}) => {
 		isShowShopCoupons = false
 		selectedShopCouponList = []
 		isSuccess = true
-	} else if (settlement.shops.some((a) => a.skus.some((b) => b.counterType === 1))) {
+	} else if (settlement.shops.some((a) => a.skus.some((b) => b.exchangeCounterType === 1))) {
 		uni.showToast({ title: '包含兑换专柜商品，无法使用商家券！', icon: 'none' })
+	} else if (settlement.shops.some((a) => a.skus.some((b) => b.procureCounterType === 1))) {
+		uni.showToast({ title: '包含采购专柜商品，无法使用商家券！', icon: 'none' })
 	} else if (settlement.shops[shopIndex].total < couponItem.fullMoney) {
 		uni.showToast({ title: '不满足优惠券使用条件！', icon: 'none' })
 	} else if ((couponItem.couponType === 1) && (settlement.shops[shopIndex].total <= couponItem.reduceMoney)) {
@@ -1048,8 +1056,8 @@ export const resolveGetOrderSettlement = async (params = {}) => {
 			if (isExchangeCounter || isProcureCounter) {
 				// 专柜商品只能使用代金券支付
 				res.data.shops[shopIndex].skus.forEach((item) => {
-					if (isExchangeCounter) item.exchangeCounterType = 1
-					if (isProcureCounter) item.procureCounterType = 1
+					if (isExchangeCounter) item.exchangeCounterType = Number(isExchangeCounter)
+					if (isProcureCounter) item.procureCounterType = Number(isProcureCounter)
 				})
 			} else {
 				// 默认选中商家的第一张优惠券

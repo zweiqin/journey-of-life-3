@@ -14,7 +14,7 @@
 			</view>
 			<!-- v-if="settlement.shopType !== 2" -->
 			<ATFOrderAddressSelect
-				v-if="settlement.shops.some((a) => a.skus.some((b) => b.counterType !== 1)) && (settlement.shopType !== 2)"
+				v-if="settlement.shops.some((a) => a.skus.some((b) => b.exchangeCounterType !== 1)) && (settlement.shopType !== 2)"
 				:data="userAddressInfo" padding="20rpx 0 0"
 			></ATFOrderAddressSelect>
 

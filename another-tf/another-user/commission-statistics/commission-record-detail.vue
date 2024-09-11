@@ -10,7 +10,8 @@
 						<text>收</text>
 					</view>
 					<view style="margin-top: 40rpx;font-size: 42rpx;">
-						<text v-if="commissionRecordData.waterType === 1">升级角色</text>
+						<text v-if="commissionRecordData.waterType === -1">退款</text>
+						<text v-else-if="commissionRecordData.waterType === 1">升级角色</text>
 						<text v-else-if="commissionRecordData.waterType === 2">分佣</text>
 						<text v-else-if="commissionRecordData.waterType === 3">社区服务</text>
 						<text v-else-if="commissionRecordData.waterType === 4">代金券</text>
@@ -77,7 +78,8 @@
 						<text>支</text>
 					</view>
 					<view style="margin-top: 40rpx;font-size: 42rpx;">
-						<text v-if="commissionRecordData.waterType === 1">商城购买</text>
+						<text v-if="commissionRecordData.waterType === -1">退款</text>
+						<text v-else-if="commissionRecordData.waterType === 1">商城购买</text>
 						<text v-else-if="commissionRecordData.waterType === 2">商圈购买</text>
 						<text v-else-if="commissionRecordData.waterType === 3">社区购买</text>
 						<text v-else-if="commissionRecordData.waterType === 4">提现</text>

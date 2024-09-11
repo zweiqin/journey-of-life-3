@@ -48,7 +48,8 @@
 								<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">
 									<text>
 										类型：
-										<text v-if="item.waterType === 1">升级角色</text>
+										<text v-if="item.waterType === -1">退款</text>
+										<text v-else-if="item.waterType === 1">升级角色</text>
 										<text v-else-if="item.waterType === 2">分佣</text>
 										<text v-else-if="item.waterType === 3">社区服务</text>
 										<text v-else-if="item.waterType === 4">代金券</text>
@@ -99,7 +100,8 @@
 								<view style="margin-top: 6rpx;font-size: 24rpx;color: #888889;">
 									<text>
 										类型：
-										<text v-if="item.waterType === 1">商城购买</text>
+										<text v-if="item.waterType === -1">退款</text>
+										<text v-else-if="item.waterType === 1">商城购买</text>
 										<text v-else-if="item.waterType === 2">商圈购买</text>
 										<text v-else-if="item.waterType === 3">社区购买</text>
 										<text v-else-if="item.waterType === 4">提现</text>
