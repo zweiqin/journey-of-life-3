@@ -90,8 +90,7 @@
 					</view>
 					<view style="padding-top: 34rpx; flex:1;">
 						<view style="font-size: 34rpx;font-weight: bold;color: #E02208;">
-							{{ typeof financeStatisticsData.alreadyArrived === 'number' ? financeStatisticsData.alreadyArrived : '--'
-							}}
+							{{ typeof financeStatisticsData.alreadyArrived === 'number' ? financeStatisticsData.alreadyArrived : '--' }}
 						</view>
 						<!-- 已提现金额 -->
 						<view style="margin-top: 14rpx;font-size: 24rpx;">已到账</view>

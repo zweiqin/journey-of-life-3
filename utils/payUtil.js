@@ -1023,5 +1023,6 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 				// #endif
 			}
 		}
+		otherArgs.fn && typeof otherArgs.fn === 'function' && otherArgs.fn()
 	}
 }

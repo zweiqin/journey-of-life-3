@@ -1447,6 +1447,18 @@
           }
         },
         {
+          "path": "another-user/temporary-recruitment-activities/index",
+          "style": {
+            "navigationBarTitleText": "活动入口"
+          }
+        },
+        {
+          "path": "another-user/temporary-recruitment-activities/activity-details",
+          "style": {
+            "navigationBarTitleText": "活动详情"
+          }
+        },
+        {
           "path": "another-user/shop/shop-enter",
           "style": {
             "navigationBarTitleText": "商圈二级页面"
@@ -2333,6 +2345,30 @@
           "path": "another-user/shop-recharge/historyRecord",
           "style": {
             "navigationBarTitleText": "充值历史记录"
+          }
+        },
+        {
+          "path": "another-user/shop-overview/data-statistics",
+          "style": {
+            "navigationBarTitleText": "数据统计"
+          }
+        },
+        {
+          "path": "another-user/shop-overview/lunation-line",
+          "style": {
+            "navigationBarTitleText": "盈亏线"
+          }
+        },
+        {
+          "path": "another-user/shop-overview/membership-list",
+          "style": {
+            "navigationBarTitleText": "会员清单"
+          }
+        },
+        {
+          "path": "another-user/shop-overview/order-records",
+          "style": {
+            "navigationBarTitleText": "订单记录"
           }
         },
 				// 其它体系

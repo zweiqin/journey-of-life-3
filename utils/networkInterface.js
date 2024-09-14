@@ -724,7 +724,7 @@ export const resolveOrderPackageData = (params = {}) => {
  */
 
 export const resolveSubmitOrder = async (params = {}) => {
-	const { isPayImmediately, settlement, userAddressInfo, skuItemMsgList, skuItemInfo, selectedPlatformCoupon, selectIntegral, integralRatio, totalPrice, otherInfo, payInfo, hasPrice, shamPriceText } = Object.assign({
+	const { isPayImmediately, settlement, userAddressInfo, skuItemMsgList, skuItemInfo, selectedPlatformCoupon, selectIntegral, integralRatio, totalPrice, otherInfo, payInfo, hasPrice, shamPriceText, fn } = Object.assign({
 		isPayImmediately: false,
 		settlement: { shops: [] },
 		userAddressInfo: { receiveId: '' },
@@ -737,11 +737,12 @@ export const resolveSubmitOrder = async (params = {}) => {
 		otherInfo: {},
 		payInfo: {},
 		hasPrice: false,
-		shamPriceText: '支付金额必须大于零'
+		shamPriceText: '支付金额必须大于零',
+		fn: undefined
 	}, params)
 	if (otherInfo.isCanPay) {
 		if (isPayImmediately) {
-			await handleDoPay({ collageId: otherInfo.collageId, money: totalPrice, orderId: otherInfo.orderId, ...payInfo, type: 2 }, 1, '')
+			await handleDoPay({ collageId: otherInfo.collageId, money: totalPrice, orderId: otherInfo.orderId, ...payInfo, type: 2 }, 1, '', { fn })
 		} else {
 			// 检查提交表单
 			if (hasPrice && (Number(totalPrice) <= 0)) return uni.showToast({ title: shamPriceText, icon: 'none' })
@@ -801,7 +802,7 @@ export const resolveSubmitOrder = async (params = {}) => {
 					})
 				}
 				// type订单类型1-父订单2-子订单
-				await handleDoPay({ ...res.data, ...payInfo, type: 1 }, 1, { 1: 'shoppingMall', 2: 'businessDistrict' }[settlement.shopType] || 'DEFAULT')
+				await handleDoPay({ ...res.data, ...payInfo, type: 1 }, 1, { 1: 'shoppingMall', 2: 'businessDistrict' }[settlement.shopType] || 'DEFAULT', { fn })
 			} catch (e) {
 				if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
 				else uni.showToast({ title: `请求：${e.errMsg}`, icon: 'none' }) // 请求失败或请求错误

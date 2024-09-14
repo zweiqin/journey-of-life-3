@@ -20,14 +20,50 @@
 			</view>
 			<view style="position: relative;">
 				<view style="padding: 22rpx 20rpx 38rpx;font-size: 28rpx;">
-					<view class="top-btn" style="text-align: right;">
-						<tui-button
-							type="white" plain link :size="36"
-							width="184rpx" height="68rpx" margin="0"
-							@click="go('/another-tf/another-user/voucher/voucher-record')"
-						>
-							收支明细
-						</tui-button>
+					<view style="display: flex;align-items: center;justify-content: space-between;">
+						<view>
+							<tui-dropdown-list
+								v-if="$store.state.auth.identityInfo.type.includes(8) || $store.state.auth.identityInfo.type.includes(9)"
+								:show="roleDropdownShow" :top="55" background-color="#ffffff"
+								@close="roleDropdownShow = false"
+							>
+								<template #selectionbox>
+									<view
+										style="height: auto;padding: 10rpx 16rpx;color: #222229;background-color: #eeeeee;border-radius: 8rpx;"
+										@click="roleDropdownShow = !roleDropdownShow"
+									>
+										<text style="font-size: 26rpx;">{{ roleDropdownName || '' }}</text>
+										<tui-icon name="arrowdown" :size="14" color="#222229" margin="0 0 0 14rpx"></tui-icon>
+									</view>
+								</template>
+								<template #dropdownbox>
+									<view style="width: fit-content;box-sizing: border-box;">
+										<tui-list-view
+											color="#777" margin-top="2rpx"
+											style="width: fit-content;min-width: 100rpx;max-height: 28vh;overflow-y: auto;"
+										>
+											<tui-list-cell
+												v-for="item in [{ name: '用户', value: '1' }, { name: '商家', value: '2' }]"
+												:key="item.name" padding="10rpx 0"
+												style="width: fit-content;margin: 0 auto;"
+												@click="(roleType !== item.value) && (((roleType = item.value) && (roleDropdownName = item.name) && (roleDropdownShow = false)) || getVoucherData())"
+											>
+												{{ item.name }}
+											</tui-list-cell>
+										</tui-list-view>
+									</view>
+								</template>
+							</tui-dropdown-list>
+						</view>
+						<view class="top-btn">
+							<tui-button
+								type="white" plain link :size="36"
+								width="184rpx" height="68rpx" margin="0"
+								@click="go('/another-tf/another-user/voucher/voucher-record')"
+							>
+								收支明细
+							</tui-button>
+						</view>
 					</view>
 					<view style="margin-top: -32rpx;">
 						<view
@@ -45,6 +81,7 @@
 		</view>
 
 		<view
+			v-if="roleType === '1'"
 			style="display: flex;justify-content: space-evenly;align-items: stretch;flex-wrap: wrap;padding-top: 42rpx;text-align: center;"
 		>
 			<view style="flex: 1;margin-top: 30rpx;">
@@ -79,7 +116,7 @@
 		</view>
 
 		<view
-			v-if="$store.state.auth.identityInfo.type.includes(8) || $store.state.auth.identityInfo.type.includes(9)"
+			v-if="roleType === '2'"
 			style="display: flex;justify-content: space-evenly;align-items: stretch;flex-wrap: wrap;padding-top: 42rpx;text-align: center;"
 		>
 			<view style="flex: 1;margin-top: 30rpx;">
@@ -112,17 +149,14 @@
 					:purchase-ratio="voucherChooseInfo.purchaseRatio"
 				></VoucherRecharge>
 			</view>
-			<view style="padding-top: 18rpx;">
+			<view v-if="roleType === '1'" style="padding-top: 18rpx;">
 				<VoucherTransfer
 					:platform-voucher-id="voucherChooseInfo.platformVoucherId"
 					:purchase-ratio="voucherChooseInfo.purchaseRatio" :c-voucher-total="userVoucherAcount.chongzhiRechargeTotal"
 					:d-voucher-total="userVoucherAcount.duihuanRechargeTotal" @success="getVoucherData()"
 				></VoucherTransfer>
 			</view>
-			<view
-				v-if="$store.state.auth.identityInfo.type.includes(8) || $store.state.auth.identityInfo.type.includes(9)"
-				style="padding-top: 18rpx;"
-			>
+			<view v-if="roleType === '2'" style="padding-top: 18rpx;">
 				<VoucherShopTransfer
 					:platform-voucher-id="voucherChooseInfo.platformVoucherId"
 					:purchase-ratio="voucherChooseInfo.purchaseRatio" :c-voucher-total="shopVoucherAcount.chongzhiRechargeTotal"
@@ -211,6 +245,9 @@ export default {
 				purchaseRatio: ''
 			},
 			// 账户数据
+			roleDropdownShow: false,
+			roleDropdownName: '用户',
+			roleType: '1',
 			isFirstLoading: true,
 			userVoucherAcount: {
 				chongzhiRechargeTotal: 0,
@@ -233,6 +270,10 @@ export default {
 			if (flag) {
 				this.$store.dispatch('auth/refrshUserInfoAction', () => {
 					if (this.voucherChooseInfo.platformVoucherId) {
+						if (this.isFirstLoading && (this.$store.state.auth.identityInfo.type.includes(8) || this.$store.state.auth.identityInfo.type.includes(9))) {
+							this.roleDropdownName = '商家'
+							this.roleType = '2'
+						}
 						this.getVoucherData()
 					} else {
 						this.userVoucherAcount = { chongzhiRechargeTotal: 0, duihuanRechargeTotal: 0 }
@@ -249,11 +290,10 @@ export default {
 			}
 		},
 		getVoucherData() {
-			if (this.$store.state.auth.identityInfo.type.includes(8) || this.$store.state.auth.identityInfo.type.includes(9)) {
+			if (this.roleType === '1') {
 				this.getUserVoucherData()
+			} else if (this.roleType === '2') {
 				this.getShopVoucherData()
-			} else {
-				this.getUserVoucherData()
 			}
 		},
 		getUserVoucherData() {
@@ -323,9 +363,14 @@ export default {
 		}
 	}
 
+	/deep/ .tui-dropdown-view {
+		height: auto !important;
+		width: fit-content;
+		margin-left: 2rpx;
+	}
+
 	.top-btn {
 		/deep/ .tui-btn {
-			display: inline-block;
 			border-radius: 10rpx;
 			background-color: #f26e34 !important;
 		}

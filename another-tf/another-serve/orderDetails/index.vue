@@ -807,7 +807,7 @@ export default {
 					orderSn: this.dataList.orderFormid,
 					type: 2,
 					...this.payInfo
-				}, 1, '')
+				}, 1, '', { fn: () => (this.payInfo.pwd = '') })
 			}
 		},
 
