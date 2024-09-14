@@ -584,7 +584,7 @@ export default {
 			if ((this.payObj.payInfo.paymentMode !== 9) && (this.payObj.payInfo.paymentMode !== 4) && !this.payObj.payInfo.pwd) {
 				this.$refs.refCashierList && this.$refs.refCashierList.handleInputPaymentPassword()
 			} else {
-				await handleDoPay(this.payObj.payInfo, 1, '')
+				await handleDoPay(this.payObj.payInfo, 1, '', { fn: () => (this.payObj.payInfo.pwd = '') })
 				this.payObj = {
 					showPayPopup: false,
 					pricePay: 0,

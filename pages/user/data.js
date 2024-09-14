@@ -304,12 +304,43 @@ export const myPreferential = [
 ]
 
 export const otherFunction = [
+  // shopServe
+  {
+    name: '商品类别',
+    icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+    url: '/another-tf/another-user/product-category/index'
+  },
+  {
+    name: '选品管理',
+    icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+    url: '/another-tf/another-user/product-selection-management/index'
+  },
+  {
+    name: '秒杀专区',
+    icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+    url: '/another-tf/another-serve/discount/spikeList'
+  },
+  {
+    name: '拼团专区',
+    icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+    url: '/another-tf/another-serve/discount/groupBuy'
+  },
+  {
+    name: '平台折扣',
+    icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+    url: '/another-tf/another-serve/discount/platformDiscount?discountId=60'
+  },
+  {
+    name: '商家折扣',
+    icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+    url: '/another-tf/another-serve/discount/discount?shopId=186&shopDiscountId=43'
+  },
+  // myFunction
   {
     name: '便民服务',
     icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
     url: '/pages/user/kuai-di/index'
   },
-  // myFunction
   {
     name: '会员中心',
     icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
@@ -382,36 +413,10 @@ export const otherFunction = [
     icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
     url: '/another-tf/another-user/lottery-activities/index'
   },
-  // shopServe
   {
-    name: '商品类别',
+    name: '临时活动',
     icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
-    url: '/another-tf/another-user/product-category/index'
-  },
-  {
-    name: '选品管理',
-    icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
-    url: '/another-tf/another-user/product-selection-management/index'
-  },
-  {
-    name: '秒杀专区',
-    icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
-    url: '/another-tf/another-serve/discount/spikeList'
-  },
-  {
-    name: '拼团专区',
-    icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
-    url: '/another-tf/another-serve/discount/groupBuy'
-  },
-  {
-    name: '平台折扣',
-    icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
-    url: '/another-tf/another-serve/discount/platformDiscount?discountId=60'
-  },
-  {
-    name: '商家折扣',
-    icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
-    url: '/another-tf/another-serve/discount/discount?shopId=186&shopDiscountId=43'
+    url: '/another-tf/another-user/temporary-recruitment-activities/index'
   },
   {
     name: '我的抽奖',

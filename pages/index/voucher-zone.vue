@@ -164,7 +164,7 @@ export default {
         classifyId: '822'
       })
 
-      this.categoryList = res.data
+      this.categoryList = res.data.filter(i => i.classifyName !== '采购专区')
     }
   },
 }

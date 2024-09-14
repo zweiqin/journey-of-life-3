@@ -344,7 +344,8 @@ export default {
 					integralRatio: this.integralRatio,
 					totalPrice: this.totalPrice,
 					otherInfo: this.otherInfo,
-					payInfo: this.payInfo
+					payInfo: this.payInfo,
+					fn: () => (this.payInfo.pwd = '')
 				})
 			}
 		},

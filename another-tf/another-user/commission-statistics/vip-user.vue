@@ -11,7 +11,7 @@
 					<view style="height: auto;color: #080808;" @click="typeDropdownShow = !typeDropdownShow">
 						<text>类型∨</text>
 						<text style="margin-left: 10rpx;;font-size: 26rpx;">
-							<text v-if="fansDataInfo.query.isToday">今日会员</text>
+							<text v-if="fansDataInfo.query.today">今日会员</text>
 							<text v-else>累计会员</text>
 						</text>
 					</view>
@@ -25,14 +25,14 @@
 							<tui-list-cell
 								padding="20rpx 0" color="#ffffff" background-color="transparent"
 								style="width: fit-content;margin: 0 auto;border-bottom: 2rpx solid #cccccc;"
-								@click="(typeDropdownShow = false) || (fansDataInfo.query.isToday = 1) && getRelationshipUserList()"
+								@click="(typeDropdownShow = false) || (fansDataInfo.query.today = 1) && getRelationshipUserList()"
 							>
 								今日会员
 							</tui-list-cell>
 							<tui-list-cell
 								padding="20rpx 0" color="#ffffff" background-color="transparent"
 								style="width: fit-content;margin: 0 auto;border-bottom: 2rpx solid #cccccc;"
-								@click="(typeDropdownShow = false) || (fansDataInfo.query.isToday = 0) || getRelationshipUserList()"
+								@click="(typeDropdownShow = false) || (fansDataInfo.query.today = 0) || getRelationshipUserList()"
 							>
 								累计会员
 							</tui-list-cell>
@@ -103,7 +103,7 @@ export default {
 				query: {
 					page: 1,
 					pageSize: 20,
-					isToday: '', // 0-全部 1-今日
+					today: '', // 0-全部 1-今日
 					phone: ''
 				},
 				data: [],
@@ -115,7 +115,7 @@ export default {
 				query: {
 					page: 1,
 					pageSize: 20,
-					isToday: 0,
+					today: 0,
 					phone: '' // 电话
 				},
 				data: [],
@@ -125,7 +125,7 @@ export default {
 		}
 	},
 	onLoad(options) {
-		this.fansDataInfo.query.isToday = Number(options.today) || 0
+		this.fansDataInfo.query.today = Number(options.today) || 0
 		this.getRelationshipUserList()
 	},
 	methods: {

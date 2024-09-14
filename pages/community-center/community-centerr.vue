@@ -108,7 +108,7 @@
     <CheckedVersion ref="checkedVersion"></CheckedVersion>
     <!-- #endif -->
 
-    <tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？" @click="_handleClickTuiModel($event, 'login', '')"></tui-modal>
+    <tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未 登录，是否先去登录？" @click="_handleClickTuiModel($event, 'login', '')"></tui-modal>
 
     <BeeWxShare ref="beeWxShareRef" @click="handleInitShare"></BeeWxShare>
 
@@ -118,9 +118,15 @@
     <!-- 弹出关注公众号 -->
     <TuanFollowOfficialAccount ref="tuanFollowOfficialAccountRef"></TuanFollowOfficialAccount>
 
+		<!-- go('/another-tf/another-user/temporary-recruitment-activities/activity-details') -->
     <PopupInformation v-show="popupImageUrl" ref="popupInformationRef" popup-type="activity" :img-url="popupImageUrl" @close="handleShowBindMobilePopup" @click="handleToActiveDetail">
       <view class="tip" slot="tip">参与即可获得 300 元代金券，机会难得</view>
     </PopupInformation>
+    <PopupInformation
+			ref="refTempPopupInformation" popup-type="temporaryRecruitmentActivities"
+			:img-url="common.seamingImgUrl('1726131254304-activity-entrance-bg.png')"
+			@click="go('/another-tf/another-user/temporary-recruitment-activities/activity-details')"
+		></PopupInformation>
 
     <DragButton text="联系客服" is-dock exist-tab-bar @btnClick="go('/another-tf/another-user/chat/chat-detail?chat=serviceAssistant')"></DragButton>
   </view>
@@ -218,6 +224,7 @@ export default {
     if (getApp().globalData.isShowFollowOfficialAccount) {
       this.$refs.tuanFollowOfficialAccountRef.show()
     }
+		this.$refs.refTempPopupInformation && this.$refs.refTempPopupInformation.show()
   },
 
   methods: {

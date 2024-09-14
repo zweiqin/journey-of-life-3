@@ -245,7 +245,7 @@ export default {
 				this.rechargeForm.payGrade = this.rechargeForm.number / this.purchaseRatio
 				submitBuyerVoucherOrderApi({ ...this.rechargeForm })
 					.then(async (res) => {
-						await handleDoPay({ ...res.data, ...this.payInfo }, 4, '')
+						await handleDoPay({ ...res.data, ...this.payInfo }, 4, '', { fn: () => (this.payInfo.pwd = '') })
 						uni.hideLoading()
 						this.isShowVoucherModal = false
 						this.isShowPopup = false

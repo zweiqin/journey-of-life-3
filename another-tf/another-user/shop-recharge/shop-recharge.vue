@@ -179,7 +179,7 @@ export default {
 					rechargeBalance: this.currentRechargeCount,
 					remark: 'normal'
 				}).then(res => {
-					handleDoPay({ ...res.data, ...this.payInfo }, 7, '')
+					handleDoPay({ ...res.data, ...this.payInfo }, 7, '', { fn: () => (this.payInfo.pwd = '') })
 					console.log(res);
 				}).catch(err => {
 					console.log(err);

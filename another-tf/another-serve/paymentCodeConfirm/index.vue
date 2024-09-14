@@ -603,7 +603,8 @@ export default {
 					otherInfo: this.otherInfo,
 					payInfo: this.payInfo,
 					hasPrice: true,
-					shamPriceText: '请输入金额'
+					shamPriceText: '请输入金额',
+					fn: () => (this.payInfo.pwd = '')
 				})
 			}
 		}

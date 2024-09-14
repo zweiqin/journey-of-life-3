@@ -7,6 +7,12 @@ import { AnotherTFRequest } from '../../utils'
 // 参与抽奖
 export const addDrawParticipateLotteryApi = (data) => AnotherTFRequest('/draw/addDraw', data, 'POST')
 
+// 查询是否已参加活动
+export const xxx1 = (data) => AnotherTFRequest('/待后端开发/查询是否未参加活动', data, 'POST')
+
+// 参加活动
+export const xxx2 = (data) => AnotherTFRequest('/待后端开发/参加活动', data, 'POST')
+
 /**
  * @description 商城相关接口
  */
@@ -580,6 +586,7 @@ export const updateSetHxCodeApi = (data) => AnotherTFRequest('/order/write', dat
 // 检查支付完成后核销订单
 export const updateChkPaidAndWriteApi = (data) => AnotherTFRequest('/order/chkPaidAndWrite', data, 'POST')
 
+// 商家操作模块
 // 商家订单管理查询
 export const getShopOrderAllApi = (data) => AnotherTFRequest('/shop/getShopOrderAll', data, 'POST')
 
@@ -627,6 +634,61 @@ export const getByRechargeApi = (data) => AnotherTFRequest('/businessRechargeCus
 
 // 生成商家收款码
 export const getPaymentGenerateCodeApi = (data) => AnotherTFRequest('/paymentCode/generateCode', data, 'POST')
+
+// 成本配置
+// 盈亏红线（当前只计算了，通联支付/惠氏宝支付，其余需要迭代）
+export const getShopProfitAndLossApi = (data) => AnotherTFRequest('/shop/getProfitAndLoss', data, 'POST')
+
+// 字段配置
+// 分页查询字段数据
+export const getShopCostFieldPageAllApi = (data) => AnotherTFRequest('/shopCostField/getPageAll', data, 'POST')
+
+// 添加字段
+export const addShopCostFieldApi = (data) => AnotherTFRequest('/shopCostField/save', data, 'POST')
+
+// 修改字段
+export const updateShopCostFieldApi = (data) => AnotherTFRequest('/shopCostField/update', data, 'POST')
+
+// 删除字段
+export const deleteShopCostFieldApi = (data) => AnotherTFRequest('/shopCostField/deleteById', data)
+
+// 查询全部
+export const getAllShopCostFieldApi = (data) => AnotherTFRequest('/shopCostField/getAll', data, 'POST')
+
+// 采购商品配置
+// 分页查询采购商品数据
+export const getShopCostRevenuePageAllApi = (data) => AnotherTFRequest('/shopCostRevenue/getPageAll', data, 'POST')
+
+// 添加采购商品
+export const addShopCostRevenueApi = (data) => AnotherTFRequest('/shopCostRevenue/save', data, 'POST')
+
+// 修改采购商品
+export const updateShopCostRevenueApi = (data) => AnotherTFRequest('/shopCostRevenue/update', data, 'POST')
+
+// 删除采购商品
+export const deleteByIdShopCostRevenueApi = (data) => AnotherTFRequest('/shopCostRevenue/deleteById', data)
+
+// 查询全部采购商品
+export const getAllShopCostRevenueApi = (data) => AnotherTFRequest('/shopCostRevenue/getAll', data, 'POST')
+
+// 字段配置
+// 商家财务头部统计
+export const getShopFinanceCountDataApi = (data) => AnotherTFRequest('/shop/getShopFinanceCount', data)
+
+// 时间条件统计
+export const getShopTotalFinanceCountApi = (data) => AnotherTFRequest('/shop/getShopTotalFinanceCount', data, 'POST')
+
+// 时间条件订单记录
+export const getShopOrderListApi = (data) => AnotherTFRequest('/shop/getShopOrderList', data, 'POST')
+
+// 会员统计
+export const getAllShopMemberApi = (data) => AnotherTFRequest('/shop/getShopMember', data, 'POST')
+
+// 营业数据
+export const getShopBusinessDataApi = (data) => AnotherTFRequest('/shop/getBusinessData', data, 'POST')
+
+// 会员统计列表
+export const getShopMemberListApi = (data) => AnotherTFRequest('/shop/getShopMemberList', data, 'POST')
 
 // 代金券
 // 获取可用代金券

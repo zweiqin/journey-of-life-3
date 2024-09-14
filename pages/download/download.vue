@@ -7,10 +7,10 @@
 					<view class="AppName">{{ APPLY_NAME }} App</view>
 					<view style="padding: 10px 0;color: #ffffff;">版本：v{{ SYSTEM_VERSION }}</view>
 					<view v-if="!isWeixin">
-						<a download href="https://www.tuanfengkeji.cn/TF_APP_Download/__UNI__B07FE0F__20240907103339.apk" class="DownLoaButton">
+						<a download href="https://www.tuanfengkeji.cn/TF_APP_Download/__UNI__B07FE0F__20240911190646.apk" class="DownLoaButton">
 							<span class="iconfont icon-anzhuo"></span> 安卓下载
 						</a>
-						<a download href="https://www.tuanfengkeji.cn/TF_APP_Download/__UNI__B07FE0F_0907105146.ipa" class="DownLoaButton">
+						<a download href="https://www.tuanfengkeji.cn/TF_APP_Download/__UNI__B07FE0F_0911184430.ipa" class="DownLoaButton">
 							<span class="iconfont icon-iOS"></span> IOS下载
 						</a>
 					</view>
