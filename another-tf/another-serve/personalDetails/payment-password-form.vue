@@ -1,5 +1,5 @@
 <template>
-	<view class="receiving-account-form-container">
+	<view class="payment-password-form-container">
 		<JHeader width="50" height="50" title="支付密码表单"></JHeader>
 		<FieldPanePP v-model="form.basicInfo" :fields="applyOne" title="设置支付密码"></FieldPanePP>
 		<view class="buts">
@@ -97,7 +97,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.receiving-account-form-container {
+.payment-password-form-container {
 	padding: 40upx 40upx 140upx 40upx;
 	box-sizing: border-box;
 

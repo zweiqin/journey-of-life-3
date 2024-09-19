@@ -216,7 +216,13 @@ export const shopServe = [
     icon: require('../../static/images/new-user/menu-icon/counterList.png'),
     url: '/another-tf/another-user/counterList/index',
     showRole: ['shop']
-  }
+  },
+  {
+    name: '数据统计',
+    icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+    url: '/another-tf/another-user/shop-overview/data-statistics',
+    showRole: ['shop', 'merchantStaff']
+  },
 ]
 
 export const additionalFunction = [

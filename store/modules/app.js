@@ -85,13 +85,10 @@ export default {
 									itemList: res.data.map((item) => `${item.name}${item.state ? '（在线）' : ''}`), // （已下线）
 									itemColor: '#2c3e50',
 									success: (result) => {
-										// uni.showToast({ title: res.data[result.tapIndex].name })
-										setTimeout(() => {
-											dispatch('flyToServiceAction', { shopId, openKfId: res.data[result.tapIndex].openKfId })
-											// uni.navigateTo({
-											// 	url: `/another-tf/another-user/chat/chat-detail?chat=serviceAssistant&kfId=${res.data[result.tapIndex].kfId}&openKfId=${res.data[result.tapIndex].openKfId}`
-											// })
-										}, 2000)
+										dispatch('flyToServiceAction', { shopId, openKfId: res.data[result.tapIndex].openKfId })
+										// uni.navigateTo({
+										// 	url: `/another-tf/another-user/chat/chat-detail?chat=serviceAssistant&kfId=${res.data[result.tapIndex].kfId}&openKfId=${res.data[result.tapIndex].openKfId}`
+										// })
 									}
 								})
 							} else {

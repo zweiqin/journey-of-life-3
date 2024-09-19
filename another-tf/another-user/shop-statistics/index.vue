@@ -241,12 +241,11 @@ export default {
 		}
 	},
 	onLoad() {
-		this.getShopStatistics()
-	},
-	watch: {
-		'$store.state.auth.identityInfo.shopInfo.shopId'(val, oldVal) {
-			this.getShopStatistics()
-		}
+		this.$store.dispatch('auth/unifiedProcessingShopAction', {
+			cb: () => {
+				this.getShopStatistics()
+			}
+		})
 	},
 	methods: {
 		handleCurrentChange(e) {

@@ -268,18 +268,16 @@ export default {
 	methods: {
 		handelInitData(flag) {
 			if (flag) {
-				this.$store.dispatch('auth/refrshUserInfoAction', () => {
-					if (this.voucherChooseInfo.platformVoucherId) {
-						if (this.isFirstLoading && (this.$store.state.auth.identityInfo.type.includes(8) || this.$store.state.auth.identityInfo.type.includes(9))) {
-							this.roleDropdownName = '商家'
-							this.roleType = '2'
-						}
-						this.getVoucherData()
-					} else {
-						this.userVoucherAcount = { chongzhiRechargeTotal: 0, duihuanRechargeTotal: 0 }
-						this.shopVoucherAcount = { chongzhiRechargeTotal: 0, duihuanRechargeTotal: 0 }
+				if (this.voucherChooseInfo.platformVoucherId) {
+					if (this.isFirstLoading && this.$store.dispatch('auth/unifiedProcessingShopAction', { isShowModal: false })) {
+						this.roleDropdownName = '商家'
+						this.roleType = '2'
 					}
-				})
+					this.getVoucherData()
+				} else {
+					this.userVoucherAcount = { chongzhiRechargeTotal: 0, duihuanRechargeTotal: 0 }
+					this.shopVoucherAcount = { chongzhiRechargeTotal: 0, duihuanRechargeTotal: 0 }
+				}
 			} else if (!this.isFirstLoading) {
 				if (this.voucherChooseInfo.platformVoucherId) {
 					this.getVoucherData()
