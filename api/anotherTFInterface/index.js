@@ -635,10 +635,6 @@ export const getByRechargeApi = (data) => AnotherTFRequest('/businessRechargeCus
 // 生成商家收款码
 export const getPaymentGenerateCodeApi = (data) => AnotherTFRequest('/paymentCode/generateCode', data, 'POST')
 
-// 成本配置
-// 盈亏红线（当前只计算了，通联支付/惠氏宝支付，其余需要迭代）
-export const getShopProfitAndLossApi = (data) => AnotherTFRequest('/shop/getProfitAndLoss', data, 'POST')
-
 // 字段配置
 // 分页查询字段数据
 export const getShopCostFieldPageAllApi = (data) => AnotherTFRequest('/shopCostField/getPageAll', data, 'POST')
@@ -654,6 +650,9 @@ export const deleteShopCostFieldApi = (data) => AnotherTFRequest('/shopCostField
 
 // 查询全部
 export const getAllShopCostFieldApi = (data) => AnotherTFRequest('/shopCostField/getAll', data, 'POST')
+
+// 查询字段数据
+export const getByIdShopCostFieldApi = (data) => AnotherTFRequest('/shopCostField/getById', data)
 
 // 采购商品配置
 // 分页查询采购商品数据
@@ -671,7 +670,14 @@ export const deleteByIdShopCostRevenueApi = (data) => AnotherTFRequest('/shopCos
 // 查询全部采购商品
 export const getAllShopCostRevenueApi = (data) => AnotherTFRequest('/shopCostRevenue/getAll', data, 'POST')
 
-// 字段配置
+// 查询字段数据
+export const getByIdShopCostRevenueApi = (data) => AnotherTFRequest('/shopCostRevenue/getById', data)
+
+// 成本配置
+// 盈亏红线（当前只计算了，通联支付/惠氏宝支付，其余需要迭代）
+export const getShopProfitAndLossApi = (data) => AnotherTFRequest('/shop/getProfitAndLoss', data, 'POST')
+
+// 商家统计
 // 商家财务头部统计
 export const getShopFinanceCountDataApi = (data) => AnotherTFRequest('/shop/getShopFinanceCount', data)
 

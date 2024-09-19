@@ -1,8 +1,8 @@
-import { T_REDIRECT_TYPE, T_NEW_BIND_TYPE, USER_INFO, USER_ID, USER_TOKEN, T_USER_TOKEN, T_STORAGE_KEY, clearAllCache } from '../../constant'
-import { A_TF_MAIN, ENV } from '../../config'
-import { CHNAGE_USER_INFO, CHNAGE_USER_TOKEN, CHNAGE_USER_IDENTITY } from './type'
+import { T_REDIRECT_TYPE, T_NEW_BIND_TYPE, USER_INFO, USER_ID, USER_TOKEN, T_STORAGE_KEY, T_IDENTITY_INFO, clearAllCache } from '../../constant'
+import { A_TF_MAIN, ANOTHER_TF_SETTLE, ENV } from '../../config'
+import { CHNAGE_USER_INFO, CHNAGE_USER_IDENTITY } from './type'
 import store from '../index'
-import { getUrlCode } from '../../utils'
+import { getUrlCode, getStorageUserId, getStorageKeyToken, jumpToOtherProject } from '../../utils'
 import { refrshUserInfoApi } from '../../api/user'
 import { Encrypt } from '../../utils/secret'
 import { getSelectLevelPlatformRelationApi, getIsShopByUserApi, updatePhoneLoginRegisterApi, updateWXLoginApi, updateWXAppLoginApi, updateAlipayLoginApi, getUserInfoApi, updateUserInfoApi } from '../../api/anotherTFInterface'
@@ -12,8 +12,7 @@ export default {
 	state() {
 		return {
 			userInfo: uni.getStorageSync(T_STORAGE_KEY) || {}, // 新团蜂的
-			userToken: uni.getStorageSync(T_USER_TOKEN) || '', // 新团蜂的
-			identityInfo: {
+			identityInfo: uni.getStorageSync(T_IDENTITY_INFO) || {
 				type: [], // 9商家或8商家员工，1加盟商，2代理商，11关系链没购买产品，12关系链已购买产品且不是团长，13关系链已是团长但不满足团长升合伙人条件，14关系链已是团长且满足团长升合伙人条件，15关系链已经是合伙人，10关系链其它情况
 				shopInfo: {}
 			}
@@ -26,14 +25,13 @@ export default {
 			uni.setStorageSync(T_STORAGE_KEY, userInfo)
 		},
 
-		[CHNAGE_USER_TOKEN](state, token) {
-			state.userToken = token
-			uni.setStorageSync(T_USER_TOKEN, token)
-		},
-
 		[CHNAGE_USER_IDENTITY](state, data) {
 			if (data.type) state.identityInfo.type = data.type
 			if (data.shopInfo) state.identityInfo.shopInfo = data.shopInfo
+			uni.setStorageSync(T_IDENTITY_INFO, {
+				type: data.type,
+				shopInfo: data.shopInfo
+			})
 		}
 	},
 
@@ -236,10 +234,9 @@ export default {
 						uni.setStorageSync(USER_ID, data.oldShopUserInfo.userInfo && data.oldShopUserInfo.userInfo.userId)
 						uni.setStorageSync(USER_TOKEN, data.oldShopUserInfo.token)
 						uni.setStorageSync(USER_INFO, data.oldShopUserInfo.userInfo)
-						commit(CHNAGE_USER_TOKEN, data.token)
 						commit(CHNAGE_USER_INFO, data)
 						if (data.roleId) commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, data.roleId]) ] })
-						dispatch('updateIdentityInfo')
+						dispatch('updateIdentityInfoAction')
 						if (redirect) {
 							uni.removeStorageSync(T_REDIRECT_TYPE)
 							if (tabbarList.includes(redirect)) {
@@ -267,10 +264,9 @@ export default {
 							uni.setStorageSync(USER_ID, data.oldShopUserInfo.userInfo && data.oldShopUserInfo.userInfo.userId)
 							uni.setStorageSync(USER_TOKEN, data.oldShopUserInfo.token)
 							uni.setStorageSync(USER_INFO, data.oldShopUserInfo.userInfo)
-							commit(CHNAGE_USER_TOKEN, data.token)
 							commit(CHNAGE_USER_INFO, data)
 							if (data.roleId) commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, data.roleId]) ] })
-							dispatch('updateIdentityInfo')
+							dispatch('updateIdentityInfoAction')
 							if ((store.state.app.terminal === 6) || (store.state.app.terminal === 3)) {
 								if (redirect) {
 									uni.removeStorageSync(T_REDIRECT_TYPE)
@@ -327,10 +323,9 @@ export default {
 						uni.setStorageSync(USER_ID, data.oldShopUserInfo.userInfo && data.oldShopUserInfo.userInfo.userId)
 						uni.setStorageSync(USER_TOKEN, data.oldShopUserInfo.token)
 						uni.setStorageSync(USER_INFO, data.oldShopUserInfo.userInfo)
-						commit(CHNAGE_USER_TOKEN, data.token)
 						commit(CHNAGE_USER_INFO, data)
 						if (data.roleId) commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, data.roleId]) ] })
-						dispatch('updateIdentityInfo')
+						dispatch('updateIdentityInfoAction')
 						if (redirect) {
 							uni.removeStorageSync(T_REDIRECT_TYPE)
 							if (tabbarList.includes(redirect)) {
@@ -366,9 +361,7 @@ export default {
 			uni.removeStorageSync(USER_ID)
 			uni.removeStorageSync(USER_INFO)
 			uni.removeStorageSync(USER_TOKEN)
-			uni.removeStorageSync(T_USER_TOKEN)
 			commit(CHNAGE_USER_INFO, {})
-			commit(CHNAGE_USER_TOKEN, '')
 			clearAllCache()
 			if (isQuiet) {
 				uni.showToast({ title: '退出成功', icon: 'none' })
@@ -419,7 +412,7 @@ export default {
 										token: tempUserInfo.token
 									}))
 									if (res.data.roleId) commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, res.data.roleId]) ] })
-									dispatch('updateIdentityInfo')
+									dispatch('updateIdentityInfoAction')
 									cb && typeof cb === 'function' && cb(result.data)
 									resolve(result.data)
 								})
@@ -437,7 +430,7 @@ export default {
 		},
 
 		// 获取身份（是否商家）
-		updateIdentityInfo({ state, dispatch, commit }) {
+		updateIdentityInfoAction({ state, dispatch, commit }, cb) {
 			return new Promise((resolve, reject) => {
 				getSelectLevelPlatformRelationApi({})
 					.then((res1) => {
@@ -462,6 +455,7 @@ export default {
 											commit(CHNAGE_USER_IDENTITY, { type: [ ...new Set([...state.identityInfo.type, 9]) ], shopInfo: res2.data || {} })
 										}
 									}
+									cb && typeof cb === 'function' && cb(state.identityInfo)
 									resolve(res2.data)
 								})
 								.catch((err) => {
@@ -476,6 +470,38 @@ export default {
 						reject(err)
 					})
 			})
+		},
+
+		// 商家功能统一处理
+		unifiedProcessingShopAction({ state, rootState, dispatch, commit }, params = {}) {
+			const { isShowModal, cb } = Object.assign({
+				isShowModal: true,
+				cb: null
+			}, params)
+			if (getStorageUserId()) {
+				if (state.identityInfo.type.includes(8) || state.identityInfo.type.includes(9)) {
+					cb && typeof cb === 'function' && cb(state.identityInfo)
+					return true
+				}
+				isShowModal && uni.showModal({
+					title: '提示',
+					content: '您还不是商家，请先成为商家！',
+					confirmText: '现在去',
+					cancelText: '取消',
+					success(res) {
+						if (res.confirm) {
+							const storageKeyToken = getStorageKeyToken()
+							if (storageKeyToken) {
+								jumpToOtherProject({ isInMiniProgram: rootState.app.isInMiniProgram, url: `${ANOTHER_TF_SETTLE}/#/?username=${state.userInfo.name}&user=${encodeURIComponent(Encrypt(storageKeyToken))}`, programUrl: `pages/skip/skip`, toType: 'H5', query: `?type=merchantSettlement&username=${state.userInfo.name}&user=${encodeURIComponent(Encrypt(storageKeyToken))}`, montageTerminal: [ 6 ] })
+							}
+						} else if (res.cancel) {
+							// uni.navigateBack();
+						}
+					}
+				})
+				return false
+			}
+			return false
 		}
 	}
 }

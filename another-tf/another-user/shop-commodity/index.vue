@@ -35,7 +35,7 @@
 		<!-- 商品列表 -->
 		<view v-if="shopList && shopList.length" class="shop-list">
 			<ATFCommonShop
-				v-for="shop in shopList" :key="shop.shopId" :shop-info="shop" bottom-type="detail"
+				v-for="shop in shopList" :key="shop.shopId" :shop-info="shop"
 				margin="22rpx 0"
 				radius="20rpx"
 			>

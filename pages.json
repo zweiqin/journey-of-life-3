@@ -2354,21 +2354,39 @@
           }
         },
         {
-          "path": "another-user/shop-overview/lunation-line",
-          "style": {
-            "navigationBarTitleText": "盈亏线"
-          }
-        },
-        {
           "path": "another-user/shop-overview/membership-list",
           "style": {
             "navigationBarTitleText": "会员清单"
           }
         },
         {
-          "path": "another-user/shop-overview/order-records",
+          "path": "another-user/shop-overview/lunation-line",
           "style": {
-            "navigationBarTitleText": "订单记录"
+            "navigationBarTitleText": "设置盈亏线"
+          }
+        },
+        {
+          "path": "another-user/shop-overview/character-configuration",
+          "style": {
+            "navigationBarTitleText": "字段配置"
+          }
+        },
+        {
+          "path": "another-user/shop-overview/character-configuration-form",
+          "style": {
+            "navigationBarTitleText": "字段表单"
+          }
+        },
+        {
+          "path": "another-user/shop-overview/purchasing-goods",
+          "style": {
+            "navigationBarTitleText": "采购商品"
+          }
+        },
+        {
+          "path": "another-user/shop-overview/purchasing-goods-form",
+          "style": {
+            "navigationBarTitleText": "采购商品表单"
           }
         },
 				// 其它体系

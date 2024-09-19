@@ -17,7 +17,8 @@ async function payH5InEquipment(payInfo) {
 		const res = await gotoOrderH5PayApi(payInfo)
 		location.replace(res.data.mwebUrl)
 	} catch (e) {
-		uni.showToast({ title: '支付失败', icon: 'none' })
+		if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
+		else uni.showToast({ title: `支付失败`, icon: 'none' })
 		setTimeout(() => {
 			if ([1, 2].includes(payInfo.purchaseMode)) {
 				uni.switchTab({ url: '/pages/order/order' })
@@ -142,7 +143,8 @@ async function zhiAliPay(payInfo) {
 				}
 			})
 		} catch (e) {
-			uni.showToast({ title: '支付宝支付异常', icon: 'none' })
+			if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
+			else uni.showToast({ title: `支付宝支付失败`, icon: 'none' })
 			setTimeout(() => { uni.switchTab({ url: '/pages/order/order' }) }, 2000)
 		} finally {
 			uni.hideLoading()
@@ -168,7 +170,8 @@ async function zhiAliPay(payInfo) {
 				}
 			})
 		} catch (e) {
-			uni.showToast({ title: '支付宝支付异常', icon: 'none' })
+			if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
+			else uni.showToast({ title: `支付宝支付失败`, icon: 'none' })
 			setTimeout(() => { uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' }) }, 2000)
 		} finally {
 			uni.hideLoading()
@@ -205,7 +208,8 @@ async function mpWechatPay(payInfo) {
 				}
 			})
 		} catch (e) {
-			uni.showToast({ title: '微信支付拉起失败', icon: 'none' })
+			if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
+			else uni.showToast({ title: `微信支付失败`, icon: 'none' })
 			setTimeout(() => { uni.switchTab({ url: '/pages/order/order' }) }, 2000)
 		}
 	} else if ([3, 4, 5].includes(payInfo.purchaseMode)) {
@@ -230,7 +234,8 @@ async function mpWechatPay(payInfo) {
 				}
 			})
 		} catch (e) {
-			uni.showToast({ title: '微信支付拉起失败', icon: 'none' })
+			if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
+			else uni.showToast({ title: `微信支付失败`, icon: 'none' })
 			setTimeout(() => { uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' }) }, 2000)
 		}
 	}
@@ -268,7 +273,8 @@ async function appWechatPay(payInfo) {
 				}
 			})
 		} catch (e) {
-			uni.showToast({ title: 'APP拉起微信支付失败', icon: 'none' })
+			if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
+			else uni.showToast({ title: `APP拉起微信支付失败`, icon: 'none' })
 			setTimeout(() => { uni.switchTab({ url: '/pages/order/order' }) }, 2000)
 		} finally {
 			uni.hideLoading()
@@ -298,7 +304,8 @@ async function appWechatPay(payInfo) {
 				}
 			})
 		} catch (e) {
-			uni.showToast({ title: 'APP拉起微信支付失败', icon: 'none' })
+			if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
+			else uni.showToast({ title: `APP拉起微信支付失败`, icon: 'none' })
 			setTimeout(() => { uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' }) }, 2000)
 		} finally {
 			uni.hideLoading()
@@ -323,7 +330,8 @@ async function bankCardPay(data, payType, type, otherArgs) {
 			// uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
 		}
 	} catch (e) {
-		uni.showToast({ title: '银行卡支付失败', icon: 'none' })
+		if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
+		else uni.showToast({ title: `银行卡支付失败`, icon: 'none' })
 		setTimeout(() => {
 			if ([1, 2].includes(payType)) {
 			} else if ([3, 4, 5].includes(payType)) {
@@ -376,7 +384,8 @@ async function h5TonglianPay(data, payType, type, otherArgs) {
 		})
 			.catch((e) => {
 				console.log(e)
-				uni.showToast({ title: '支付失败', icon: 'none' })
+				if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
+				else uni.showToast({ title: `支付失败`, icon: 'none' })
 				setTimeout(() => {
 					if ([1, 2].includes(payType)) {
 						uni.switchTab({ url: '/pages/order/order' })
@@ -396,26 +405,36 @@ async function h5TonglianPay(data, payType, type, otherArgs) {
 			...otherArgs
 		}).then((res) => {
 			console.log(JSON.stringify(res.data))
-			if (res.code == 200) {
-				if (type) {
-					uni.removeStorageSync(T_PAY_ORDER)
-					uni.setStorageSync(T_PAY_ORDER, {
-						type,
-						TL_ORDER_NO: data.orderSn
-					})
+			if (type) {
+				uni.removeStorageSync(T_PAY_ORDER)
+				uni.setStorageSync(T_PAY_ORDER, {
+					type,
+					TL_ORDER_NO: data.orderSn
+				})
+			}
+			if (res.data.isZeroOrder === '1') { // 零元支付情况
+				uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
+			} else {
+				delete res.data.isZeroOrder
+				let query = ''
+				for (const key in res.data) {
+					query += key + '=' + res.data[key] + '&'
 				}
-				if (res.data.isZeroOrder === '1') { // 零元支付情况
-					uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
-				} else {
-					delete res.data.isZeroOrder
-					let query = ''
-					for (const key in res.data) {
-						query += key + '=' + res.data[key] + '&'
-					}
-					location.href = `weixin://dl/business/?appid=wx3cef6c7325c38a45&path=pages/loading/loading&query=${query}orderNo=${data.orderSn}&userId=${getUserId()}`
-				}
+				location.href = `weixin://dl/business/?appid=wx3cef6c7325c38a45&path=pages/loading/loading&query=${query}orderNo=${data.orderSn}&userId=${getUserId()}`
 			}
 		})
+			.catch((e) => {
+				console.log(e)
+				if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
+				else uni.showToast({ title: `支付失败`, icon: 'none' })
+				setTimeout(() => {
+					if ([1, 2].includes(payType)) {
+						uni.switchTab({ url: '/pages/order/order' })
+					} else if ([3, 4, 5].includes(payType)) {
+						uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' })
+					}
+				}, 2000)
+			})
 			.finally((e) => {
 				uni.hideLoading()
 			})
@@ -435,33 +454,43 @@ async function wvTonglianPay(data, payType, type, otherArgs) {
 		...otherArgs
 	}).then((res) => {
 		console.log(JSON.stringify(res.data))
-		if (res.code == 200) {
-			if (type) {
-				uni.removeStorageSync(T_PAY_ORDER)
-				uni.setStorageSync(T_PAY_ORDER, {
-					type,
-					TL_ORDER_NO: data.orderSn
-				})
+		if (type) {
+			uni.removeStorageSync(T_PAY_ORDER)
+			uni.setStorageSync(T_PAY_ORDER, {
+				type,
+				TL_ORDER_NO: data.orderSn
+			})
+		}
+		if (res.data.isZeroOrder === '1') { // 零元支付情况
+			uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
+		} else {
+			delete res.data.isZeroOrder
+			let query = ''
+			for (const key in res.data) {
+				query += key + '=' + res.data[key] + '&'
 			}
-			if (res.data.isZeroOrder === '1') { // 零元支付情况
-				uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
-			} else {
-				delete res.data.isZeroOrder
-				let query = ''
-				for (const key in res.data) {
-					query += key + '=' + res.data[key] + '&'
+			wx.miniProgram.navigateTo({
+				url: '/pages/loading/loading?' + query + 'orderNo=' + data.orderSn + '&userId=' + getUserId(),
+				fail: () => {
+					uni.switchTab({
+						url: '/pages/order/order'
+					})
 				}
-				wx.miniProgram.navigateTo({
-					url: '/pages/loading/loading?' + query + 'orderNo=' + data.orderSn + '&userId=' + getUserId(),
-					fail: () => {
-						uni.switchTab({
-							url: '/pages/order/order'
-						})
-					}
-				})
-			}
+			})
 		}
 	})
+		.catch((e) => {
+			console.log(e)
+			if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
+			else uni.showToast({ title: `支付失败`, icon: 'none' })
+			setTimeout(() => {
+				if ([1, 2].includes(payType)) {
+					uni.switchTab({ url: '/pages/order/order' })
+				} else if ([3, 4, 5].includes(payType)) {
+					uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' })
+				}
+			}, 2000)
+		})
 		.finally((e) => {
 			uni.hideLoading()
 		})
@@ -479,45 +508,55 @@ async function appTonglianPay(data, payType, type, otherArgs) {
 		paymentMode: data.paymentMode,
 		...otherArgs
 	}).then((res) => {
-		if (res.code == 200) {
-			if (type) {
-				uni.removeStorageSync(T_PAY_ORDER)
-				uni.setStorageSync(T_PAY_ORDER, {
-					type,
-					TL_ORDER_NO: data.orderSn
-				})
+		if (type) {
+			uni.removeStorageSync(T_PAY_ORDER)
+			uni.setStorageSync(T_PAY_ORDER, {
+				type,
+				TL_ORDER_NO: data.orderSn
+			})
+		}
+		if (res.data.isZeroOrder === '1') { // 零元支付情况
+			uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
+		} else {
+			delete res.data.isZeroOrder
+			let query = ''
+			for (const key in res.data) {
+				query += key + '=' + res.data[key] + '&'
 			}
-			if (res.data.isZeroOrder === '1') { // 零元支付情况
-				uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
-			} else {
-				delete res.data.isZeroOrder
-				let query = ''
-				for (const key in res.data) {
-					query += key + '=' + res.data[key] + '&'
+			plus.share.getServices(function (result) {
+				let sweixin = null
+				for (const i in result) {
+					if (result[i].id == 'weixin') {
+						sweixin = result[i]
+					}
 				}
-				plus.share.getServices(function (result) {
-					let sweixin = null
-					for (const i in result) {
-						if (result[i].id == 'weixin') {
-							sweixin = result[i]
-						}
-					}
-					if (sweixin) {
-						sweixin.launchMiniProgram({
-							id: 'gh_e64a1a89a0ad', // 微信小程序的原始ID（"g_"开头的字符串）
-							type: 0,
-							path: 'pages/orderDetail/orderDetail?' + query
-						})
-					} else {
-						uni.showToast({ title: '请先安装微信', icon: 'none' })
-					}
-				}, function (e) {
-					uni.showToast({ title: '获取分享服务列表失败', icon: 'none' })
-					console.log('获取分享服务列表失败：' + e.message)
-				})
-			}
+				if (sweixin) {
+					sweixin.launchMiniProgram({
+						id: 'gh_e64a1a89a0ad', // 微信小程序的原始ID（"g_"开头的字符串）
+						type: 0,
+						path: 'pages/orderDetail/orderDetail?' + query
+					})
+				} else {
+					uni.showToast({ title: '请先安装微信', icon: 'none' })
+				}
+			}, function (e) {
+				uni.showToast({ title: '获取分享服务列表失败', icon: 'none' })
+				console.log('获取分享服务列表失败：' + e.message)
+			})
 		}
 	})
+		.catch((e) => {
+			console.log(e)
+			if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
+			else uni.showToast({ title: `支付失败`, icon: 'none' })
+			setTimeout(() => {
+				if ([1, 2].includes(payType)) {
+					uni.switchTab({ url: '/pages/order/order' })
+				} else if ([3, 4, 5].includes(payType)) {
+					uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' })
+				}
+			}, 2000)
+		})
 		.finally((e) => {
 			uni.hideLoading()
 		})
@@ -563,7 +602,8 @@ async function h5CommissionPay(data, payType, type, otherArgs) {
 	})
 		.catch((e) => {
 			console.log(e)
-			uni.showToast({ title: '支付失败', icon: 'none' })
+			if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
+			else uni.showToast({ title: `支付失败`, icon: 'none' })
 			setTimeout(() => {
 				if ([1, 2].includes(payType)) {
 					uni.switchTab({ url: '/pages/order/order' })
@@ -605,7 +645,8 @@ async function h5HuiShiBaoPay(data, payType, type, otherArgs) {
 	})
 		.catch((e) => {
 			console.log(e)
-			uni.showToast({ title: '支付失败', icon: 'none' })
+			if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
+			else uni.showToast({ title: `支付失败`, icon: 'none' })
 			setTimeout(() => {
 				if ([1, 2].includes(payType)) {
 					uni.switchTab({ url: '/pages/order/order' })
@@ -737,7 +778,8 @@ async function wvHuiShiBaoPay(data, payType, type, otherArgs) {
 	// 	})
 	// 		.catch((e) => {
 	// 			console.log(e)
-	// 			uni.showToast({ title: '支付失败', icon: 'none' })
+	// 			if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
+	// 			else uni.showToast({ title: `支付失败`, icon: 'none' })
 	// 			setTimeout(() => {
 	// 				if ([1, 2].includes(payType)) {
 	// 					uni.switchTab({ url: '/pages/order/order' })
@@ -1025,4 +1067,19 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 		}
 		otherArgs.fn && typeof otherArgs.fn === 'function' && otherArgs.fn()
 	}
+}
+
+export const paymentModeEnum = {
+	1: '微信支付',
+	2: '支付宝支付',
+	3: '花呗支付',
+	4: '通联支付',
+	5: '佣金支付',
+	6: '平台余额支付',
+	7: '商家余额支付',
+	8: '消费金支付',
+	9: '惠市宝支付',
+	10: '扫码支付',
+	11: '代金券支付',
+	12: '商家代金券支付'
 }

@@ -53,7 +53,7 @@
 
 <script>
 export default {
-	name: 'StorePrimaryFilterBox',
+	name: 'PageHead',
 	props: {
 		isInput: {
 			type: Boolean,

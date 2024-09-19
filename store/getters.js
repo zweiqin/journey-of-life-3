@@ -1,6 +1,5 @@
 export default {
   userInfo: (state) => state.auth.userInfo,
-  userToken: (state) => state.auth.userToken,
 
   // 购物车
   shopCarInfo: (state) => state.shopCar.shopCarInfo,

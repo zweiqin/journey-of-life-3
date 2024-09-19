@@ -60,9 +60,9 @@
 								</template> -->
 							<text>{{ shopInfo.shopBrief || '--' }}</text>
 						</view>
-						<view v-if="shopInfo.distance" style="margin-left: 6upx;">
-							<tui-icon name="gps" :size="14" color="#888889"></tui-icon>
-							<text style="margin-left: 4upx;color: #888889;font-size: 26upx;">{{ shopInfo.distance || 0 }}Km</text>
+						<view style="margin-left: 6upx;">
+							<tui-icon name="eye" :size="14" color="#888889"></tui-icon>
+							<text style="margin-left: 4upx;color: #888889;font-size: 26upx;">{{ shopInfo.accessNum || '100+' }}</text>
 						</view>
 					</view>
 					<view style="display: flex;align-items: center;justify-content: flex-end;padding-top: 6upx;">
@@ -159,9 +159,9 @@
 							</text>
 						</view>
 					</view>
-					<view v-if="shopInfo.distance" class="brief-right">
-						<tui-icon name="gps" :size="24" unit="rpx" color="#eb520e" margin="0 8rpx 0 0"></tui-icon>
-						<text>{{ shopInfo.distance || 0 }}Km</text>
+					<view class="brief-right">
+						<tui-icon name="eye" :size="24" unit="rpx" color="#eb520e" margin="0 8rpx 0 0"></tui-icon>
+						<text>{{ shopInfo.accessNum || '100+' }}</text>
 					</view>
 				</view>
 

@@ -24,7 +24,7 @@
 						</view>
 					</view>
 					<view style="display: flex;align-items: center;justify-content: space-between;margin-top: 28rpx;">
-						<tui-button type="gray" width="47%" height="86rpx" margin="0" :size="28" @click="handleReset">
+						<tui-button type="gray" width="47%" height="86rpx" margin="0" :size="28" @click="handleCancle">
 							取 消
 						</tui-button>
 						<tui-button type="warning" width="47%" height="86rpx" margin="0" :size="28" @click="handleConfirm">
@@ -88,15 +88,12 @@ export default {
 		}
 	},
 	methods: {
-		handleReset() {
-			this.formData = {
-				remark: ''
-			}
+		handleCancle() {
 			this.isShowPopup = false
 		},
 		handleConfirm() {
 			this.$emit('confirm', this.formData)
-			// this.isShowPopup = false
+			this.isShowPopup = false
 		}
 	}
 }

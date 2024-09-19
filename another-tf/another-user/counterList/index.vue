@@ -54,11 +54,17 @@
 import { getShopProductsApi } from "@/api/anotherTFInterface";
 
 export default {
-  onLoad(option) {},
-  //   mounted() {
-  //     this.shopName = this.$store.state.auth.identityInfo.shopInfo.shopName;
-  //     this.queryData.shopId = this.$store.state.auth.identityInfo.shopInfo.shopId;
-  //   },
+	name: 'CounterList',
+  onLoad(option) {
+		this.$store.dispatch('auth/unifiedProcessingShopAction', {
+			cb: () => {
+				this.queryData.shopId =
+					this.$store.state.auth.identityInfo.shopInfo.shopId;
+				this.shopName = this.$store.state.auth.identityInfo.shopInfo.shopName;
+				this.getList();
+			}
+		})
+	},
   data() {
     return {
       // 从地址中获取参数
@@ -104,20 +110,6 @@ export default {
       uni.switchTab({
         url: "/pages/user/user",
       });
-    },
-  },
-  watch: {
-    "$store.state.auth.identityInfo.type": {
-      handler(newVal) {
-        if (newVal.includes(8) || newVal.includes(9)) {
-          this.queryData.shopId =
-            this.$store.state.auth.identityInfo.shopInfo.shopId;
-          this.shopName = this.$store.state.auth.identityInfo.shopInfo.shopName;
-          this.getList();
-        }
-      },
-      immediate: true,
-      deep: true,
     },
   },
   // 触底加载
