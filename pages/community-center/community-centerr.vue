@@ -21,7 +21,7 @@
 
         <view class="tip-blod-title">生活好帮手 尽在团蜂社区</view>
         <view class="image-list">
-          <image :src="common.seamingImgUrl('1716517536510-p-1.png')" class="p-img" @click="go('/community-center/service-sort/index?value=288&name=家政服务')"></image>
+          <image :src="common.seamingImgUrl('1726813732763-dfwssfd.png')" class="p-img" @click="go('/community-center/service-sort/index?value=288&name=家政服务')"></image>
           <image :src="common.seamingImgUrl('1716517542887-p-2.png')" class="p-img" @click="go('/community-center/service-sort/index?value=2&name=家具维保')"></image>
           <image :src="common.seamingImgUrl('1716517546905-p-3.png')" class="p-img" @click="go('/community-center/service-sort/index?value=13&name=旧房翻新')"></image>
         </view>
