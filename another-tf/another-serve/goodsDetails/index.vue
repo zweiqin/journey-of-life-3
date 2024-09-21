@@ -565,6 +565,7 @@ export default {
 
 		// 获取商品详情
 		async handleGetProductDetail() {
+			this.$refs.refGoodSkuSelect && (this.$refs.refGoodSkuSelect.selectedAttr = {})
 			uni.showLoading({
 				title: '加载中...',
 				mask: true

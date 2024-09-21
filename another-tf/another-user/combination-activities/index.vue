@@ -213,7 +213,7 @@
 		<view style="padding-bottom: 45rpx;">
 			<LoadingMore
 				:status="!isEmpty && !combinationActivityList.length
-					? 'loading' : !isEmpty && combinationActivityList.length && (combinationActivityList.length >= combinationActivityTotal) ? '' : ''"
+					? 'loading' : !isEmpty && combinationActivityList.length && (combinationActivityList.length >= combinationActivityTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
 			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">请期待组合活动</tui-no-data>

@@ -168,7 +168,7 @@
 								<view style="padding-bottom: 45rpx;">
 									<LoadingMore
 										:status="!isEmpty && !flowOrderList.length
-											? 'loading' : !isEmpty && flowOrderList.length && (flowOrderList.length >= flowOrderTotal) ? '' : ''"
+											? 'loading' : !isEmpty && flowOrderList.length && (flowOrderList.length >= flowOrderTotal) ? 'no-more' : ''"
 									>
 									</LoadingMore>
 									<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无订单数据~</tui-no-data>
@@ -192,7 +192,7 @@
 						<tui-button
 							type="warning" width="168rpx" height="52rpx" margin="0 auto"
 							plain link :size="26"
-							@click="(isShowFlowOrder = true) && getFlowOrderList()"
+							@click="(isShowFlowOrder = true) && !isEmpty && !flowOrderList.length && getFlowOrderList()"
 						>
 							<view style="display: flex;align-items: center;line-height: 1;">
 								<text>展开</text>
@@ -210,7 +210,7 @@
 						<tui-button
 							type="warning" plain width="122rpx" height="44rpx"
 							link :size="24"
-							@click="go('/another-tf/another-user/shop-overview/membership-list')"
+							@click="go('/another-tf/another-shop/shop-overview/membership-list')"
 						>
 							会员列表
 						</tui-button>
@@ -391,7 +391,7 @@
 						<tui-button
 							type="warning" plain width="122rpx" height="44rpx"
 							link :size="24"
-							@click="go('/another-tf/another-user/shop-overview/lunation-line')"
+							@click="go('/another-tf/another-shop/shop-overview/lunation-line')"
 						>
 							设置盈亏线
 						</tui-button>
@@ -431,63 +431,63 @@
 				</view>
 			</view>
 
-			<view>
+			<!-- <view>
 				<view style="padding: 0 30rpx;font-weight: bold;">消费金统计</view>
 				<view style="margin-bottom: 20rpx;padding: 0 30rpx;" class="bottom-tabs">
-					<tui-tabs
-						style="width: 690rpx;padding: 0 0rpx 0 0rpx;overflow: hidden;" :slider-width="138" :padding="30"
-						item-width="138rpx" selected-color="#333333" bold slider-bg-color="#cccccc"
-						background-color="transparent"
-						:tabs="[{ name: '普通订单' }, { name: '消费金' }, { name: '代金券' }, { name: '余额' }, { name: '佣金' }]"
-						:current-tab="activeModeTab"
-						@change="(e) => ((activeModeTab = e.index) || true) && (queryInfo.paymentMode = e.index + 1) && getFinanceStatistics()"
-					></tui-tabs>
+				<tui-tabs
+				style="width: 690rpx;padding: 0 0rpx 0 0rpx;overflow: hidden;" :slider-width="138" :padding="30"
+				item-width="138rpx" selected-color="#333333" bold slider-bg-color="#cccccc"
+				background-color="transparent"
+				:tabs="[{ name: '普通订单' }, { name: '消费金' }, { name: '代金券' }, { name: '余额' }, { name: '佣金' }]"
+				:current-tab="activeModeTab"
+				@change="(e) => ((activeModeTab = e.index) || true) && (queryInfo.paymentMode = e.index + 1) && getFinanceStatistics()"
+				></tui-tabs>
 				</view>
 				<view
-					style="margin: 0 30rpx;padding: 0 0 34rpx;background-color: #ffffff;color: #666666;font-size: 24rpx;border-radius: 16rpx;"
+				style="margin: 0 30rpx;padding: 0 0 34rpx;background-color: #ffffff;color: #666666;font-size: 24rpx;border-radius: 16rpx;"
 				>
-					<view style="display: flex;align-items: center;">
-						<view style="flex:1;padding: 34rpx 0 0 32rpx;">
-							<view style="display: flex;align-items: center;">
-								<view style="width: 6rpx;height: 16rpx;background-color: #3370ff;"></view>
-								<view style="margin-left: 8rpx;">营业额消费金</view>
-							</view>
-							<view style="margin-top: 18rpx;font-size: 42rpx;font-weight: bold;color: #191919;">
-								{{ typeof financeStatisticsData.beeTurnover === 'number' ? financeStatisticsData.beeTurnover : '--' }}
-							</view>
-						</view>
-						<view style="flex:1;padding: 34rpx 0 0 32rpx;">
-							<view style="display: flex;align-items: center;">
-								<view style="width: 6rpx;height: 16rpx;background-color: #0dc53e;"></view>
-								<view style="margin-left: 8rpx;">可提现消费金</view>
-							</view>
-							<view style="margin-top: 18rpx;font-size: 42rpx;font-weight: bold;color: #191919;">
-								{{ typeof financeStatisticsData.beeWithdrawal === 'number' ? financeStatisticsData.beeWithdrawal : '--' }}
-							</view>
-						</view>
-					</view>
-					<view style="display: flex;align-items: center;">
-						<view style="flex:1;padding: 34rpx 0 0 32rpx;">
-							<view style="display: flex;align-items: center;">
-								<view style="width: 6rpx;height: 16rpx;background-color: #fa6d2c;"></view>
-								<view style="margin-left: 8rpx;">待到账消费金</view>
-							</view>
-							<view style="margin-top: 18rpx;font-size: 42rpx;font-weight: bold;color: #191919;">
-								{{ typeof financeStatisticsData.beeFreeze === 'number' ? financeStatisticsData.beeFreeze : '--' }}
-							</view>
-						</view>
-						<view style="flex:1;padding: 34rpx 0 0 32rpx;">
-							<view style="display: flex;align-items: center;">
-								<view style="width: 6rpx;height: 16rpx;background-color: #3370ff;"></view>
-								<view style="margin-left: 8rpx;">消费金提现比例</view>
-							</view>
-							<view style="margin-top: 18rpx;font-size: 42rpx;font-weight: bold;color: #191919;">
-								{{ typeof financeStatisticsData.beeCoinRatio === 'number' ? financeStatisticsData.beeCoinRatio : '--' }}
-							</view>
-						</view>
-					</view>
+				<view style="display: flex;align-items: center;">
+				<view style="flex:1;padding: 34rpx 0 0 32rpx;">
+				<view style="display: flex;align-items: center;">
+				<view style="width: 6rpx;height: 16rpx;background-color: #3370ff;"></view>
+				<view style="margin-left: 8rpx;">营业额消费金</view>
 				</view>
-			</view>
+				<view style="margin-top: 18rpx;font-size: 42rpx;font-weight: bold;color: #191919;">
+				{{ typeof financeStatisticsData.beeTurnover === 'number' ? financeStatisticsData.beeTurnover : '--' }}
+				</view>
+				</view>
+				<view style="flex:1;padding: 34rpx 0 0 32rpx;">
+				<view style="display: flex;align-items: center;">
+				<view style="width: 6rpx;height: 16rpx;background-color: #0dc53e;"></view>
+				<view style="margin-left: 8rpx;">可提现消费金</view>
+				</view>
+				<view style="margin-top: 18rpx;font-size: 42rpx;font-weight: bold;color: #191919;">
+				{{ typeof financeStatisticsData.beeWithdrawal === 'number' ? financeStatisticsData.beeWithdrawal : '--' }}
+				</view>
+				</view>
+				</view>
+				<view style="display: flex;align-items: center;">
+				<view style="flex:1;padding: 34rpx 0 0 32rpx;">
+				<view style="display: flex;align-items: center;">
+				<view style="width: 6rpx;height: 16rpx;background-color: #fa6d2c;"></view>
+				<view style="margin-left: 8rpx;">待到账消费金</view>
+				</view>
+				<view style="margin-top: 18rpx;font-size: 42rpx;font-weight: bold;color: #191919;">
+				{{ typeof financeStatisticsData.beeFreeze === 'number' ? financeStatisticsData.beeFreeze : '--' }}
+				</view>
+				</view>
+				<view style="flex:1;padding: 34rpx 0 0 32rpx;">
+				<view style="display: flex;align-items: center;">
+				<view style="width: 6rpx;height: 16rpx;background-color: #3370ff;"></view>
+				<view style="margin-left: 8rpx;">消费金提现比例</view>
+				</view>
+				<view style="margin-top: 18rpx;font-size: 42rpx;font-weight: bold;color: #191919;">
+				{{ typeof financeStatisticsData.beeCoinRatio === 'number' ? financeStatisticsData.beeCoinRatio : '--' }}
+				</view>
+				</view>
+				</view>
+				</view>
+				</view> -->
 
 		</view>
 	</view>
@@ -639,7 +639,7 @@ export default {
 						])
 					})
 				})
-			this.getFinanceStatistics()
+			// this.getFinanceStatistics()
 		},
 
 		handleFlowDropdownSelect(item) {

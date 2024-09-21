@@ -71,9 +71,17 @@
 						>
 							券
 						</view>
-						<view style="margin-top: 44rpx;font-size: 28rpx">用户总代金券</view>
-						<view style="margin-top: 36rpx;font-size: 64rpx">
-							￥{{ Number.parseFloat(userVoucherAcount.chongzhiRechargeTotal + userVoucherAcount.duihuanRechargeTotal).toFixed(2) }}
+						<view v-if="roleType === '1'">
+							<view style="margin-top: 44rpx;font-size: 28rpx">用户总代金券</view>
+							<view style="margin-top: 36rpx;font-size: 64rpx">
+								￥{{ Number.parseFloat(userVoucherAcount.chongzhiRechargeTotal + userVoucherAcount.duihuanRechargeTotal).toFixed(2) }}
+							</view>
+						</view>
+						<view v-else-if="roleType === '2'">
+							<view style="margin-top: 44rpx;font-size: 28rpx">商家总代金券</view>
+							<view style="margin-top: 36rpx;font-size: 64rpx">
+								￥{{ Number.parseFloat(shopVoucherAcount.chongzhiRechargeTotal + shopVoucherAcount.duihuanRechargeTotal).toFixed(2) }}
+							</view>
 						</view>
 					</view>
 				</view>
@@ -266,10 +274,10 @@ export default {
 		this.handelInitData()
 	},
 	methods: {
-		handelInitData(flag) {
+		async handelInitData(flag) {
 			if (flag) {
 				if (this.voucherChooseInfo.platformVoucherId) {
-					if (this.isFirstLoading && this.$store.dispatch('auth/unifiedProcessingShopAction', { isShowModal: false })) {
+					if (this.isFirstLoading && await this.$store.dispatch('auth/unifiedProcessingShopAction', { isShowModal: false })) {
 						this.roleDropdownName = '商家'
 						this.roleType = '2'
 					}

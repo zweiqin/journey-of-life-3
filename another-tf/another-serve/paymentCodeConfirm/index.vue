@@ -323,6 +323,7 @@ export default {
 				if (!'result.data') {
 					this.$showToast('商家已停用')
 				} else {
+					this.selectedAttr = {}
 					const res = await getProductDetailsByIdApi({
 						shopId: Number(options.shopId),
 						productId: Number(options.productId),
