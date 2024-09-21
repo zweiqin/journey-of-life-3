@@ -696,6 +696,86 @@ export const getShopBusinessDataApi = (data) => AnotherTFRequest('/shop/getBusin
 // 会员统计列表
 export const getShopMemberListApi = (data) => AnotherTFRequest('/shop/getShopMemberList', data, 'POST')
 
+// 会员卡商家
+// 商家新增会员卡
+export const addShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCard/save', data, 'POST')
+
+// 商家修改会员卡
+export const updateShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCard/update', data, 'POST')
+
+// 商家分页查询
+export const getPageAllShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCard/getPageAll', data, 'POST')
+
+// 商家查询数据
+export const getByIdShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCard/getById', data)
+
+// 商家下架会员卡
+export const updateShelfShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCard/shelf', data)
+
+// 商家会员卡发行
+export const updateIssueShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCard/issue', data)
+
+// 商家新增会员权益
+export const addShopMemberCardEquityApi = (data) => AnotherTFRequest('/shopMemberCardEquity/save', data, 'POST')
+
+// 商家修改会员权益
+export const updateShopMemberCardEquityApi = (data) => AnotherTFRequest('/shopMemberCardEquity/update', data, 'POST')
+
+// 商家分页查询
+export const getPageAllShopMemberCardEquityApi = (data) => AnotherTFRequest('/shopMemberCardEquity/getPageAll', data, 'POST')
+
+// 商家查询数据
+export const getByIdShopMemberCardEquityApi = (data) => AnotherTFRequest('/shopMemberCardEquity/getById', data)
+
+// 商家删除数据
+export const deleteByIdShopMemberCardEquityApi = (data) => AnotherTFRequest('/shopMemberCardEquity/deleteById', data)
+
+// 商家会员卡购买用户数据
+export const getPageCardUserAllShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCard/getPageCardUserAll', data, 'POST')
+
+// 商家会员卡购买用户数据详情
+export const getPageCardUserIdShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCard/getPageCardUserId', data, 'POST')
+
+// 商家结算审核列表
+export const getShopMemberCardApplySettlementApi = (data) => AnotherTFRequest('/shopMemberCardApplySettlement/getShopSettlement', data, 'POST')
+
+// 商家同意结算
+export const updateAgreeShopMemberCardApplyApi = (data) => AnotherTFRequest('/shopMemberCardApplySettlement/agreeWithSettlement', data)
+
+// 商家扫码核销会员卡
+export const updateVerificationShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCardUser/scanCodeVerification', data)
+
+// 会员卡用户
+// 提交购买会员卡订单
+export const submitShopMemberCardOrderApi = (data) => AnotherTFRequest('/shopMemberCardOrder/submitCardOrder', data, 'POST')
+
+// 分页查询用户购买的会员卡
+export const getPageAllShopMemberCardUserApi = (data) => AnotherTFRequest('/shopMemberCardUser/getPageAll', data, 'POST')
+
+// 查询用户购买的会员卡详情
+export const getByIdShopMemberCardUserApi = (data) => AnotherTFRequest('/shopMemberCardUser/getById', data, 'POST')
+
+// 用户的推广总佣金统计
+export const getCardStatisticsShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCardPromoter/getCardStatistics', data, 'POST')
+
+// 用户的商家推广记录
+export const getCardPromoterAllShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCardPromoter/getCardPromoterAll', data, 'POST')
+
+// 用户的推广商家分组佣金统计
+export const getGroupShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCardPromoter/getCardStatistics', data, 'POST')
+
+// 用户提交结算申请
+export const updateSettlementShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCardApplySettlement/applySettlement', data)
+
+// 用户结算记录
+export const getBuyerSettlementShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCardApplySettlement/getBuyerSettlement', data, 'POST')
+
+// 用户出账记录
+export const getOutgoingRecordShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCardUser/getUserOutgoingRecord', data, 'POST')
+
+// 用户入账记录
+export const getEntryRecordShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCardUser/getUserEntryRecord', data, 'POST')
+
 // 代金券
 // 获取可用代金券
 export const getVoucherApi = (data) => AnotherTFRequest('/voucher/getVoucher', data)

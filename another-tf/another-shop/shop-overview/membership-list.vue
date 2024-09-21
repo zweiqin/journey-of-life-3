@@ -14,7 +14,7 @@
 							<tui-lazyload-img
 								width="100rpx" height="100rpx" mode="aspectFit" radius="50%"
 								background-color="#ffffff"
-								:src="require('../../../static/images/new-user/default-user-avatar.png')"
+								:src="common.seamingImgUrl(item.headImage) || require('../../../static/images/new-user/default-user-avatar.png')"
 							></tui-lazyload-img>
 						</view>
 						<view>
@@ -35,15 +35,15 @@
 				</view>
 				<view style="margin-top: 12rpx;padding: 26rpx 20rpx 0;font-size: 28rpx;color: #000000;background-color: #f5f5f5;border-radius: 12rpx;">
 					<view style="display: flex;align-items: center;padding-bottom: 18rpx;">
-						<view style="min-width: 162rpx;color: #939393">累计消费金额</view>
+						<view style="min-width: 162rpx;color: #939393">消费总额</view>
 						<view style="flex: 1;margin: 0 0 0 40rpx;">{{ item.total }}</view>
 					</view>
 					<view style="display: flex;align-items: center;padding-bottom: 18rpx;">
-						<view style="min-width: 162rpx;color: #939393">消费次数</view>
+						<view style="min-width: 162rpx;color: #939393">下单总数</view>
 						<view style="flex: 1;margin: 0 0 0 40rpx;">{{ item.frequency }}</view>
 					</view>
 					<view style="display: flex;align-items: center;padding-bottom: 18rpx;">
-						<view style="min-width: 162rpx;color: #939393">上次消费时间</view>
+						<view style="min-width: 162rpx;color: #939393">最近消费时间</view>
 						<view style="flex: 1;margin: 0 0 0 40rpx;">{{ item.lastTime || '--' }}</view>
 					</view>
 					<view style="display: flex;align-items: center;padding-bottom: 18rpx;">
@@ -61,21 +61,21 @@
 							</text>
 						</view>
 					</view>
-					<view style="display: flex;align-items: center;padding-bottom: 18rpx;">
+					<!-- <view style="display: flex;align-items: center;padding-bottom: 18rpx;">
 						<view style="min-width: 162rpx;color: #939393">注册ip</view>
 						<view style="flex: 1;margin: 0 0 0 40rpx;">{{ item.registerIp || '--' }}</view>
-					</view>
-					<view style="display: flex;align-items: center;padding-bottom: 18rpx;">
+						</view>
+						<view style="display: flex;align-items: center;padding-bottom: 18rpx;">
 						<view style="min-width: 162rpx;color: #939393">上次登录的ip</view>
 						<view style="flex: 1;margin: 0 0 0 40rpx;">{{ item.lastLoginIp || '--' }}</view>
-					</view>
+						</view> -->
 				</view>
 			</view>
 		</view>
 		<view style="padding-bottom: 45rpx;">
 			<LoadingMore
 				:status="!isEmpty && !membershipList.length
-					? 'loading' : !isEmpty && membershipList.length && (membershipList.length >= membershipTotal) ? '' : ''"
+					? 'loading' : !isEmpty && membershipList.length && (membershipList.length >= membershipTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
 			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无会员~</tui-no-data>
@@ -96,6 +96,7 @@ export default {
 				// {
 				// 	buyerUserId: '', // 客户id
 				// 	name: '', // 客户昵称
+				// 	headImage: '', // 客户头像
 				// 	phone: '', // 手机号
 				// 	frequency: '', // 消费次数
 				// 	total: '', // 累计消费金额

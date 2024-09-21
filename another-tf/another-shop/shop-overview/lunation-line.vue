@@ -10,7 +10,7 @@
 							<tui-button
 								type="warning" plain width="152rpx" height="44rpx"
 								link :size="24"
-								@click="go('/another-tf/another-user/shop-overview/purchasing-goods')"
+								@click="go('/another-tf/another-shop/shop-overview/purchasing-goods')"
 							>
 								全部采购商品
 							</tui-button>
@@ -105,7 +105,7 @@
 							<tui-button
 								type="warning" plain width="152rpx" height="44rpx"
 								link :size="24"
-								@click="go('/another-tf/another-user/shop-overview/character-configuration')"
+								@click="go('/another-tf/another-shop/shop-overview/character-configuration')"
 							>
 								全部字段配置
 							</tui-button>
@@ -319,7 +319,7 @@ export default {
 							this.characterFormData.fieldPrice = ''
 							this.$showToast('添加字段成功')
 							setTimeout(() => {
-								this.getPurchasingGoodsAllList()
+								this.getCharacterAllList()
 							}, 2000)
 						})
 					}

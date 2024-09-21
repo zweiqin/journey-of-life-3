@@ -89,7 +89,7 @@
 		<view style="padding-bottom: 45rpx;">
 			<LoadingMore
 				:status="!isEmpty && !lotteryActivityList.length
-					? 'loading' : !isEmpty && lotteryActivityList.length && (lotteryActivityList.length >= lotteryActivityTotal) ? '' : ''"
+					? 'loading' : !isEmpty && lotteryActivityList.length && (lotteryActivityList.length >= lotteryActivityTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
 			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">请期待组合活动</tui-no-data>

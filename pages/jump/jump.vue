@@ -107,7 +107,8 @@ import {
 	bindPlatformRelationshipCodeApi,
 	bindPlatformRelationshipShopApi,
 	bindPlatformInfoCodeBindingApi,
-	addDrawParticipateLotteryApi
+	addDrawParticipateLotteryApi,
+	updateVerificationShopMemberCardApi
 } from '../../api/anotherTFInterface'
 import { getStorageUserId, getStorageKeyToken, jumpToOtherProject } from '../../utils'
 import { Encrypt } from '../../utils/secret'

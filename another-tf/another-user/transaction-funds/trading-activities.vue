@@ -93,7 +93,7 @@
 		<view style="padding-bottom: 45rpx;">
 			<LoadingMore
 				:status="!isEmpty && !tradingActivityList.length
-					? 'loading' : !isEmpty && tradingActivityList.length && (tradingActivityList.length >= tradingActivityTotal) ? '' : ''"
+					? 'loading' : !isEmpty && tradingActivityList.length && (tradingActivityList.length >= tradingActivityTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
 			<tui-no-data v-if="isEmpty" :fixed="false" style="margin-top: 60rpx;">请期待消费金活动</tui-no-data>
