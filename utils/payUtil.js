@@ -4,6 +4,74 @@ import { gotoOrderAppPayApi, gotoOrderH5PayApi, getSessionKeyAppApi, gotoOrderPa
 import store from '../store'
 import { getUserId, isInWx, jumpToOtherProject } from './index'
 
+export const paymentTypeEnum = {
+	'1': 'shoppingMall',
+	'2': 'businessDistrict',
+	'3': 'settled',
+	'4': 'voucher',
+	'5': 'mapRedEnvelope',
+	'6': 'article',
+	'7': 'shopRecharge',
+	'8': 'balance',
+	'9': 'verification',
+	'10': 'activityDeposit',
+	'11': 'memberCard',
+	'undefined': 'DEFAULT',
+	'': 'DEFAULT'
+}
+
+export const paymentModeEnum = {
+	1: '微信支付',
+	2: '支付宝支付',
+	3: '花呗支付',
+	4: '通联支付',
+	5: '佣金支付',
+	6: '平台余额支付',
+	7: '商家余额支付',
+	8: '消费金支付',
+	9: '惠市宝支付',
+	10: '扫码支付',
+	11: '代金券支付',
+	12: '商家代金券支付'
+}
+
+// eslint-disable-next-line complexity
+export function handleOrderTypeJump(params = {}) {
+	const { type } = Object.assign({
+		type: ''
+	}, params)
+	if (type === 'shoppingMall') {
+		// 跳到其它订单页
+		uni.switchTab({ url: '/pages/order/order' })
+	} else if (type === 'businessDistrict') {
+		// 跳到其它订单页
+		uni.switchTab({ url: '/pages/order/order' })
+	} else if (type === 'settled') {
+		uni.switchTab({ url: '/pages/user/user' })
+	} else if (type === 'voucher') {
+		// 这种类型的充值，无论是在小程序和APP环境跳转到其它小程序支付后按手机返回键的情况，还是在H5环境使用通联或惠市宝支付后按手机返回键的情况，还是其它支付方式支付后重定向到本页面的情况，都会在本页面触发onshow重新加载数据，可以不用跳到其它订单页。
+		uni.redirectTo({ url: '/another-tf/another-user/voucher/voucher-operation' })
+	} else if (type === 'mapRedEnvelope') {
+		uni.switchTab({ url: '/pages/user/user' })
+	} else if (type === 'article') {
+		uni.switchTab({ url: '/pages/user/user' })
+	} else if (type === 'shopRecharge') {
+		// 其它
+		uni.switchTab({ url: '/pages/user/user' })
+	} else if (type === 'balance') {
+		// 触发onshow
+		uni.redirectTo({ url: '/another-tf/another-user/my-wallet/balance-operation' })
+	} else if (type === 'verification') {
+		uni.switchTab({ url: '/pages/user/user' })
+	} else if (type === 'activityDeposit') {
+		uni.switchTab({ url: '/pages/user/user' })
+	} else if (type === 'memberCard') {
+		// 跳到其它订单页
+		uni.redirectTo({ url: '/another-tf/another-user/member-card/user-purchased' })
+	} else {
+		uni.switchTab({ url: '/pages/index/index' })
+	}
+}
 // #ifdef H5
 const jweixin = require('jweixin-module')
 
@@ -917,7 +985,7 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 		title: '支付中...'
 	})
 	console.log(JSON.stringify(submitResult))
-	if (purchaseMode) { // 1-商城 2-本地 3-入驻 4-代金券 5-地图红包
+	if (purchaseMode) { // 订单购买类型 1-商城 2-本地 3-入驻 4-代金券 5-地图红包 6-文章支付 7-商家充值支付 8-用户余额充值 9-线下核销 10-活动保证金 11-商家会员卡充值
 		const submitInfo = { ...submitResult, purchaseMode }
 		if (submitInfo.paymentMode === 999) {
 			await bankCardPay(submitResult, purchaseMode, type, otherArgs)
@@ -1067,19 +1135,4 @@ export async function handleDoPay(submitResult, purchaseMode, type = 'DEFAULT', 
 		}
 		otherArgs.fn && typeof otherArgs.fn === 'function' && otherArgs.fn()
 	}
-}
-
-export const paymentModeEnum = {
-	1: '微信支付',
-	2: '支付宝支付',
-	3: '花呗支付',
-	4: '通联支付',
-	5: '佣金支付',
-	6: '平台余额支付',
-	7: '商家余额支付',
-	8: '消费金支付',
-	9: '惠市宝支付',
-	10: '扫码支付',
-	11: '代金券支付',
-	12: '商家代金券支付'
 }

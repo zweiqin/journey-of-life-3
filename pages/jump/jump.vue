@@ -6,7 +6,7 @@
 				<ATFOrderInfo :data="orderInfo"></ATFOrderInfo>
 			</view>
 			<view style="margin-top: 50rpx;">
-				<tui-input v-model="code" label="核销码" placeholder="请输入核销码" disabled></tui-input>
+				<tui-input v-model="code" label="核销码" placeholder="缺少核销码" disabled></tui-input>
 			</view>
 			<view style="display: flex;justify-content: flex-end;align-items: center;margin: 20rpx 0 0;">
 				<view style="flex: 1;">
@@ -39,6 +39,46 @@
 						等待付款
 					</tui-button>
 				</view>
+			</view>
+		</view>
+		<view v-if="viewType === 'memberCardWriteOff'" style="padding: 24rpx;">
+			<JHeader tabbar="/pages/user/user" width="50" height="50" title="会员卡核销"></JHeader>
+			<view v-if="memberCardWriteOffForm.cardPurchasedInfo && memberCardWriteOffForm.cardPurchasedInfo.cardOrderId" style="margin-top: 40rpx;">
+				<ATFCardPurchasedInfo
+					:data="memberCardWriteOffForm.cardPurchasedInfo" :is-show-write-off="false" detail-type=""
+				></ATFCardPurchasedInfo>
+			</view>
+			<view style="margin-top: 50rpx;">
+				<view style="display: flex;align-items: center;padding: 26rpx 30rpx;">
+					<view>会员卡类型</view>
+					<view style="margin-left: 12rpx;">
+						<text v-if="memberCardWriteOffForm.type === '1'">消费卡</text>
+						<text v-else-if="memberCardWriteOffForm.type === '2'">次数卡</text>
+						<text v-else>--</text>
+					</view>
+				</view>
+				<tui-input
+					v-model="memberCardWriteOffForm.code" label="核销码" placeholder="缺少核销码"
+					:border-bottom="false" disabled
+				></tui-input>
+				<view>
+					<tui-input
+						v-if="memberCardWriteOffForm.type === '1'"
+						v-model="memberCardWriteOffForm.price" type="number" label="会员卡消费金额" placeholder="请输入会员卡消费金额"
+					></tui-input>
+					<tui-input
+						v-else-if="memberCardWriteOffForm.type === '2'"
+						v-model="memberCardWriteOffForm.price" type="number" label="会员卡消费次数" placeholder="请输入会员卡消费次数"
+					></tui-input>
+				</view>
+			</view>
+			<view style="display: flex;justify-content: flex-end;align-items: center;margin: 20rpx 0 0;">
+				<tui-button
+					margin="0" type="green" width="260rpx" shape="circle"
+					@click="handleMemberCardWriteOff()"
+				>
+					确认核销
+				</tui-button>
 			</view>
 		</view>
 		<view v-else-if="viewType === 'collection'" style="min-height: 100vh;background-color: #f0f0f0;" class="type-collection">
@@ -108,6 +148,7 @@ import {
 	bindPlatformRelationshipShopApi,
 	bindPlatformInfoCodeBindingApi,
 	addDrawParticipateLotteryApi,
+	getPageCardUserIdShopMemberCardApi,
 	updateVerificationShopMemberCardApi
 } from '../../api/anotherTFInterface'
 import { getStorageUserId, getStorageKeyToken, jumpToOtherProject } from '../../utils'
@@ -153,12 +194,26 @@ export default {
 			viewType: '',
 			// verification的情况
 			orderId: '',
-			orderInfo: {},
+			orderInfo: {
+				orderId: '',
+				collageId: '',
+				price: ''
+			},
 			isOrderVerification: false,
 			verificationTicker: null,
 			// bBindFranchisees的情况
 			currentIdentity: 1,
-			chooseIdentityLoading: false
+			chooseIdentityLoading: false,
+			// memberCardWriteOff的情况
+			memberCardWriteOffForm: {
+				cardOrderId: '',
+				cardPurchasedInfo: {
+					cardOrderId: ''
+				},
+				code: '',
+				price: '',
+				type: ''
+			}
 		}
 	},
 
@@ -358,6 +413,7 @@ export default {
 				const productIdStr = this.code.split('~')[1]
 				const skuIdStr = this.code.split('~')[2]
 				// setTimeout(() => { uni.redirectTo({ url: `/another-tf/another-serve/paymentCodeConfirm/index?type=1&${shopIdStr}&${productIdStr}&${skuIdStr}` }) }, 300)
+				// 用于在收款码结算页判断页面栈的页面数量，从而当使用通联或惠市宝支付后按返回键返回后，进而判断需不需要清除存储订单信息或跳转到订单列表页
 				setTimeout(() => { uni.redirectTo({ url: `/pages/navigation/navigation?target=${encodeURIComponent('/another-tf/another-serve/paymentCodeConfirm/index?type=1&' + shopIdStr + '&' + productIdStr + '&' + skuIdStr)}` }) }, 300)
 			} else if (this.type === 'tempCollection') { // 临时收款码结算
 				const orderIdStr = this.code.split('~')[0]
@@ -367,10 +423,11 @@ export default {
 			} else if (this.type === 'wvHuiShiBaoPayTurn') { // 惠市宝在小程序套壳环境的支付结果回传
 				await handleDoPay({
 					collageId: Number(this.code.split('~')[3]),
-					money: '',
+					money: '', // Number(this.code.split('~')[7])
 					orderId: Number(this.code.split('~')[2]),
 					paymentMode: Number(this.code.split('~')[6]),
-					orderSn: Number(this.code.split('~')[4])
+					orderSn: Number(this.code.split('~')[4]),
+					type: '' // this.code.split('~')[8]
 				}, Number(this.code.split('~')[1]), this.code.split('~')[5], { isSuccess: Number(this.code.split('~')[0]) })
 			} else if (this.type === 'bindLastUser') { // 旧系统
 				checkBindApi({ userId: this.userId })
@@ -451,6 +508,20 @@ export default {
 					.finally((e) => { setTimeout(() => { uni.switchTab({ url: '/pages/user/user' }) }, 2000) })
 			} else if (this.type === 'bBindFranchisees') {
 				this.viewType = 'chooseIdentity'
+			} else if (this.type === 'memberCardWriteOff') { // 商家对会员卡订单核销
+				this.memberCardWriteOffForm.cardOrderId = this.code.split('~')[0]
+				this.memberCardWriteOffForm.type = this.code.split('~')[1]
+				this.memberCardWriteOffForm.code = this.code.split('~')[2]
+				this.viewType = 'memberCardWriteOff'
+				getPageCardUserIdShopMemberCardApi({
+					cardOrderId: this.memberCardWriteOffForm.cardOrderId
+				}).then(({ data }) => {
+					this.memberCardWriteOffForm.cardPurchasedInfo = data
+				})
+			} else if (this.type === 'memberCardPromotion') { // 用户对会员卡推广分享
+				const shopId = this.code.split('~')[0]
+				const promoterUserId = this.code.split('~')[1]
+				setTimeout(() => { uni.redirectTo({ url: `/pages/navigation/navigation?target=${encodeURIComponent('/another-tf/another-user/member-card/member-card-list?shopId=' + shopId + '&promoterUserId=' + promoterUserId)}` }) }, 300)
 			}
 		},
 		handleVerification() {
@@ -480,6 +551,41 @@ export default {
 				this.viewType = ''
 				setTimeout(() => { uni.switchTab({ url: '/pages/user/user' }) }, 2000)
 			}
+		},
+		handleMemberCardWriteOff() {
+			if (!this.memberCardWriteOffForm.type) {
+				return this.$showToast('缺少会员卡类型')
+			} else if (!this.memberCardWriteOffForm.code) {
+				return this.$showToast('缺少会员卡核销码')
+			} else if (!this.memberCardWriteOffForm.price) {
+				if (this.memberCardWriteOffForm.type === '1') {
+					return this.$showToast('缺少会员卡消费金额')
+				} else if (this.memberCardWriteOffForm.type === '2') {
+					return this.$showToast('缺少会员卡消费次数')
+				}
+			}
+			uni.showModal({
+				title: '提示',
+				content: '确认核销该会员卡？',
+				success: (res) => {
+					if (res.confirm) {
+						uni.showLoading()
+						updateVerificationShopMemberCardApi({
+							code: this.memberCardWriteOffForm.code,
+							price: this.memberCardWriteOffForm.price,
+							type: this.memberCardWriteOffForm.type
+						})
+							.then((res) => {
+								this.$showToast('核销成功', 'success')
+								uni.hideLoading()
+							})
+							.catch((e) => {
+								uni.hideLoading()
+							})
+							.finally((e) => { setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000) })
+					}
+				}
+			})
 		}
 	}
 }

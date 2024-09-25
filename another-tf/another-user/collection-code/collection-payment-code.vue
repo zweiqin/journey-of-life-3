@@ -1,10 +1,10 @@
 <template>
 	<view class="collection-payment-code-container">
 		<JHeader title="商家收款" width="50" height="50"></JHeader>
-		<view style="padding: 40upx 0 0;text-align: center;">
+		<view style="padding: 40rpx 0 0;text-align: center;">
 			<view>临时商家点单码</view>
 			<image
-				:src="codePicUrl" style="width: 400rpx;margin-top: 20upx;" mode="widthFix"
+				:src="codePicUrl" style="width: 400rpx;margin-top: 20rpx;" mode="widthFix"
 				@click="handlePreviewImage(codePicUrl)"
 			/>
 		</view>
@@ -73,14 +73,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.generate-code-container {
-	position: absolute;
-	top: -10000upx;
-}
-
 .collection-payment-code-container {
 	min-height: 100vh;
-	padding-bottom: 216upx;
+	padding-bottom: 216rpx;
 	background-color: #f4f4f4;
 	box-sizing: border-box;
 
@@ -93,6 +88,11 @@ export default {
 			color: #222229;
 			font-weight: normal;
 		}
+	}
+
+	.generate-code-container {
+		position: absolute;
+		top: -10000rpx;
 	}
 }
 </style>

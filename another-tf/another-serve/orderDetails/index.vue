@@ -408,7 +408,7 @@
 					<tui-button
 						v-if="[1, 8].includes(dataList.state)"
 						type="warning" width="48%" height="82rpx" margin="20rpx 0 0"
-						style="background: #ef530e!important;border-radius: 8rpx;" @click="showPayTypePopup = true"
+						style="background: #ef530e!important;border-radius: 8rpx;" @click="isShowPayTypePopup = true"
 					>
 						提交支付
 					</tui-button>
@@ -455,8 +455,8 @@
 					</tui-button>
 				</view>
 
-				<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
-					<view v-if="showPayTypePopup" style="padding: 60rpx 0 128rpx;">
+				<tui-bottom-popup :show="isShowPayTypePopup" @close="isShowPayTypePopup = false">
+					<view v-if="isShowPayTypePopup" style="padding: 60rpx 0 128rpx;">
 						<CashierList
 							ref="refCashierList" :price-pay="dataList.price" show
 							:pay-type-shops="[ dataList.shopId ]"
@@ -491,7 +491,7 @@
 
 <script>
 import { afterConditionEnum, orderPatternEnum } from '../../../components/ATFOrderInfo/config'
-import { handleDoPay } from '../../../utils/payUtil'
+import { paymentModeEnum, handleDoPay } from '../../../utils/payUtil'
 import {
 	getOrderDetailApi,
 	getIndexShopDetailApi,
@@ -542,7 +542,7 @@ export default {
 			remainingTime: null, // 倒计时剩余时间
 
 			// 支付
-			showPayTypePopup: false,
+			isShowPayTypePopup: false,
 			payInfo: {},
 
 			// 客服
@@ -807,7 +807,7 @@ export default {
 					orderSn: this.dataList.orderFormid,
 					type: 2,
 					...this.payInfo
-				}, 1, '', { fn: () => (this.payInfo.pwd = '') })
+				}, this.dataList.orderType, paymentModeEnum[this.dataList.orderType], { fn: () => (this.payInfo.pwd = '') })
 			}
 		},
 

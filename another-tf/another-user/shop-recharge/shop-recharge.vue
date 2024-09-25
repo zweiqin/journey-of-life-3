@@ -68,11 +68,11 @@
       </view>
 
       <button v-if="rechargePriceList && rechargePriceList.length > 0" class="recharge-button uni-btn" :style="{ opacity: currentRechargeCount ? 1 : 0.6 }"
-        @click="showPayTypePopup = true"> {{ currentRechargeCount ? `${currentRechargeCount} 立即充值` : '请输入充值金额' }} </button>
+        @click="isShowPayTypePopup = true"> {{ currentRechargeCount ? `${currentRechargeCount} 立即充值` : '请输入充值金额' }} </button>
     </view>
 
-		<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
-			<view v-if="showPayTypePopup" style="padding: 60upx 0 128upx;">
+		<tui-bottom-popup :show="isShowPayTypePopup" @close="isShowPayTypePopup = false">
+			<view v-if="isShowPayTypePopup" style="padding: 60upx 0 128upx;">
 				<CashierList
 					ref="refCashierList" :price-pay="currentRechargeCount" show
 					pay-type-shops
@@ -96,7 +96,7 @@
 
 <script>
 import { getRechargeSubmitApi, addRechargeSubmitApi, getRechargeTotalCustomersApi, getByShopAllApi, getByRechargeApi, getIndexShopDetailApi } from '@/api/anotherTFInterface'
-import { handleDoPay } from '@/utils/payUtil'
+import { paymentModeEnum, handleDoPay } from '@/utils/payUtil'
 
 export default {
 	name: 'ShopRecharge',
@@ -114,7 +114,7 @@ export default {
       currentRechargeType: 0,
       currentRechargeCount: 50,
       searchShopValue: "",
-			showPayTypePopup: false,
+			isShowPayTypePopup: false,
 			payInfo: {},
     }
   },
@@ -179,7 +179,7 @@ export default {
 					rechargeBalance: this.currentRechargeCount,
 					remark: 'normal'
 				}).then(res => {
-					handleDoPay({ ...res.data, ...this.payInfo }, 7, '', { fn: () => (this.payInfo.pwd = '') })
+					handleDoPay({ ...res.data, ...this.payInfo }, 7, paymentModeEnum[7], { fn: () => (this.payInfo.pwd = '') })
 					console.log(res);
 				}).catch(err => {
 					console.log(err);

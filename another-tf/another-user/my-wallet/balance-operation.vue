@@ -1,6 +1,14 @@
 <template>
 	<view class="balance-operation">
-		<JHeader title="余额" width="50" height="50"></JHeader>
+		<BeeBack>
+			<view
+				style="display: flex;align-items: center;justify-content: space-between;padding: 20rpx 20rpx 16rpx;background-color: #f5f5f5;"
+			>
+				<BeeIcon name="arrowleft" :size="26" color="#222229" style="width: fit-content;">
+				</BeeIcon>
+				<text style="flex: 1;margin-left: -40rpx;text-align: center;">余额</text>
+			</view>
+		</BeeBack>
 		<view style="display: flex;justify-content: flex-end;">
 			<tui-button
 				type="black" width="220rpx" height="60rpx" margin="0"
@@ -143,7 +151,7 @@
 						type="warning" width="238rpx" height="108rpx" margin="32rpx 0 0"
 						:size="40" shape="circle"
 						style="display: inline-block;background: #ef530e!important;box-shadow: 0px 12px 20px 0px #f1ac8e;"
-						@click="showPayTypePopup = true"
+						@click="isShowPayTypePopup = true"
 					>
 						确定
 					</tui-button>
@@ -151,8 +159,8 @@
 			</view>
 		</tui-modal>
 
-		<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
-			<view v-if="showPayTypePopup" style="padding: 60rpx 0 128rpx;">
+		<tui-bottom-popup :show="isShowPayTypePopup" @close="isShowPayTypePopup = false">
+			<view v-if="isShowPayTypePopup" style="padding: 60rpx 0 128rpx;">
 				<CashierList
 					:price-pay="rechargeForm.amounts || 0" show
 					pay-type-shops
@@ -173,7 +181,7 @@
 
 <script>
 import { getPricePlatformAllApi, addOrderSubmitUserRechargeApi } from '../../../api/anotherTFInterface'
-import { handleDoPay } from '../../../utils/payUtil'
+import { paymentModeEnum, handleDoPay } from '../../../utils/payUtil'
 
 export default {
 	name: 'BalanceOperation',
@@ -206,7 +214,7 @@ export default {
 			rechargeForm: {
 				amounts: 1000
 			},
-			showPayTypePopup: false,
+			isShowPayTypePopup: false,
 			payInfo: {},
 			isShowModalRecharge: false
 		}
@@ -243,7 +251,7 @@ export default {
 			uni.showLoading()
 			addOrderSubmitUserRechargeApi({ ...this.rechargeForm })
 				.then(async (res) => {
-					await handleDoPay({ ...res.data, orderSn: res.data.orderSn || res.data.orderNumber, ...this.payInfo }, 8, '')
+					await handleDoPay({ ...res.data, orderSn: res.data.orderSn || res.data.orderNumber, ...this.payInfo }, 8, paymentModeEnum[8])
 				})
 				.catch(() => {
 					uni.hideLoading()
@@ -258,17 +266,6 @@ export default {
 	min-height: 100vh;
 	background-color: #f8f9fb;
 	box-sizing: border-box;
-
-	/deep/ .j-header-wrapper {
-		padding: 24rpx 0 10rpx;
-		background-color: #f5f5f5;
-
-		.title {
-			font-size: 36rpx;
-			color: #222229;
-			font-weight: normal;
-		}
-	}
 
 	.operation-btn {
 		/deep/ .tui-btn {

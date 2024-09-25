@@ -21,15 +21,24 @@
 			<ATFBrandInfo
 				ref="refATFBrandInfo"
 				:is-selection="Boolean(isSelection)" :brand-detail="brandDetail"
-				style="padding-top: 40rpx;" @navgation="handleNavigate"
+				padding="40rpx 0 0 0" @navgation="handleNavigate"
 				@refresh="getBrandDetail"
 			></ATFBrandInfo>
 		</view>
 		<view style="padding: 0 30rpx;background-color: #ffffff;">
 			<view
-				style="padding: 14rpx 0;border-top: 1rpx dashed #dddddd;"
+				style="display: flex;align-items: center;justify-content: flex-end;flex-wrap: wrap;padding: 14rpx 0;border-top: 1rpx dashed #dddddd;"
 			>
-				<view v-if="!initiatedSplicingId" style="display: flex;align-items: center;justify-content: flex-end;">
+				<view>
+					<tui-button
+						type="green" width="200rpx" height="58rpx" shape="circle"
+						plain margin="0 0 0 18rpx" bold
+						@click="go(`/another-tf/another-user/member-card/member-card-list?shopId=${brandDetail.shopId}`)"
+					>
+						购买会员卡
+					</tui-button>
+				</view>
+				<view v-if="!initiatedSplicingId">
 					<tui-button
 						type="warning" width="180rpx" height="58rpx" shape="circle"
 						plain margin="0 0 0 18rpx" bold
@@ -38,31 +47,29 @@
 						发起拼单
 					</tui-button>
 				</view>
-				<view v-else style="display: flex;align-items: center;justify-content: space-between;">
+				<view v-else style="display: flex;align-items: center;justify-content: flex-end;flex-wrap: wrap;width: 100%;">
 					<view style="font-size: 36rpx;font-weight: bold;color: #007aff;">拼单进行中：</view>
-					<view style="flex: 1;display: flex;align-items: center;justify-content: flex-end;flex-wrap: wrap;">
-						<tui-button
-							type="blue" width="240rpx" height="58rpx" shape="circle"
-							plain margin="6rpx 0 6rpx 18rpx" bold
-							@click="handleCopySplicing"
-						>
-							复制拼单链接
-						</tui-button>
-						<tui-button
-							type="blue" width="180rpx" height="58rpx" shape="circle"
-							plain margin="6rpx 0 6rpx 18rpx" bold
-							@click="handleShareServe()"
-						>
-							分享拼单
-						</tui-button>
-						<tui-button
-							type="danger" width="180rpx" height="58rpx" shape="circle"
-							plain margin="6rpx 0 6rpx 18rpx" bold
-							@click="handleEndSplicing"
-						>
-							结束拼单
-						</tui-button>
-					</view>
+					<tui-button
+						type="blue" width="240rpx" height="58rpx" shape="circle"
+						plain margin="6rpx 0 6rpx 18rpx" bold
+						@click="handleCopySplicing"
+					>
+						复制拼单链接
+					</tui-button>
+					<tui-button
+						type="blue" width="180rpx" height="58rpx" shape="circle"
+						plain margin="6rpx 0 6rpx 18rpx" bold
+						@click="handleShareServe()"
+					>
+						分享拼单
+					</tui-button>
+					<tui-button
+						type="danger" width="180rpx" height="58rpx" shape="circle"
+						plain margin="6rpx 0 6rpx 18rpx" bold
+						@click="handleEndSplicing"
+					>
+						结束拼单
+					</tui-button>
 				</view>
 			</view>
 		</view>
@@ -449,7 +456,6 @@ export default {
 			this.$copy(`${A_TF_MAIN}/#/another-tf/another-user/shop/splicing-reception?shopId=${this.brandDetail.shopId}&splicingId=${this.initiatedSplicingId}`)
 		},
 		handleShareServe(isQuit) {
-			this.$copy(`${A_TF_MAIN}/#/another-tf/another-user/shop/splicing-reception?shopId=${this.brandDetail.shopId}&splicingId=${this.initiatedSplicingId}`)
 			if (!this.isLogin()) return
 			const data = {
 				data: {

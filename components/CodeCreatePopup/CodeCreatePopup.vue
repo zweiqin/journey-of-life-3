@@ -166,11 +166,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.generate-code-container {
-	position: absolute;
-	top: -10000rpx;
-}
-
 .code-mask {
 	position: fixed;
 	top: 0;
@@ -183,6 +178,11 @@ export default {
 	background-color: rgba(0, 0, 0, 0.5);
 	transition: all 350ms;
 	opacity: 0;
+
+	.generate-code-container {
+		position: absolute;
+		top: -10000rpx;
+	}
 
 	.code-wrapper {
 		width: 600rpx;

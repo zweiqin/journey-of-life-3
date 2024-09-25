@@ -137,7 +137,7 @@
 						type="warning" width="238rpx" height="108rpx" margin="32rpx 0 0"
 						:size="40" shape="circle"
 						style="display: inline-block;background: #ef530e!important;box-shadow: 0px 12px 20px 0px #f1ac8e;"
-						@click="showPayTypePopup = true"
+						@click="isShowPayTypePopup = true"
 					>
 						确定
 					</tui-button>
@@ -145,8 +145,8 @@
 			</view>
 		</tui-modal>
 
-		<tui-bottom-popup :show="showPayTypePopup" @close="showPayTypePopup = false">
-			<view v-if="showPayTypePopup" style="padding: 60rpx 0 128rpx;">
+		<tui-bottom-popup :show="isShowPayTypePopup" @close="isShowPayTypePopup = false">
+			<view v-if="isShowPayTypePopup" style="padding: 60rpx 0 128rpx;">
 				<CashierList
 					ref="refCashierList"
 					:price-pay="rechargeForm.number / 2" show pay-type-shops :hui-shi-bao-pay="!!rechargeForm.number"
@@ -168,7 +168,7 @@
 
 <script>
 import { submitBuyerVoucherOrderApi } from '../../../../api/anotherTFInterface'
-import { handleDoPay } from '../../../../utils/payUtil'
+import { paymentModeEnum, handleDoPay } from '../../../../utils/payUtil'
 
 export default {
 	name: 'VoucherRecharge',
@@ -206,7 +206,7 @@ export default {
 				payGrade: '',
 				orderType: '1'
 			},
-			showPayTypePopup: false,
+			isShowPayTypePopup: false,
 			payInfo: {}
 		}
 	},
@@ -245,7 +245,7 @@ export default {
 				this.rechargeForm.payGrade = this.rechargeForm.number / this.purchaseRatio
 				submitBuyerVoucherOrderApi({ ...this.rechargeForm })
 					.then(async (res) => {
-						await handleDoPay({ ...res.data, ...this.payInfo }, 4, '', { fn: () => (this.payInfo.pwd = '') })
+						await handleDoPay({ ...res.data, ...this.payInfo }, 4, paymentModeEnum[4], { fn: () => (this.payInfo.pwd = '') })
 						uni.hideLoading()
 						this.isShowVoucherModal = false
 						this.isShowPopup = false

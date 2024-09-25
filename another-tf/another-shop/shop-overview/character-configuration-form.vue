@@ -74,7 +74,7 @@ export default {
 		async getCharacterDetail(id) {
 			this.form.basicInfo.id = id
 			uni.showLoading()
-			getByIdShopCostFieldApi()
+			getByIdShopCostFieldApi({ id })
 				.then((res) => {
 					this.form.basicInfo.shopId = (res.data && res.data.shopId) || ''
 					this.form.basicInfo.fieldName = (res.data && res.data.fieldName) || ''

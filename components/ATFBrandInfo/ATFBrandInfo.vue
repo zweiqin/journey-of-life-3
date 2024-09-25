@@ -1,13 +1,14 @@
 <template>
-	<view class="brand-info-container">
+	<view class="brand-info-container" :style="{ padding }">
 		<view style="display: flex;justify-content: space-between;align-items: center;font-size: 36rpx;font-weight: bold;">
 			<view>{{ brandDetail.shopName || '--' }}</view>
 			<view style="display: flex;align-items: center;">
 				<BeeIcon
+					v-if="isShowCollect"
 					:name="brandDetail.ifCollect ? 'star-fill' : 'star'" :size="22"
 					:color="brandDetail.ifCollect ? '#ff8000' : '#222229'" @click="handleCollectToggle"
 				></BeeIcon>
-				<BeeWxShare ref="beeWxShareRef" @click="handleShareServe()">
+				<BeeWxShare v-if="isShowShare" ref="beeWxShareRef" @click="handleShareServe()">
 					<BeeIcon :size="22" color="#333333" name="share" style="margin-left: 24rpx;"></BeeIcon>
 				</BeeWxShare>
 			</view>
@@ -96,18 +97,20 @@
 						<text>电话</text>
 					</view>
 				</BeeMakePhone>
-				<view class="item" @click="$emit('navgation')">
+				<view v-if="isShowNavigate" class="item" @click="$emit('navgation')">
 					<BeeIcon :size="20" color="#e02208" name="revoke"></BeeIcon>
 					<text>去这</text>
 				</view>
 			</view>
 		</view>
 
-		<tui-bottom-popup :show="isShowCustomerServicePopup" @close="isShowCustomerServicePopup = false">
-			<ATFCustomerService :shop-id="shopId" :data="customerServiceList"></ATFCustomerService>
-		</tui-bottom-popup>
+		<view v-if="isShowService">
+			<tui-bottom-popup :show="isShowCustomerServicePopup" @close="isShowCustomerServicePopup = false">
+				<ATFCustomerService :shop-id="shopId" :data="customerServiceList"></ATFCustomerService>
+			</tui-bottom-popup>
 
-		<DragButton text="联系商家" is-dock exist-tab-bar @btnClick="handleOpenCustomerService"></DragButton>
+			<DragButton text="联系商家" is-dock exist-tab-bar @btnClick="handleOpenCustomerService"></DragButton>
+		</view>
 	</view>
 </template>
 
@@ -121,9 +124,29 @@ export default {
 			type: Object,
 			required: true
 		},
+		padding: {
+			type: String,
+			default: '0'
+		},
 		isSelection: {
 			type: Boolean,
 			default: false
+		},
+		isShowCollect: {
+			type: Boolean,
+			default: true
+		},
+		isShowShare: {
+			type: Boolean,
+			default: true
+		},
+		isShowNavigate: {
+			type: Boolean,
+			default: true
+		},
+		isShowService: {
+			type: Boolean,
+			default: true
 		}
 	},
 	data() {
@@ -141,13 +164,15 @@ export default {
 	watch: {
 		brandDetail: {
 			handler(newV, oldV) {
-				if (newV.shopId && (newV.shopId !== oldV.shopId)) {
+				if (!oldV || (newV.shopId && (newV.shopId !== oldV.shopId))) {
 					this.shopId = newV.shopId
-					// #ifdef H5
-					this.$nextTick(() => {
-						this.handleShareServe(true)
-					})
+					if (this.isShowShare) {
+						// #ifdef H5
+						this.$nextTick(() => {
+							this.handleShareServe(true)
+						})
 					// #endif
+					}
 				}
 			},
 			immediate: true,
