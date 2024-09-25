@@ -175,6 +175,7 @@
 import { resolveGoodsDetailSkuSituation, resolveGoodsDetailTagsSituation, resolveGetOrderSettlement, resolveIntegralSelect, resolveCalcOrderTotal, resolveVoucherData, resolveVoucherPaySelect, resolveSubmitOrder } from '../../../utils'
 import { getShopIdCodeRelationshipCodeApi, bindPlatformRelationshipCodeApi, getShopIsNotDeactivateApi, getOrderDetailApi, getProductDetailsByIdApi, getQueryDictByNameApi } from '../../../api/anotherTFInterface'
 import { T_SKU_ITEM_MSG_LIST, T_SKU_ITEM_INFO, T_PAY_ORDER } from '../../../constant'
+import { handleOrderTypeJump } from '../../../utils/payUtil'
 
 export default {
 	name: 'PaymentCodeConfirm',
@@ -248,10 +249,8 @@ export default {
 		}
 	},
 	async onLoad(options) {
-		// #ifdef H5
 		const pages = getCurrentPages()
 		if (pages.length > 1) uni.removeStorageSync(T_PAY_ORDER)
-		// #endif
 		if (options.orderId) {
 			this.otherInfo.orderId = Number(options.orderId) || ''
 			this.otherInfo.collageId = Number(options.collageId) || ''
@@ -295,7 +294,7 @@ export default {
 						'userVoucherDeductLimit': 0,
 						'voucherList': [],
 						'voucherTotalAll': 0,
-						'shopType': data.shopType
+						'shopType': data.orderType
 					}
 					const priceInputValue = {}
 					this.settlement.shops.forEach((item) => {
@@ -387,9 +386,7 @@ export default {
 		handleOnShowBefore(isGetDetail) {
 			if (isGetDetail) {
 				if (uni.getStorageSync(T_PAY_ORDER)) {
-					uni.switchTab({
-						url: '/pages/order/order'
-					})
+					handleOrderTypeJump(uni.getStorageSync(T_PAY_ORDER).type)
 				} else if (typeof this.integralRatio === 'number') {
 					this.handleOnShow()
 				} else {

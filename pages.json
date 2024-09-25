@@ -1535,6 +1535,24 @@
           }
         },
         {
+          "path": "another-user/member-card/member-card-commission",
+          "style": {
+            "navigationBarTitleText": "会员卡佣金"
+          }
+        },
+        {
+          "path": "another-user/member-card/user-purchased",
+          "style": {
+            "navigationBarTitleText": "用户购买会员卡列表"
+          }
+        },
+        {
+          "path": "another-user/member-card/user-purchased-detail",
+          "style": {
+            "navigationBarTitleText": "用户购买会员卡详情"
+          }
+        },
+        {
           "path": "another-user/member-card/settlement-record",
           "style": {
             "navigationBarTitleText": "会员卡结算记录列表"
@@ -2436,18 +2454,6 @@
           "path": "another-shop/member-card/member-card-equity-form",
           "style": {
             "navigationBarTitleText": "会员卡权益表单"
-          }
-        },
-        {
-          "path": "another-shop/member-card/user-purchased",
-          "style": {
-            "navigationBarTitleText": "用户购买会员卡列表"
-          }
-        },
-        {
-          "path": "another-shop/member-card/user-purchased-detail",
-          "style": {
-            "navigationBarTitleText": "用户购买会员卡详情"
           }
         },
         {

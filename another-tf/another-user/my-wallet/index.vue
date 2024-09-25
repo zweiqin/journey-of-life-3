@@ -145,6 +145,21 @@
 						</view>
 					</view>
 				</tui-list-cell>
+				<tui-list-cell unlined padding="0 28rpx" :size="30" @click="go('/another-tf/another-user/member-card/member-card-commission')">
+					<view
+						style="display: flex;justify-content: space-between;align-items: center;padding: 28rpx 0;margin-top: 10rpx;"
+					>
+						<view style="display: flex;justify-content: space-between;align-items: center;">
+							<view style="width: 48rpx;margin-right: 34rpx;">
+								<tui-icon name="feedback" :size="48" unit="rpx" color="#f16527" margin="0"></tui-icon>
+							</view>
+							<text>会员卡信息</text>
+						</view>
+						<view>
+							<tui-icon name="arrowright" :size="48" unit="rpx" color="#767676" margin="0 2rpx 0 0"></tui-icon>
+						</view>
+					</view>
+				</tui-list-cell>
 			</tui-list-view>
 		</view>
 	</view>

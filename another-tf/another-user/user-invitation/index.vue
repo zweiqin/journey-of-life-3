@@ -183,11 +183,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.generate-code-container {
-	position: absolute;
-	top: -10000rpx;
-}
-
 .user-invitation-container {
 	min-height: 100vh;
 	padding-bottom: 216rpx;
@@ -201,6 +196,11 @@ export default {
 			font-size: 36rpx;
 			color: #2A2B23;
 		}
+	}
+
+	.generate-code-container {
+		position: absolute;
+		top: -10000rpx;
 	}
 }
 </style>

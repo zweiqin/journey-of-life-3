@@ -34,6 +34,7 @@
 
 <script>
 import { T_PAY_ORDER } from '../../../constant'
+import { handleOrderTypeJump } from '../../../utils/payUtil'
 
 export default {
 	name: 'PaymentCompleted',
@@ -41,11 +42,17 @@ export default {
 	data() {
 		return {
 			state: '',
+			type: ''
 		}
 	},
 	onLoad(options) {
-		if (uni.getStorageSync(T_PAY_ORDER)) getApp().globalData.orderTypeShow = uni.getStorageSync(T_PAY_ORDER).type
+		// T_PAY_ORDER的作用：在原支付页支付后，每次onShow都会判断订单信息，有则重定向到'订单跳转页'；在原支付页支付后重定向到该页面，根据订单信息判断要重定向的'订单跳转页'。
+		// （除通联或惠市宝支付）其它支付在支付后会直接重定向到该页面，就不再在本地存储中保留订单信息。（但可能存在一些情况，不一定在支付后到该页面，订单信息可能就会保存在本地存储。）
+		// 支付后到该页面，如果不清除订单信息，订单信息就会保存在本地存储，如果用户直接退出APP，那下次重新进入APP，再进入订单页，就会根据订单信息滑到商城或商圈的订单tab
+		// 支付后到该页面，如果清除订单信息，那就要把订单信息保存在内存中，点击该页按钮时（如果不点击，而是按手机返回键，可能就会返回到商品详情页），跳转到订单页，才能根据内存中的订单信息滑到商城或商圈的订单tab
+		if (uni.getStorageSync(T_PAY_ORDER)) this.type = uni.getStorageSync(T_PAY_ORDER).type
 		uni.removeStorageSync(T_PAY_ORDER)
+		getApp().globalData.orderTypeShow = this.type
 		this.state = options.state || 'success'
 	},
 	mounted() {
@@ -55,8 +62,8 @@ export default {
 			this.$switchTab('/pages/order/order')
 		},
 		handelBackOrder() {
-			this.$switchTab('/pages/order/order')
-		},
+			handleOrderTypeJump(this.type)
+		}
 	}
 }
 </script>

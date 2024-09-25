@@ -74,7 +74,7 @@ export default {
 		async getPurchasingGoodsDetail(id) {
 			this.form.basicInfo.purchasingGoodsId = id
 			uni.showLoading()
-			getByIdShopCostRevenueApi()
+			getByIdShopCostRevenueApi({ id })
 				.then((res) => {
 					this.form.basicInfo.shopId = (res.data && res.data.shopId) || ''
 					this.form.basicInfo.goodsName = (res.data && res.data.goodsName) || ''

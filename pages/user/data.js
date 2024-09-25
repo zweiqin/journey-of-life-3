@@ -223,6 +223,12 @@ export const shopServe = [
     url: '/another-tf/another-shop/shop-overview/data-statistics',
     showRole: ['shop', 'merchantStaff']
   },
+  {
+    name: '会员卡',
+    icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+    url: '/another-tf/another-shop/member-card/shop-member-card',
+    showRole: ['shop', 'merchantStaff']
+  },
 ]
 
 export const additionalFunction = [

@@ -755,11 +755,11 @@ export const getPageAllShopMemberCardUserApi = (data) => AnotherTFRequest('/shop
 // 查询用户购买的会员卡详情
 export const getByIdShopMemberCardUserApi = (data) => AnotherTFRequest('/shopMemberCardUser/getById', data, 'POST')
 
-// 用户的推广总佣金统计
-export const getCardStatisticsShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCardPromoter/getCardStatistics', data, 'POST')
-
 // 用户的商家推广记录
 export const getCardPromoterAllShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCardPromoter/getCardPromoterAll', data, 'POST')
+
+// 用户的推广总佣金统计
+export const getCardStatisticsShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCardPromoter/getCardStatistics', data, 'POST')
 
 // 用户的推广商家分组佣金统计
 export const getGroupShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCardPromoter/getCardStatistics', data, 'POST')

@@ -17,8 +17,8 @@
 		</view>
 		<view style="padding: 0 20upx;">
 			<view style="display: flex;justify-content: space-between;">
-				<view v-if="typeof data.orderPrice === 'number'">商品总价：<text style="color: red;">￥{{ data.orderPrice }}</text></view>
-				<view v-if="typeof data.price === 'number'">实付款：<text style="color: red;">￥{{ data.price }}</text></view>
+				<view v-if="typeof data.orderPrice === 'number'">商品总价：<text style="color: #e02208;">￥{{ data.orderPrice }}</text></view>
+				<view v-if="typeof data.price === 'number'">实付款：<text style="color: #e02208;">￥{{ data.price }}</text></view>
 			</view>
 			<view style="margin-top: 12upx;padding-top: 12upx;;border-top: 1px solid #dddddd;">
 				<view style="display: flex;justify-content: space-between;font-size: 26upx;color: #999999;">
@@ -54,5 +54,6 @@ export default {
 
 <style lang="less" scoped>
 .order-info-container {
+	box-sizing: border-box;
 }
 </style>

@@ -1,5 +1,5 @@
 /* eslint-disable complexity */
-import { handleDoPay } from './payUtil'
+import { paymentModeEnum, handleDoPay } from './payUtil'
 import { getProductDetailsByIdApi, getBanziProductCanSaleApi, getGroupSettlementWorkApi, getSettlementOrderApi, updatePlaceOrderSubmitApi, addUserTrackReportDoPointerApi, updatePlatformBeeCurrencySaveBeeApi, updateSavePlatformComposeApi } from '../api/anotherTFInterface'
 import { T_RECEIVE_ITEM } from '../constant'
 
@@ -742,7 +742,7 @@ export const resolveSubmitOrder = async (params = {}) => {
 	}, params)
 	if (otherInfo.isCanPay) {
 		if (isPayImmediately) {
-			await handleDoPay({ collageId: otherInfo.collageId, money: totalPrice, orderId: otherInfo.orderId, ...payInfo, type: 2 }, 1, '', { fn })
+			await handleDoPay({ collageId: otherInfo.collageId, money: totalPrice, orderId: otherInfo.orderId, ...payInfo, type: 2 }, settlement.shopType, paymentModeEnum[settlement.shopType], { fn })
 		} else {
 			// 检查提交表单
 			if (hasPrice && (Number(totalPrice) <= 0)) return uni.showToast({ title: shamPriceText, icon: 'none' })
@@ -802,7 +802,7 @@ export const resolveSubmitOrder = async (params = {}) => {
 					})
 				}
 				// type订单类型1-父订单2-子订单
-				await handleDoPay({ ...res.data, ...payInfo, type: 1 }, 1, { 1: 'shoppingMall', 2: 'businessDistrict' }[settlement.shopType] || 'DEFAULT', { fn })
+				await handleDoPay({ ...res.data, ...payInfo, type: 1 }, settlement.shopType, paymentModeEnum[settlement.shopType], { fn })
 			} catch (e) {
 				if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
 				else uni.showToast({ title: `请求：${e.errMsg}`, icon: 'none' }) // 请求失败或请求错误

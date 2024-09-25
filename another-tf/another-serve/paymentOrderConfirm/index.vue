@@ -124,6 +124,7 @@
 import { resolveGetOrderSettlement, resolveIntegralSelect, resolveCalcOrderTotal, resolveVoucherData, resolveVoucherPaySelect, resolveSubmitOrder } from '../../../utils'
 import { getQueryDictByNameApi } from '../../../api/anotherTFInterface'
 import { T_SKU_ITEM_MSG_LIST, T_SKU_ITEM_INFO, T_PAY_ORDER } from '../../../constant'
+import { handleOrderTypeJump } from '../../../utils/payUtil'
 
 export default {
 	name: 'PaymentCodeConfirm',
@@ -180,10 +181,8 @@ export default {
 		}
 	},
 	onLoad(options) {
-		// #ifdef H5
 		const pages = getCurrentPages()
 		if (pages.length > 1) uni.removeStorageSync(T_PAY_ORDER)
-		// #endif
 		this.fromType = options.type
 		this.brandId = options.brandId || ''
 		this.isExchangeCounter = Boolean(Number(options.isExchange) || 0)
@@ -191,9 +190,9 @@ export default {
 	},
 	onShow() {
 		if (uni.getStorageSync(T_PAY_ORDER)) {
-			uni.switchTab({
-				url: '/pages/order/order'
-			})
+			// 考虑在小程序和APP环境，跳转到其它小程序支付的情况，通联和惠市宝支付成功后用户按手机返回键回到该页面（本地存储中会保留订单信息）
+			// 另外，在H5环境（小程序和APP环境在首次加载时必然会清除，且只有一次首次加载），在onLoad首次加载时：如果是由其它页面跳转到该支付页面，就会清除订单信息，就不会重定向到'订单跳转页'；如果是通联和惠市宝支付成功后用户按手机返回键，就会重定向。
+			handleOrderTypeJump(uni.getStorageSync(T_PAY_ORDER).type)
 		} else if (typeof this.integralRatio === 'number') {
 			this.handleOnShow()
 		} else {

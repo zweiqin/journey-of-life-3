@@ -575,7 +575,7 @@ export default {
 
 	.generate-code-container {
 		position: absolute;
-		top: -10000upx;
+		top: -10000rpx;
 	}
 }
 </style>

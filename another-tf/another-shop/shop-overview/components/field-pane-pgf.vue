@@ -142,9 +142,5 @@ export default {
 			}
 		}
 	}
-
-	/deep/ .tui-popup-class.tui-bottom-popup {
-		height: 85vh !important;
-	}
 }
 </style>

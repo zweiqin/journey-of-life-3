@@ -1,6 +1,14 @@
 <template>
 	<view class="voucher-operation-container">
-		<JHeader title="代金券" width="50" height="50"></JHeader>
+		<BeeBack>
+			<view
+				style="display: flex;align-items: center;justify-content: space-between;padding: 20rpx 20rpx 16rpx;background-color: #f5f5f5;"
+			>
+				<BeeIcon name="arrowleft" :size="26" color="#222229" style="width: fit-content;">
+				</BeeIcon>
+				<text style="flex: 1;margin-left: -40rpx;text-align: center;">代金券</text>
+			</view>
+		</BeeBack>
 		<VoucherChoose
 			v-show="!voucherChooseInfo.platformVoucherId"
 			@change="(e) => (voucherChooseInfo = e) && handelInitData(true)"
@@ -357,17 +365,6 @@ export default {
 	min-height: 100vh;
 	background-color: #f8f9fb;
 	box-sizing: border-box;
-
-	/deep/ .j-header-wrapper {
-		padding: 24rpx 0 10rpx;
-		background-color: #f5f5f5;
-
-		.title {
-			font-size: 36rpx;
-			color: #222229;
-			font-weight: normal;
-		}
-	}
 
 	/deep/ .tui-dropdown-view {
 		height: auto !important;

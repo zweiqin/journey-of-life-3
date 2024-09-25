@@ -140,7 +140,7 @@ import SubNavs from './components/SubNavs.vue'
 import AdditionalAmountOrder from '../../community-center/components/AdditionalAmountOrder.vue'
 import CommentTypeV1 from '../../community-center/comment-order/components/CommentTypeV1.vue'
 import CommentTypeV2 from '../../community-center/comment-order/components/CommentTypeV2.vue'
-import { handleDoPay } from '../../utils/payUtil'
+import { paymentModeEnum, handleDoPay } from '../../utils/payUtil'
 import { importJsSDK } from '../../utils'
 
 export default {
@@ -220,6 +220,7 @@ export default {
 				pricePay: 0,
 				shopId: '',
 				skus: [],
+				orderType: '',
 				payInfo: {}
 			}
 		}
@@ -274,13 +275,13 @@ export default {
 
 	onShow() {
 		this.userId = uni.getStorageSync(USER_ID) || ''
-		if (getApp().globalData.orderTypeShow) {
-			this.handleChangeOrderMode(getApp().globalData.orderTypeShow)
-			getApp().globalData.orderTypeShow = ''
-		} else if (uni.getStorageSync(T_PAY_ORDER) && ['community', 'shoppingMall', 'businessDistrict'].includes(uni.getStorageSync(T_PAY_ORDER).type)) {
+		if (uni.getStorageSync(T_PAY_ORDER) && ['community', 'shoppingMall', 'businessDistrict'].includes(uni.getStorageSync(T_PAY_ORDER).type)) {
 			this.handleChangeOrderMode(uni.getStorageSync(T_PAY_ORDER).type)
+		} else if (['community', 'shoppingMall', 'businessDistrict'].includes(getApp().globalData.orderTypeShow)) {
+			this.handleChangeOrderMode(getApp().globalData.orderTypeShow)
 		}
 		uni.removeStorageSync(T_PAY_ORDER)
+		getApp().globalData.orderTypeShow = ''
 		uni.removeStorageSync(T_COMMUNITY_ORDER_NO)
 		uni.removeStorageSync(ENTERPRISE_ORDERS_NO)
 		this.$nextTick(() => {
@@ -584,7 +585,7 @@ export default {
 			if ((this.payObj.payInfo.paymentMode !== 9) && (this.payObj.payInfo.paymentMode !== 4) && !this.payObj.payInfo.pwd) {
 				this.$refs.refCashierList && this.$refs.refCashierList.handleInputPaymentPassword()
 			} else {
-				await handleDoPay(this.payObj.payInfo, 1, '', { fn: () => (this.payObj.payInfo.pwd = '') })
+				await handleDoPay(this.payObj.payInfo, this.payObj.orderType, paymentModeEnum[this.payObj.orderType], { fn: () => (this.payObj.payInfo.pwd = '') })
 				this.payObj = {
 					showPayPopup: false,
 					pricePay: 0,

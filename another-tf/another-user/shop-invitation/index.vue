@@ -127,11 +127,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.generate-code-container {
-	position: absolute;
-	top: -10000upx;
-}
-
 .shop-invitation-container {
 	min-height: 100vh;
 	background-color: #f0f0f0;
@@ -141,6 +136,11 @@ export default {
 		.tui-gallery__info {
 			display: none;
 		}
+	}
+
+	.generate-code-container {
+		position: absolute;
+		top: -10000rpx;
 	}
 }
 </style>
