@@ -142,14 +142,14 @@
 								编辑
 							</tui-button>
 							<tui-button
-								v-if="(data.memberCardState === 2) || (data.memberCardState === 3)" type="danger"
+								v-if="data.memberCardState === 1" type="danger"
 								width="120rpx" height="50rpx" margin="0 0 0 20rpx" shape="circle"
 								@click="handleMemberCardOffShelf(data)"
 							>
 								下架
 							</tui-button>
 							<tui-button
-								v-if="data.memberCardState === 1" type="danger" width="120rpx" height="50rpx"
+								v-if="(data.memberCardState === 2) || (data.memberCardState === 3)" type="danger" width="120rpx" height="50rpx"
 								margin="0 0 0 20rpx" shape="circle" @click="handleMemberCardIssue(data)"
 							>
 								发行

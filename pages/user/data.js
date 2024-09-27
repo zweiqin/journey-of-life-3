@@ -224,8 +224,8 @@ export const shopServe = [
     showRole: ['shop', 'merchantStaff']
   },
   {
-    name: '会员卡',
-    icon: require('../../static/images/new-user/menu-icon/fensitongji.png'),
+    name: '会员卡管理',
+    icon: require('../../static/images/new-user/menu-icon/huiyuankaguanli.png'),
     url: '/another-tf/another-shop/member-card/shop-member-card',
     showRole: ['shop', 'merchantStaff']
   },

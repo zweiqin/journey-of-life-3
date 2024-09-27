@@ -15,14 +15,14 @@
 							</view>
 							</view> -->
 						<view>
-							<view v-if="isShowWriteOff && data.cardUrl" style="display: flex;align-items: center;padding: 10rpx 0 0;">
+							<view v-if="isShowWriteOff && data.cardNum" style="display: flex;align-items: center;padding: 10rpx 0 0;">
 								<view>
-									核销码：{{ data.cardUrl }}
+									核销码：{{ data.cardNum }}
 								</view>
 								<tui-button
 									type="warning" width="120rpx" height="50rpx"
 									margin="0 0 0 20rpx"
-									shape="circle" @click="$copy(data.cardUrl)"
+									shape="circle" @click="$copy(data.cardNum)"
 								>
 									复制
 								</tui-button>
@@ -74,10 +74,7 @@
 						</view>
 						<view style="padding: 6rpx 0 0;font-size: 28rpx;">
 							<view style="display: flex;justify-content: space-between;align-items: center;flex-wrap: wrap;">
-								<view>
-									<text>名称：{{ data.cardName || '--' }}</text>
-									<text v-if="data.cardNum">（编号：{{ data.cardNum }}）</text>
-								</view>
+								<view>名称：{{ data.cardName || '--' }}</view>
 								<view>
 									<text v-if="data.memberCardType === 1">消费卡</text>
 									<text v-else-if="data.memberCardType === 2">次数卡</text>
@@ -411,7 +408,7 @@ export default {
 			uni.showLoading({
 				title: '生成中...'
 			})
-			this.createCode = this.data.cardUrl || ''
+			this.createCode = this.data.cardNum || ''
 			this.qrcodeUrl = `${A_TF_MAIN}/#/pages/jump/jump?userId=${this.$store.getters.userInfo.buyerUserId}&type=memberCardWriteOff&code=${this.data.cardOrderId || ''}~${this.data.memberCardType || ''}~`
 			this.popupType = 'memberCardWriteOff'
 			this.isShowPopup = true

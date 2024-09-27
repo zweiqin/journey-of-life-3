@@ -21,7 +21,7 @@
 						<template #right>
 							<tui-button
 								type="warning" width="120rpx" height="50rpx" shape="circle"
-								@click="(queryInfo.shopName || true) && (queryInfo.page = 1) && getCardUserPurchasedSearchList()"
+								@click="(queryInfo.page = 1) && getCardUserPurchasedSearchList()"
 							>
 								搜索
 							</tui-button>
@@ -39,7 +39,7 @@
 						<template #right>
 							<tui-button
 								type="warning" width="120rpx" height="50rpx" shape="circle"
-								@click="(queryInfo.phone || true) && (queryInfo.page = 1) && getCardUserPurchasedSearchList()"
+								@click="(queryInfo.page = 1) && getCardUserPurchasedSearchList()"
 							>
 								搜索
 							</tui-button>
@@ -59,7 +59,7 @@
 						<template #right>
 							<tui-button
 								type="warning" width="120rpx" height="50rpx" shape="circle"
-								@click="(queryInfo.phone || true) && (queryInfo.page = 1) && getCardUserPurchasedSearchList()"
+								@click="(queryInfo.page = 1) && getCardUserPurchasedSearchList()"
 							>
 								搜索
 							</tui-button>
@@ -69,7 +69,7 @@
 			</view>
 			<tui-radio-group
 				:value="queryInfo.status"
-				@change="(e) => queryInfo.status !== e.detail.value && ((queryInfo.status = e.detail.value) || true) && (queryInfo.page = 1) && getCardUserPurchasedSearchList()"
+				@change="(e) => (queryInfo.status !== e.detail.value) && ((queryInfo.status = e.detail.value) || true) && (queryInfo.page = 1) && getCardUserPurchasedSearchList()"
 			>
 				<view style="display: flex;flex-wrap: wrap;align-items: center;">
 					<text style="font-size: 30rpx;">会员卡状态：</text>

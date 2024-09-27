@@ -48,12 +48,74 @@
 							@click="isShowMemberCardPopup = false"
 						></tui-icon>
 					</view>
-					<view style="padding: 40rpx 0 0;">
+					<view style="padding: 40rpx 0 0;background-color: #eeeeee;">
+						<view style="padding: 18rpx 20rpx 0;">
+							<view class="search-btn" style="display: flex;align-items: center;padding: 0 0 12rpx;">
+								<text style="font-size: 30rpx;">会员卡名称</text>
+								<view style="flex: 1;margin-left: 16rpx;">
+									<tui-input
+										v-model="queryInfo.cardName" placeholder="根据会员卡名称搜索" is-fillet padding="6rpx 10rpx 6rpx 26rpx"
+										background-color="transparent"
+									>
+										<template #right>
+											<tui-button
+												type="warning" width="120rpx" height="50rpx" shape="circle"
+												@click="(queryInfo.page = 1) && getMemberCardSearchList()"
+											>
+												搜索
+											</tui-button>
+										</template>
+									</tui-input>
+								</view>
+							</view>
+							<tui-radio-group
+								:value="queryInfo.memberCardType"
+								@change="(e) => (queryInfo.memberCardType !== e.detail.value) && ((queryInfo.memberCardType = e.detail.value) || true) && (queryInfo.page = 1) && getMemberCardSearchList()"
+							>
+								<view style="display: flex;flex-wrap: wrap;align-items: center;">
+									<text style="font-size: 30rpx;">类型：</text>
+									<tui-label
+										v-for="(item, index) in [{ name: '全部', value: '' }, { name: '消费卡', value: '1' }, { name: '次数卡', value: '2' }]"
+										:key="index"
+									>
+										<view style="display: flex;align-items: center;padding: 6rpx 10rpx;font-size: 28rpx;">
+											<tui-radio
+												:checked="queryInfo.memberCardType === item.value" :value="item.value"
+												color="#07c160" border-color="#999" :scale-ratio="0.8"
+											>
+											</tui-radio>
+											<text>{{ item.name }}</text>
+										</view>
+									</tui-label>
+								</view>
+							</tui-radio-group>
+							<tui-radio-group
+								:value="queryInfo.memberCardState"
+								@change="(e) => queryInfo.memberCardState !== e.detail.value && ((queryInfo.memberCardState = e.detail.value) || true) && (queryInfo.page = 1) && getMemberCardSearchList()"
+							>
+								<view style="display: flex;flex-wrap: wrap;align-items: center;">
+									<text style="font-size: 30rpx;">状态：</text>
+									<tui-label
+										v-for="(item, index) in [{ name: '全部', value: '' }, { name: '已发行', value: '1' }, { name: '未发行', value: '2' }, { name: '已下架', value: '3' }]"
+										:key="index"
+									>
+										<view style="display: flex;align-items: center;padding: 6rpx 10rpx;font-size: 28rpx;">
+											<tui-radio
+												:checked="queryInfo.memberCardState === item.value" :value="item.value"
+												color="#07c160" border-color="#999" :scale-ratio="0.8"
+											>
+											</tui-radio>
+											<text>{{ item.name }}</text>
+										</view>
+									</tui-label>
+								</view>
+							</tui-radio-group>
+						</view>
 						<view v-if="memberCardList && memberCardList.length" style="margin: 10rpx 0 0;">
 							<view v-for="(item, index) in memberCardList" :key="index" style="padding: 0 20rpx 35rpx;">
 								<ATFMemberCardInfo
 									:data="item" :is-show-shop="false" :is-shop-operation="false" is-show-select
-									@select="(e) => (form.cardId = e.id) && (cardName = e.cardName) && (isShowMemberCardPopup = false)"
+									@select="(e) => (form.cardId = e.cardId) && (cardName = e.cardName) && (isShowMemberCardPopup = false)"
 								>
 								</ATFMemberCardInfo>
 							</view>
@@ -105,7 +167,10 @@ export default {
 			memberCardTotal: 0,
 			queryInfo: {
 				page: 1,
-				pageSize: 20
+				pageSize: 20,
+				cardName: '',
+				memberCardType: '',
+				memberCardState: ''
 			},
 			cardName: ''
 		}
@@ -179,6 +244,13 @@ export default {
 
 .field-pane-container {
 	margin-top: 30rpx;
+
+	.search-btn {
+		/deep/ .tui-input__wrap {
+			border: 2rpx solid #EF5511;
+			border-radius: 8rpx;
+		}
+	}
 
 	/deep/ .tui-popup-class.tui-bottom-popup {
 		height: 85vh !important;

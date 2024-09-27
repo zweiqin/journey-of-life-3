@@ -62,7 +62,7 @@ export default {
 			this.$switchTab('/pages/order/order')
 		},
 		handelBackOrder() {
-			handleOrderTypeJump(this.type)
+			handleOrderTypeJump({ type: this.type })
 		}
 	}
 }
