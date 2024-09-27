@@ -386,7 +386,7 @@ export default {
 		handleOnShowBefore(isGetDetail) {
 			if (isGetDetail) {
 				if (uni.getStorageSync(T_PAY_ORDER)) {
-					handleOrderTypeJump(uni.getStorageSync(T_PAY_ORDER).type)
+					handleOrderTypeJump({ type: uni.getStorageSync(T_PAY_ORDER).type })
 				} else if (typeof this.integralRatio === 'number') {
 					this.handleOnShow()
 				} else {

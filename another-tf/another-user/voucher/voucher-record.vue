@@ -101,7 +101,7 @@
 			<view v-if="[ 5 ].includes(queryType)" style="padding: 18rpx 0 0;">
 				<tui-radio-group
 					:value="orderInfo.query.status"
-					@change="(e) => orderInfo.query.status !== e.detail.value && ((orderInfo.query.status = e.detail.value) || true) && (orderInfo.query.page = 1) && getAllVoucherOrderList()"
+					@change="(e) => (orderInfo.query.status !== e.detail.value) && ((orderInfo.query.status = e.detail.value) || true) && (orderInfo.query.page = 1) && getAllVoucherOrderList()"
 				>
 					<view style="display: flex;flex-wrap: wrap;align-items: center;">
 						<text style="font-size: 30rpx;">选择状态：</text>

@@ -192,7 +192,7 @@ export default {
 		if (uni.getStorageSync(T_PAY_ORDER)) {
 			// 考虑在小程序和APP环境，跳转到其它小程序支付的情况，通联和惠市宝支付成功后用户按手机返回键回到该页面（本地存储中会保留订单信息）
 			// 另外，在H5环境（小程序和APP环境在首次加载时必然会清除，且只有一次首次加载），在onLoad首次加载时：如果是由其它页面跳转到该支付页面，就会清除订单信息，就不会重定向到'订单跳转页'；如果是通联和惠市宝支付成功后用户按手机返回键，就会重定向。
-			handleOrderTypeJump(uni.getStorageSync(T_PAY_ORDER).type)
+			handleOrderTypeJump({ type: uni.getStorageSync(T_PAY_ORDER).type })
 		} else if (typeof this.integralRatio === 'number') {
 			this.handleOnShow()
 		} else {

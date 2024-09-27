@@ -48,7 +48,7 @@
 						<template #right>
 							<tui-button
 								type="warning" width="120rpx" height="50rpx" shape="circle"
-								@click="(queryInfo.phone || true) && (queryInfo.page = 1) && getCardPromotionRecordSearchList()"
+								@click="(queryInfo.page = 1) && getCardPromotionRecordSearchList()"
 							>
 								搜索
 							</tui-button>
@@ -58,7 +58,7 @@
 			</view>
 			<tui-radio-group
 				:value="queryInfo.status"
-				@change="(e) => queryInfo.status !== e.detail.value && ((queryInfo.status = e.detail.value) || true) && (queryInfo.page = 1) && getCardPromotionRecordSearchList()"
+				@change="(e) => (queryInfo.status !== e.detail.value) && ((queryInfo.status = e.detail.value) || true) && (queryInfo.page = 1) && getCardPromotionRecordSearchList()"
 			>
 				<view style="display: flex;flex-wrap: wrap;align-items: center;">
 					<text style="font-size: 30rpx;">结算状态：</text>

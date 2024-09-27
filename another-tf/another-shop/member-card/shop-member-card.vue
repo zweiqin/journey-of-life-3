@@ -43,7 +43,7 @@
 						<template #right>
 							<tui-button
 								type="warning" width="120rpx" height="50rpx" shape="circle"
-								@click="(queryInfo.cardName || true) && (queryInfo.page = 1) && getMemberCardSearchList()"
+								@click="(queryInfo.page = 1) && getMemberCardSearchList()"
 							>
 								搜索
 							</tui-button>
@@ -53,7 +53,7 @@
 			</view>
 			<tui-radio-group
 				:value="queryInfo.memberCardType"
-				@change="(e) => queryInfo.memberCardType !== e.detail.value && ((queryInfo.memberCardType = e.detail.value) || true) && (queryInfo.page = 1) && getMemberCardSearchList()"
+				@change="(e) => (queryInfo.memberCardType !== e.detail.value) && ((queryInfo.memberCardType = e.detail.value) || true) && (queryInfo.page = 1) && getMemberCardSearchList()"
 			>
 				<view style="display: flex;flex-wrap: wrap;align-items: center;">
 					<text style="font-size: 30rpx;">类型：</text>

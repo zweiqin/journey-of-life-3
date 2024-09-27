@@ -515,6 +515,7 @@ export default {
 			orderId: 0,
 			noticeId: 0,
 			showType: '',
+			isProcure: 0,
 
 			// 核销相关
 			verificationCode: '',
@@ -555,11 +556,11 @@ export default {
 		this.orderId = parseInt(options.orderId)
 		this.noticeId = options.noticeId || 0
 		this.showType = options.showType || 'detail'
+		this.isProcure = Number(options.isProcure) || 0
 		if (this.showType === 'writeOff') {
 			getOrderVerificationHxCodeApi({
 				url: `${A_TF_MAIN}/#/pages/jump/jump?orderId=${this.orderId}&type=verification&code=${this.orderId}~`
 			}).then((res) => {
-				// if (res.errno === -1) return
 				this.verificationCode = res.data.code
 				this.verificationCodeUrl = res.data.hxCode
 				this.verificationStatus = res.data.status
@@ -606,7 +607,7 @@ export default {
 				shopSeckillId: orderItem.shopSeckillId,
 				skus: orderItem.skus
 			} ])
-			this.go('/another-tf/another-serve/paymentOrderConfirm/index?type=1')
+			this.go(`/another-tf/another-serve/paymentOrderConfirm/index?type=1&isProcure=${this.isProcure}`)
 		},
 
 		handleAddEvaluate(skuItem) {

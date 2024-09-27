@@ -3,40 +3,40 @@
 		<view class="title">{{ title }}</view>
 		<view v-for="item in fields" :key="item.label">
 			<view v-if="(item.field === 'cardId') || (item.field === 'shopId')"></view>
-			<view v-else-if="item.field === 'startTime' || item.field === 'endTime'" class="item">
+			<!-- <view v-else-if="item.field === 'startTime' || item.field === 'endTime'" class="item">
 				<template>
-					<view
-						class="input-wrapper" :style="{
-							'flex-direction': item.type === 'textarea' ? 'column' : '',
-							'align-items': item.type === 'textarea' ? 'flex-start' : ''
-						}"
-					>
-						<view class="sub-title">{{ item.label }}</view>
-						<view v-if="item.type === 'time' && item.field === 'startTime'">
-							<input
-								:value="form[item.field]" class="input" :disabled="true" type="text"
-								:placeholder="item.placeholder" @click="$refs.dateTimeTradeS[0].show()"
-								@input="handleInput(item.field, $event)"
-							/>
-							<tui-datetime
-								ref="dateTimeTradeS" :type="7" radius
-								@confirm="handleInput(item.field, $event)"
-							></tui-datetime>
-						</view>
-						<view v-if="item.type === 'time' && item.field === 'endTime'">
-							<input
-								:value="form[item.field]" class="input" :disabled="true" type="text"
-								:placeholder="item.placeholder" @click="$refs.dateTimeTradeE[0].show()"
-								@input="handleInput(item.field, $event)"
-							/>
-							<tui-datetime
-								ref="dateTimeTradeE" :type="7" radius
-								@confirm="handleInput(item.field, $event)"
-							></tui-datetime>
-						</view>
-					</view>
+				<view
+				class="input-wrapper" :style="{
+				'flex-direction': item.type === 'textarea' ? 'column' : '',
+				'align-items': item.type === 'textarea' ? 'flex-start' : ''
+				}"
+				>
+				<view class="sub-title">{{ item.label }}</view>
+				<view v-if="item.type === 'time' && item.field === 'startTime'">
+				<input
+				:value="form[item.field]" class="input" :disabled="true" type="text"
+				:placeholder="item.placeholder" @click="$refs.dateTimeTradeS[0].show()"
+				@input="handleInput(item.field, $event)"
+				/>
+				<tui-datetime
+				ref="dateTimeTradeS" :type="7" radius
+				@confirm="handleInput(item.field, $event)"
+				></tui-datetime>
+				</view>
+				<view v-if="item.type === 'time' && item.field === 'endTime'">
+				<input
+				:value="form[item.field]" class="input" :disabled="true" type="text"
+				:placeholder="item.placeholder" @click="$refs.dateTimeTradeE[0].show()"
+				@input="handleInput(item.field, $event)"
+				/>
+				<tui-datetime
+				ref="dateTimeTradeE" :type="7" radius
+				@confirm="handleInput(item.field, $event)"
+				></tui-datetime>
+				</view>
+				</view>
 				</template>
-			</view>
+				</view> -->
 			<view v-else class="item">
 				<template>
 					<view
@@ -76,31 +76,14 @@
 							</tui-label>
 						</tui-radio-group>
 						<tui-radio-group
-							v-else-if="(item.type === 'radio') && (item.field === 'memberCardState')" v-model="form[item.field]"
-							style="flex: 1;display: flex;flex-wrap: wrap;justify-content: flex-end;" @change="(e) => { }"
-						>
-							<tui-label
-								v-for="(part, index) in [{ name: '已发行', value: '1' }, { name: '未发行', value: '2' }, { name: '已下架', value: '3' }]"
-								:key="index"
-							>
-								<tui-list-cell padding="16rpx">
-									<view>
-										<tui-radio :checked="false" :value="part.value" color="#07c160" border-color="#999">
-										</tui-radio>
-										<text class="tui-text">{{ part.name }}</text>
-									</view>
-								</tui-list-cell>
-							</tui-label>
-						</tui-radio-group>
-						<tui-radio-group
 							v-else-if="(item.type === 'radio') && (item.field === 'memberCardChannel')" v-model="form[item.field]"
 							style="flex: 1;display: flex;flex-wrap: wrap;justify-content: flex-end;" @change="(e) => { }"
 						>
 							<tui-label
-								v-for="(part, index) in [{ name: 'app', value: '1' }, { name: 'H5', value: '2' }, { name: '支付宝小程序', value: '3' }, { name: '线下渠道', value: '3' }, { name: '微信小程序', value: '3' }, { name: '代理发行', value: '3' }]"
+								v-for="(part, index) in [{ name: 'app', value: '1' }, { name: 'H5', value: '2' }, { name: '支付宝小程序', value: '3' }, { name: '线下渠道', value: '4' }, { name: '微信小程序', value: '5' }, { name: '代理发行', value: '6' }]"
 								:key="index"
 							>
-								<tui-list-cell padding="16rpx">
+								<tui-list-cell v-if="(part.value === form[item.field]) || ['4', '6'].includes(part.value)" padding="16rpx">
 									<view>
 										<tui-radio :checked="false" :value="part.value" color="#07c160" border-color="#999">
 										</tui-radio>
@@ -158,7 +141,6 @@ export default {
 				shopId: '',
 				cardName: '',
 				memberCardType: '',
-				memberCardState: '',
 				memberCardNumber: '',
 				memberCardChannel: '',
 				memberCardLevel: '',
@@ -167,9 +149,9 @@ export default {
 				cardPrice: '',
 				cardDiscountedPrice: '',
 				agentPurchasePrice: '',
-				promotionPrice: '',
-				startTime: '',
-				endTime: ''
+				promotionPrice: ''
+				// startTime: '',
+				// endTime: ''
 			}
 		}
 	},

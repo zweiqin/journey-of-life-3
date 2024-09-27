@@ -31,7 +31,7 @@
       >
     </view>
     <view class="order-list" v-if="orderList.length > 0">
-      <view class="order-item" v-for="(item,index) in orderList" :key="index" @click="go(`/another-tf/another-serve/orderDetails/index?orderId=${item.orderId}`)"">
+      <view class="order-item" v-for="(item,index) in orderList" :key="index" @click="go(`/another-tf/another-serve/orderDetails/index?orderId=${item.orderId}&isProcure=1`)"">
         <view class="item-top">
           <view>订单编号：{{ item.orderFormid }}</view>
           <!-- '订单状态 1-待付款 2-待发货 3-待收货 4-已完成 5-已完成 6-已完成 7-已完成 8-已完成 9-待核销已付款 10-已核销 11-未付款核销', -->

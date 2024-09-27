@@ -1,6 +1,6 @@
 <template>
 	<view class="shop-member-card-form-container">
-		<JHeader width="50" height="50" title="商家会员卡表单"></JHeader>
+		<JHeader width="50" height="50" title="会员卡权益表单"></JHeader>
 		<FieldPaneMCEF v-model="form.basicInfo" :fields="equityInfo" title="基本信息"></FieldPaneMCEF>
 
 		<ATFUpload
@@ -49,10 +49,10 @@ export default {
 					type: 'picker'
 				},
 				{
-					label: '会员卡名称：',
-					field: 'cardName',
+					label: '权益名称：',
+					field: 'equityName',
 					type: 'input',
-					placeholder: '请输入会员卡名称'
+					placeholder: '请输入权益名称'
 				},
 				{
 					label: '会员卡权益说明',

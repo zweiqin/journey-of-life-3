@@ -29,6 +29,15 @@ export default {
 		this.$store.dispatch('auth/unifiedProcessingShopAction', {
 			cb: () => {
 				this.form.basicInfo.shopId = this.$store.state.auth.identityInfo.shopInfo.shopId
+				if ([ 1 ].includes(this.$store.state.app.terminal)) {
+					this.form.basicInfo.memberCardChannel = '1'
+				} else if ([3, 5, 6].includes(this.$store.state.app.terminal)) {
+					this.form.basicInfo.memberCardChannel = '2'
+				} else if ([ 4 ].includes(this.$store.state.app.terminal)) {
+					this.form.basicInfo.memberCardChannel = '3'
+				} else if ([ 2 ].includes(this.$store.state.app.terminal)) {
+					this.form.basicInfo.memberCardChannel = '5'
+				}
 				if (options.id) {
 					this.getMemberCardDetail(options.id)
 				}
@@ -61,12 +70,6 @@ export default {
 					field: 'memberCardType',
 					type: 'radio',
 					placeholder: '会员卡类型'
-				},
-				{
-					label: '会员卡状态：',
-					field: 'memberCardState',
-					type: 'radio',
-					placeholder: '会员卡状态'
 				},
 				{
 					label: '发行张数：',
@@ -121,19 +124,19 @@ export default {
 					type: 'input',
 					field: 'promotionPrice',
 					placeholder: '请输入推广佣金'
-				},
-				{
-					label: '购买有效期开始日期：',
-					field: 'startTime',
-					type: 'time',
-					placeholder: '请选择购买有效期开始日期'
-				},
-				{
-					label: '购买有效期结束日期：',
-					field: 'endTime',
-					type: 'time',
-					placeholder: '请选择购买有效期结束日期'
 				}
+				// {
+				// 	label: '购买有效期开始日期：',
+				// 	field: 'startTime',
+				// 	type: 'time',
+				// 	placeholder: '请选择购买有效期开始日期'
+				// },
+				// {
+				// 	label: '购买有效期结束日期：',
+				// 	field: 'endTime',
+				// 	type: 'time',
+				// 	placeholder: '请选择购买有效期结束日期'
+				// }
 			],
 			uploadFields: [
 				{
@@ -147,7 +150,6 @@ export default {
 					shopId: '',
 					cardName: '',
 					memberCardType: '',
-					memberCardState: '',
 					memberCardNumber: '',
 					memberCardChannel: '',
 					memberCardLevel: '',
@@ -156,9 +158,9 @@ export default {
 					cardPrice: '',
 					cardDiscountedPrice: '',
 					agentPurchasePrice: '',
-					promotionPrice: '',
-					startTime: '',
-					endTime: ''
+					promotionPrice: ''
+					// startTime: '',
+					// endTime: ''
 				},
 				imgs: {
 					cardCover: ''
@@ -177,9 +179,8 @@ export default {
 					uni.hideLoading()
 					this.form.basicInfo.cardName = res.data.cardName || ''
 					this.form.basicInfo.memberCardType = String(res.data.memberCardType) || ''
-					this.form.basicInfo.memberCardState = String(res.data.memberCardState) || ''
 					this.form.basicInfo.memberCardNumber = res.data.memberCardNumber || ''
-					this.form.basicInfo.memberCardChannel = String(res.data.memberCardChannel) || ''
+					// this.form.basicInfo.memberCardChannel = String(res.data.memberCardChannel) || ''
 					this.form.basicInfo.memberCardLevel = String(res.data.memberCardLevel) || ''
 					this.form.basicInfo.memberCardDays = res.data.memberCardDays || ''
 					this.form.basicInfo.cardEquityStatement = res.data.cardEquityStatement || ''
@@ -187,8 +188,8 @@ export default {
 					this.form.basicInfo.cardDiscountedPrice = res.data.cardDiscountedPrice || ''
 					this.form.basicInfo.agentPurchasePrice = res.data.agentPurchasePrice || ''
 					this.form.basicInfo.promotionPrice = res.data.promotionPrice || ''
-					this.form.basicInfo.startTime = res.data.startTime || ''
-					this.form.basicInfo.endTime = res.data.endTime || ''
+					// this.form.basicInfo.startTime = res.data.startTime || ''
+					// this.form.basicInfo.endTime = res.data.endTime || ''
 					this.form.imgs.cardCover = res.data.cardCover || ''
 				})
 				.catch((e) => {
@@ -223,10 +224,6 @@ export default {
 				this.$showToast('缺少会员卡类型')
 				return
 			}
-			if (!data.memberCardState) {
-				this.$showToast('缺少会员卡状态')
-				return
-			}
 			if (!data.memberCardNumber) {
 				this.$showToast('缺少发行张数')
 				return
@@ -247,14 +244,14 @@ export default {
 				this.$showToast('缺少折扣价')
 				return
 			}
-			if (!data.startTime) {
-				this.$showToast('缺少购买有效期开始日期')
-				return
-			}
-			if (!data.endTime) {
-				this.$showToast('缺少购买有效期结束日期')
-				return
-			}
+			// if (!data.startTime) {
+			// 	this.$showToast('缺少购买有效期开始日期')
+			// 	return
+			// }
+			// if (!data.endTime) {
+			// 	this.$showToast('缺少购买有效期结束日期')
+			// 	return
+			// }
 			uni.showModal({
 				title: '提示',
 				content: '确认提交商家会员卡表单？',

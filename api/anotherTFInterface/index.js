@@ -753,7 +753,7 @@ export const submitShopMemberCardOrderApi = (data) => AnotherTFRequest('/shopMem
 export const getPageAllShopMemberCardUserApi = (data) => AnotherTFRequest('/shopMemberCardUser/getPageAll', data, 'POST')
 
 // 查询用户购买的会员卡详情
-export const getByIdShopMemberCardUserApi = (data) => AnotherTFRequest('/shopMemberCardUser/getById', data, 'POST')
+export const getByIdShopMemberCardUserApi = (data) => AnotherTFRequest('/shopMemberCardUser/getById', data)
 
 // 用户的商家推广记录
 export const getCardPromoterAllShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCardPromoter/getCardPromoterAll', data, 'POST')
@@ -762,7 +762,7 @@ export const getCardPromoterAllShopMemberCardApi = (data) => AnotherTFRequest('/
 export const getCardStatisticsShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCardPromoter/getCardStatistics', data, 'POST')
 
 // 用户的推广商家分组佣金统计
-export const getGroupShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCardPromoter/getCardStatistics', data, 'POST')
+export const getGroupShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCardPromoter/getCardShopStatistics', data, 'POST')
 
 // 用户提交结算申请
 export const updateSettlementShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCardApplySettlement/applySettlement', data)
@@ -771,10 +771,10 @@ export const updateSettlementShopMemberCardApi = (data) => AnotherTFRequest('/sh
 export const getBuyerSettlementShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCardApplySettlement/getBuyerSettlement', data, 'POST')
 
 // 用户出账记录
-export const getOutgoingRecordShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCardUser/getUserOutgoingRecord', data, 'POST')
+export const getOutgoingRecordShopMemberCardApi = (data) => AnotherTFRequest('/buyerMemberCardOutgoingRecord/getUserOutgoingRecord', data, 'POST')
 
 // 用户入账记录
-export const getEntryRecordShopMemberCardApi = (data) => AnotherTFRequest('/shopMemberCardUser/getUserEntryRecord', data, 'POST')
+export const getEntryRecordShopMemberCardApi = (data) => AnotherTFRequest('/buyerMemberCardEntryRecord/getUserEntryRecord', data, 'POST')
 
 // 代金券
 // 获取可用代金券

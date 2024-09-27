@@ -12,6 +12,18 @@
 		</view>
 
 		<view style="padding: 18rpx 20rpx 0;">
+			<view style="display: flex;align-items: center;padding: 0 0 12rpx;">
+				<view>
+					会员卡：{{ cardName || '无' }}
+				</view>
+				<tui-button
+					type="warning" width="120rpx" height="50rpx" shape="circle"
+					margin="0 0 0 20rpx"
+					@click="(popupType = 'memberCardsPopup') && (isShowPopup = true) && !memberCardsInfo.isEmpty && !memberCardsInfo.data.length && getMemberCardSearchList()"
+				>
+					选择
+				</tui-button>
+			</view>
 			<view class="search-btn" style="display: flex;align-items: center;padding: 0 0 12rpx;">
 				<text style="font-size: 30rpx;">会员卡名称</text>
 				<view style="flex: 1;margin-left: 16rpx;">
@@ -22,7 +34,7 @@
 						<template #right>
 							<tui-button
 								type="warning" width="120rpx" height="50rpx" shape="circle"
-								@click="(queryInfo.cardName || true) && (queryInfo.page = 1) && getCardEquitySearchList()"
+								@click="(queryInfo.page = 1) && getCardEquitySearchList()"
 							>
 								搜索
 							</tui-button>
@@ -32,7 +44,7 @@
 			</view>
 			<tui-radio-group
 				:value="queryInfo.memberCardType"
-				@change="(e) => queryInfo.memberCardType !== e.detail.value && ((queryInfo.memberCardType = e.detail.value) || true) && (queryInfo.page = 1) && getCardEquitySearchList()"
+				@change="(e) => (queryInfo.memberCardType !== e.detail.value) && ((queryInfo.memberCardType = e.detail.value) || true) && (queryInfo.page = 1) && getCardEquitySearchList()"
 			>
 				<view style="display: flex;flex-wrap: wrap;align-items: center;">
 					<text style="font-size: 30rpx;">类型：</text>
@@ -115,19 +127,100 @@
 		</view>
 
 		<tui-bottom-popup
-			:z-index="997" :mask-z-index="996" :show="isShowMemberCardPopup"
+			:z-index="997" :mask-z-index="996" :show="isShowPopup"
 			@close="() => {}"
 		>
-			<scroll-view scroll-y style="height: 100%;">
+			<scroll-view scroll-y style="height: 100%;" @scrolltolower="handleScrolltolower">
 				<view>
 					<view style="display: flex;justify-content: flex-end;padding: 12rpx;border-bottom: solid 1rpx #EEEEEE;">
 						<tui-icon
 							name="close" :size="50" unit="rpx" color="#999999"
-							@click="isShowMemberCardPopup = false"
+							@click="isShowPopup = false"
 						></tui-icon>
 					</view>
-					<view style="padding: 40rpx 0 0;">
+					<view v-if="popupType === 'memberCardPopup'" style="padding: 40rpx 0 0;">
 						<ATFMemberCardInfo :data="memberCardInfo" :is-shop-operation="false"></ATFMemberCardInfo>
+					</view>
+					<view v-else-if="popupType === 'memberCardsPopup'" style="padding: 40rpx 0 0;background-color: #eeeeee;">
+						<view style="padding: 18rpx 20rpx 0;">
+							<view class="search-btn" style="display: flex;align-items: center;padding: 0 0 12rpx;">
+								<text style="font-size: 30rpx;">会员卡名称</text>
+								<view style="flex: 1;margin-left: 16rpx;">
+									<tui-input
+										v-model="memberCardsInfo.query.cardName" placeholder="根据会员卡名称搜索" is-fillet padding="6rpx 10rpx 6rpx 26rpx"
+										background-color="transparent"
+									>
+										<template #right>
+											<tui-button
+												type="warning" width="120rpx" height="50rpx" shape="circle"
+												@click="(memberCardsInfo.query.page = 1) && getMemberCardSearchList()"
+											>
+												搜索
+											</tui-button>
+										</template>
+									</tui-input>
+								</view>
+							</view>
+							<tui-radio-group
+								:value="memberCardsInfo.query.memberCardType"
+								@change="(e) => memberCardsInfo.query.memberCardType !== e.detail.value && ((memberCardsInfo.query.memberCardType = e.detail.value) || true) && (memberCardsInfo.query.page = 1) && getMemberCardSearchList()"
+							>
+								<view style="display: flex;flex-wrap: wrap;align-items: center;">
+									<text style="font-size: 30rpx;">类型：</text>
+									<tui-label
+										v-for="(item, index) in [{ name: '全部', value: '' }, { name: '消费卡', value: '1' }, { name: '次数卡', value: '2' }]"
+										:key="index"
+									>
+										<view style="display: flex;align-items: center;padding: 6rpx 10rpx;font-size: 28rpx;">
+											<tui-radio
+												:checked="memberCardsInfo.query.memberCardType === item.value" :value="item.value"
+												color="#07c160" border-color="#999" :scale-ratio="0.8"
+											>
+											</tui-radio>
+											<text>{{ item.name }}</text>
+										</view>
+									</tui-label>
+								</view>
+							</tui-radio-group>
+							<tui-radio-group
+								:value="memberCardsInfo.query.memberCardState"
+								@change="(e) => memberCardsInfo.query.memberCardState !== e.detail.value && ((memberCardsInfo.query.memberCardState = e.detail.value) || true) && (memberCardsInfo.query.page = 1) && getMemberCardSearchList()"
+							>
+								<view style="display: flex;flex-wrap: wrap;align-items: center;">
+									<text style="font-size: 30rpx;">状态：</text>
+									<tui-label
+										v-for="(item, index) in [{ name: '全部', value: '' }, { name: '已发行', value: '1' }, { name: '未发行', value: '2' }, { name: '已下架', value: '3' }]"
+										:key="index"
+									>
+										<view style="display: flex;align-items: center;padding: 6rpx 10rpx;font-size: 28rpx;">
+											<tui-radio
+												:checked="memberCardsInfo.query.memberCardState === item.value" :value="item.value"
+												color="#07c160" border-color="#999" :scale-ratio="0.8"
+											>
+											</tui-radio>
+											<text>{{ item.name }}</text>
+										</view>
+									</tui-label>
+								</view>
+							</tui-radio-group>
+						</view>
+						<view v-if="memberCardsInfo.data && memberCardsInfo.data.length" style="margin: 10rpx 0 0;">
+							<view v-for="(item, index) in memberCardsInfo.data" :key="index" style="padding: 0 20rpx 35rpx;">
+								<ATFMemberCardInfo
+									:data="item" :is-show-shop="false" :is-shop-operation="false" is-show-select
+									@select="(e) => (queryInfo.cardId = e.cardId) && (cardName = e.cardName) && (isShowPopup = false)"
+								>
+								</ATFMemberCardInfo>
+							</view>
+						</view>
+						<view style="padding-bottom: 45rpx;">
+							<LoadingMore
+								:status="!isEmpty && !memberCardsInfo.data.length
+									? 'loading' : !isEmpty && memberCardsInfo.data.length && (memberCardsInfo.data.length >= memberCardsInfo.listTotal) ? 'no-more' : ''"
+							>
+							</LoadingMore>
+							<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无商家会员卡内容~</tui-no-data>
+						</view>
 					</view>
 				</view>
 			</scroll-view>
@@ -136,7 +229,7 @@
 </template>
 
 <script>
-import { getPageAllShopMemberCardEquityApi, deleteByIdShopMemberCardEquityApi, getByIdShopMemberCardApi } from '../../../api/anotherTFInterface'
+import { getPageAllShopMemberCardEquityApi, deleteByIdShopMemberCardEquityApi, getByIdShopMemberCardApi, getPageAllShopMemberCardApi } from '../../../api/anotherTFInterface'
 export default {
 	name: 'MemberCardEquity',
 	data() {
@@ -147,11 +240,26 @@ export default {
 			queryInfo: {
 				page: 1,
 				pageSize: 20,
+				cardId: '',
 				cardName: '',
 				memberCardType: ''
 			},
-			isShowMemberCardPopup: false,
-			memberCardInfo: {}
+			isShowPopup: false,
+			popupType: '',
+			memberCardInfo: {},
+			memberCardsInfo: {
+				query: {
+					page: 1,
+					pageSize: 10,
+					cardName: '',
+					memberCardType: '',
+					memberCardState: ''
+				},
+				data: [],
+				listTotal: 0,
+				isEmpty: false
+			},
+			cardName: ''
 		}
 	},
 	onLoad() {
@@ -206,19 +314,44 @@ export default {
 				}
 			})
 		},
+
 		getMemberCardInfo(memberCardId) {
-			this.isShowMemberCardPopup = true
 			if (!memberCardId) return this.$showToast('缺少会员卡ID')
 			uni.showLoading()
 			getByIdShopMemberCardApi({ id: memberCardId })
 				.then((res) => {
 					uni.hideLoading()
 					this.memberCardInfo = res.data
-					this.isShowMemberCardPopup = true
+					this.popupType = 'memberCardPopup'
+					this.isShowPopup = true
 				})
 				.catch((e) => {
 					uni.hideLoading()
 				})
+		},
+		getMemberCardSearchList(isLoadmore) {
+			uni.showLoading()
+			getPageAllShopMemberCardApi(this.memberCardsInfo.query).then((res) => {
+				this.memberCardsInfo.listTotal = res.data.total
+				if (isLoadmore) {
+					this.memberCardsInfo.data.push(...res.data.list)
+				} else {
+					this.memberCardsInfo.data = res.data.list
+				}
+				this.memberCardsInfo.isEmpty = this.memberCardsInfo.data.length === 0
+				uni.hideLoading()
+			})
+				.catch((e) => {
+					uni.hideLoading()
+				})
+		},
+		handleScrolltolower() {
+			if (this.popupType === 'memberCardsPopup') {
+				if (this.memberCardsInfo.data.length < this.memberCardsInfo.listTotal) {
+					++this.memberCardsInfo.query.page
+					this.getMemberCardSearchList(true)
+				}
+			}
 		}
 	},
 	onReachBottom() {
