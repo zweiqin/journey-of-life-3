@@ -491,7 +491,7 @@
 
 <script>
 import { afterConditionEnum, orderPatternEnum } from '../../../components/ATFOrderInfo/config'
-import { paymentModeEnum, handleDoPay } from '../../../utils/payUtil'
+import { paymentTypeEnum, handleDoPay } from '../../../utils/payUtil'
 import {
 	getOrderDetailApi,
 	getIndexShopDetailApi,
@@ -502,7 +502,7 @@ import {
 	getOrderRefundApi,
 	updateOrderConfirmApi
 } from '../../../api/anotherTFInterface'
-import { T_SKU_ITEM_MSG_LIST, T_REFUND_APPLY_ITEM, T_AFTER_SALE_APPLY_REFUND } from '../../../constant'
+import { T_SKU_ITEM_MSG_LIST, T_REFUND_APPLY_ITEM, T_AFTER_SALE_APPLY_REFUND, T_PAY_ORDER } from '../../../constant'
 import { resolveShowCanNotBuyMsg } from '../../../utils'
 import { A_TF_MAIN } from '../../../config'
 
@@ -545,6 +545,7 @@ export default {
 			// 支付
 			isShowPayTypePopup: false,
 			payInfo: {},
+			isPasswordFail: false,
 
 			// 客服
 			isShowCustomerServicePopup: false,
@@ -552,6 +553,7 @@ export default {
 		}
 	},
 	onLoad(options) {
+		uni.removeStorageSync(T_PAY_ORDER)
 		this.isIphone = getApp().globalData.isIphone
 		this.orderId = parseInt(options.orderId)
 		this.noticeId = options.noticeId || 0
@@ -573,6 +575,11 @@ export default {
 		}
 	},
 	onShow() {
+		if (uni.getStorageSync(T_PAY_ORDER) && this.isShowPayTypePopup && ((this.payInfo.paymentMode === 9) || (this.payInfo.paymentMode === 4))) {
+			uni.removeStorageSync(T_PAY_ORDER)
+			this.isShowPayTypePopup = false
+			this.payInfo = {}
+		}
 		this.getOrderDetailData(this.orderId)
 	},
 	methods: {
@@ -798,7 +805,8 @@ export default {
 
 		async handlePaymentPassword() {
 			if ((this.payInfo.paymentMode !== 9) && (this.payInfo.paymentMode !== 4) && !this.payInfo.pwd) {
-				this.$refs.refCashierList && this.$refs.refCashierList.handleInputPaymentPassword()
+				if (this.isPasswordFail) this.$refs.refCashierList && (this.$refs.refCashierList.isShowPasswordDialog = true)
+				else this.$refs.refCashierList && this.$refs.refCashierList.handleInputPaymentPassword()
 			} else {
 				await handleDoPay({
 					collageId: this.dataList.collageId,
@@ -808,7 +816,14 @@ export default {
 					orderSn: this.dataList.orderFormid,
 					type: 2,
 					...this.payInfo
-				}, this.dataList.orderType, paymentModeEnum[this.dataList.orderType], { fn: () => (this.payInfo.pwd = '') })
+				}, this.dataList.orderType, paymentTypeEnum[this.dataList.orderType], {
+					passwordFailFn: (submitResult) => {
+						uni.removeStorageSync(T_PAY_ORDER)
+						this.isPasswordFail = true
+						this.payInfo.pwd = ''
+						this.$refs.refCashierList && (this.$refs.refCashierList.isShowPasswordDialog = true)
+					}
+				})
 			}
 		},
 

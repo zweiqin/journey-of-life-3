@@ -262,7 +262,7 @@ export default {
 			cardName: ''
 		}
 	},
-	onLoad() {
+	onShow() {
 		this.$store.dispatch('auth/unifiedProcessingShopAction', {
 			cb: () => {
 				this.getCardEquitySearchList()

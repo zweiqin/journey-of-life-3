@@ -72,7 +72,8 @@
 					:show-platform-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && (b.exchangeCounterType !== 1) && (b.procureCounterType !== 1))) && !!totalPrice"
 					:show-transaction-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && (b.exchangeCounterType !== 1) && (b.procureCounterType !== 1))) && !!totalPrice"
 					:shop-id-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId && (b.exchangeCounterType !== 1) && (b.procureCounterType !== 1))) && totalPrice ? settlement.shops.length === 1 ? settlement.shops[0].shopId : 0 : 0"
-					@change="handlePaymentSelect" @voucher-select="(e) => otherInfo.voucherId = e.voucherId"
+					:is-password-fail="isPasswordFail" @change="handlePaymentSelect"
+					@voucher-select="(e) => otherInfo.voucherId = e.voucherId"
 					@password-input="(e) => (payInfo.pwd = e.pwd) && handlePaymentPassword()"
 				/>
 			</view>
@@ -124,7 +125,7 @@
 import { resolveGetOrderSettlement, resolveIntegralSelect, resolveCalcOrderTotal, resolveVoucherData, resolveVoucherPaySelect, resolveSubmitOrder } from '../../../utils'
 import { getQueryDictByNameApi } from '../../../api/anotherTFInterface'
 import { T_SKU_ITEM_MSG_LIST, T_SKU_ITEM_INFO, T_PAY_ORDER } from '../../../constant'
-import { handleOrderTypeJump } from '../../../utils/payUtil'
+import { handleOrderTypeJump, paymentTypeEnum, handleDoPay } from '../../../utils/payUtil'
 
 export default {
 	name: 'PaymentCodeConfirm',
@@ -145,6 +146,8 @@ export default {
 			totalPrice: 0, // 合计
 			userAddressInfo: { receiveId: '' },
 			payInfo: { paymentMode: '', huabeiPeriod: -1, pwd: '' }, // 支付相关
+			isPasswordFail: false,
+			submitResult: {},
 			// 拼团相关
 			skuItemInfo: {},
 			// 店铺优惠券相关
@@ -181,6 +184,11 @@ export default {
 		}
 	},
 	onLoad(options) {
+		// 涉及支付的页面分类：
+		// ①涉及支付密码的页面：
+		// - 要创建订单的页面：使用通联或惠市宝支付后需要订单跳转的页面（订单结算页，付款码结算页，会员卡列表页），使用通联或惠市宝支付后不需要订单跳转的页面（商家充值页，代金券充值页）。
+		// - 不用创建订单的页面：会员卡订单页，订单列表页，订单详情页。（情况：在H5环境使用通联和惠市宝支付，套壳小程序和APP环境使用通联和惠市宝支付，使用其它支付后密码错误再使用通联和惠市宝支付）
+		// ②不涉及支付密码的页面：余额充值页。
 		const pages = getCurrentPages()
 		if (pages.length > 1) uni.removeStorageSync(T_PAY_ORDER)
 		this.fromType = options.type
@@ -189,9 +197,12 @@ export default {
 		this.isProcureCounter = Boolean(Number(options.isProcure) || 0)
 	},
 	onShow() {
-		if (uni.getStorageSync(T_PAY_ORDER)) {
-			// 考虑在小程序和APP环境，跳转到其它小程序支付的情况，通联和惠市宝支付成功后用户按手机返回键回到该页面（本地存储中会保留订单信息）
-			// 另外，在H5环境（小程序和APP环境在首次加载时必然会清除，且只有一次首次加载），在onLoad首次加载时：如果是由其它页面跳转到该支付页面，就会清除订单信息，就不会重定向到'订单跳转页'；如果是通联和惠市宝支付成功后用户按手机返回键，就会重定向。
+		const pages = getCurrentPages()
+		if (uni.getStorageSync(T_PAY_ORDER) && (pages.length === 1)) {
+			// 在H5环境（小程序和APP环境在首次加载时必然会清除，且只有一次首次加载），在onLoad首次加载时：如果是由其它页面跳转到该支付页面，就会清除订单信息，就不会重定向到'订单跳转页'；如果是通联和惠市宝支付成功后用户按手机返回键，就会重定向。
+			handleOrderTypeJump({ type: uni.getStorageSync(T_PAY_ORDER).type })
+		} else if (uni.getStorageSync(T_PAY_ORDER) && ((this.payInfo.paymentMode === 9) || (this.payInfo.paymentMode === 4))) {
+			// 考虑在套壳小程序和APP环境，跳转到其它小程序支付的情况，通联和惠市宝支付成功后用户按手机返回键回到该页面（本地存储中会保留订单信息）
 			handleOrderTypeJump({ type: uni.getStorageSync(T_PAY_ORDER).type })
 		} else if (typeof this.integralRatio === 'number') {
 			this.handleOnShow()
@@ -329,10 +340,18 @@ export default {
 			this.totalPrice = orderTotalObj.totalPrice
 		},
 
-		handlePaymentPassword() {
-			if ((this.payInfo.paymentMode !== 9) && (this.payInfo.paymentMode !== 4) && !this.payInfo.pwd) {
-				this.$refs.refCashierList && this.$refs.refCashierList.handleInputPaymentPassword()
-			} else {
+		async handlePaymentPassword() {
+			if (this.isPasswordFail && this.payInfo.pwd) {
+				await handleDoPay({ ...this.submitResult, ...this.payInfo, type: 1 }, this.settlement.shopType, paymentTypeEnum[this.settlement.shopType], {
+					passwordFailFn: (submitResult) => {
+						this.payInfo.pwd = ''
+						this.$refs.refCashierList && (this.$refs.refCashierList.isShowPasswordDialog = true)
+					}
+				})
+			} else if ((this.payInfo.paymentMode !== 9) && (this.payInfo.paymentMode !== 4) && !this.payInfo.pwd) {
+				if (this.isPasswordFail) this.$refs.refCashierList && (this.$refs.refCashierList.isShowPasswordDialog = true) // 应该不会发生，因为密码错误后会重新弹出密码输入框，如果此时关闭框则会进行订单跳转，而不是（关闭框再点击提交后）进入该判断。但此处仍考虑该情况。
+				else this.$refs.refCashierList && this.$refs.refCashierList.handleInputPaymentPassword()
+			} else if (!this.isPasswordFail) {
 				resolveSubmitOrder({
 					settlement: this.settlement,
 					userAddressInfo: this.userAddressInfo,
@@ -344,7 +363,12 @@ export default {
 					totalPrice: this.totalPrice,
 					otherInfo: this.otherInfo,
 					payInfo: this.payInfo,
-					fn: () => (this.payInfo.pwd = '')
+					passwordFailFn: (submitResult) => {
+						this.submitResult = submitResult
+						this.isPasswordFail = true
+						this.payInfo.pwd = ''
+						this.$refs.refCashierList && (this.$refs.refCashierList.isShowPasswordDialog = true)
+					}
 				})
 			}
 		},

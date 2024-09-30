@@ -1,13 +1,14 @@
 <template>
   <view class="container">
-    <view class="backHeader">
-			<tui-icon
-				name="arrowleft" :size="60" unit="rpx"
-				color="#000000"
-				margin="0" @click="handleBack"
-			></tui-icon>
-      <text class="pageTitle">充值商家</text>
-    </view>
+		<BeeBack>
+			<view
+				style="display: flex;align-items: center;justify-content: space-between;padding: 20rpx 20rpx 16rpx;background-color: #f5f5f5;"
+			>
+				<BeeIcon name="arrowleft" :size="26" color="#222229" style="width: fit-content;">
+				</BeeIcon>
+				<text style="flex: 1;margin-left: -40rpx;text-align: center;">充值商家</text>
+			</view>
+		</BeeBack>
     <view class="checkoutMerchant">
         <div class="tabsNavs">
             <view class="tab-item" @click="changeTab(index)" :class="{active : currentIndex == index}" v-for="(item, index) in tabs" :key="item">
@@ -56,29 +57,6 @@ export default {
 <style lang="scss">
 .container {
     background-color: #F8F9FB;
-    .backHeader {
-        position: relative;
-        width: 750rpx;
-        height: 88rpx;
-        /* background-color: #fff; */
-        display: flex;
-        align-items: center;
-        .backIcon {
-            width: 60rpx;
-            height: 60rpx;
-        }
-        .pageTitle {
-            font-family: 思源黑体;
-            font-size: 32rpx;
-            font-weight: 600;
-            line-height: 44rpx;
-            letter-spacing: 0.32rpx;
-            color: #222229;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-    }
     .checkoutMerchant {
         width: 100vw;
         box-sizing: border-box;

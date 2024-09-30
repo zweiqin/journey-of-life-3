@@ -2,7 +2,7 @@
 	<view class="field-pane-container">
 		<view class="title">{{ title }}</view>
 		<view v-for="item in fields" :key="item.label">
-			<view v-if="(item.field === 'cardId') || (item.field === 'shopId')"></view>
+			<view v-if="(item.field === 'cardId') || (item.field === 'shopId') || (item.field === 'originMemberCardChannel')"></view>
 			<!-- <view v-else-if="item.field === 'startTime' || item.field === 'endTime'" class="item">
 				<template>
 				<view
@@ -83,7 +83,7 @@
 								v-for="(part, index) in [{ name: 'app', value: '1' }, { name: 'H5', value: '2' }, { name: '支付宝小程序', value: '3' }, { name: '线下渠道', value: '4' }, { name: '微信小程序', value: '5' }, { name: '代理发行', value: '6' }]"
 								:key="index"
 							>
-								<tui-list-cell v-if="(part.value === form[item.field]) || ['4', '6'].includes(part.value)" padding="16rpx">
+								<tui-list-cell v-if="(part.value === form.originMemberCardChannel) || ['4', '6'].includes(part.value)" padding="16rpx">
 									<view>
 										<tui-radio :checked="false" :value="part.value" color="#07c160" border-color="#999">
 										</tui-radio>
@@ -143,6 +143,7 @@ export default {
 				memberCardType: '',
 				memberCardNumber: '',
 				memberCardChannel: '',
+				originMemberCardChannel: '',
 				memberCardLevel: '',
 				memberCardDays: '',
 				cardEquityStatement: '',

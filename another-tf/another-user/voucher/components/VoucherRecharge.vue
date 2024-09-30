@@ -151,7 +151,7 @@
 					ref="refCashierList"
 					:price-pay="rechargeForm.number / 2" show pay-type-shops :hui-shi-bao-pay="!!rechargeForm.number"
 					show-tonglian-pay :show-commission-pay="!!rechargeForm.number" :show-platform-pay="!!rechargeForm.number"
-					@change="(e) => payInfo = e"
+					:is-password-fail="isPasswordFail" @change="(e) => payInfo = e"
 					@password-input="(e) => (payInfo.pwd = e.pwd) && handlePaymentPassword()"
 				/>
 				<tui-button
@@ -168,7 +168,7 @@
 
 <script>
 import { submitBuyerVoucherOrderApi } from '../../../../api/anotherTFInterface'
-import { paymentModeEnum, handleDoPay } from '../../../../utils/payUtil'
+import { paymentTypeEnum, handleDoPay } from '../../../../utils/payUtil'
 
 export default {
 	name: 'VoucherRecharge',
@@ -207,7 +207,9 @@ export default {
 				orderType: '1'
 			},
 			isShowPayTypePopup: false,
-			payInfo: {}
+			payInfo: {},
+			isPasswordFail: false,
+			submitResult: {}
 		}
 	},
 
@@ -237,15 +239,30 @@ export default {
 			this.isShowVoucherModal = true
 		},
 
-		handlePaymentPassword() {
-			if ((this.payInfo.paymentMode !== 9) && (this.payInfo.paymentMode !== 4) && !this.payInfo.pwd) {
-				this.$refs.refCashierList && this.$refs.refCashierList.handleInputPaymentPassword()
-			} else {
+		async handlePaymentPassword() {
+			if (this.isPasswordFail && this.payInfo.pwd) {
+				await handleDoPay({ ...this.submitResult, ...this.payInfo }, 4, paymentTypeEnum[4], {
+					passwordFailFn: (submitResult) => {
+						this.payInfo.pwd = ''
+						this.$refs.refCashierList && (this.$refs.refCashierList.isShowPasswordDialog = true)
+					}
+				})
+			} else if ((this.payInfo.paymentMode !== 9) && (this.payInfo.paymentMode !== 4) && !this.payInfo.pwd) {
+				if (this.isPasswordFail) this.$refs.refCashierList && (this.$refs.refCashierList.isShowPasswordDialog = true)
+				else this.$refs.refCashierList && this.$refs.refCashierList.handleInputPaymentPassword()
+			} else if (!this.isPasswordFail) {
 				uni.showLoading()
 				this.rechargeForm.payGrade = this.rechargeForm.number / this.purchaseRatio
 				submitBuyerVoucherOrderApi({ ...this.rechargeForm })
 					.then(async (res) => {
-						await handleDoPay({ ...res.data, ...this.payInfo }, 4, paymentModeEnum[4], { fn: () => (this.payInfo.pwd = '') })
+						await handleDoPay({ ...res.data, ...this.payInfo }, 4, paymentTypeEnum[4], {
+							passwordFailFn: (submitResult) => {
+								this.submitResult = submitResult
+								this.isPasswordFail = true
+								this.payInfo.pwd = ''
+								this.$refs.refCashierList && (this.$refs.refCashierList.isShowPasswordDialog = true)
+							}
+						})
 						uni.hideLoading()
 						this.isShowVoucherModal = false
 						this.isShowPopup = false

@@ -1,5 +1,6 @@
 <template>
   <view class="shop-recharge-container">
+		<JHeader title="商家充值" width="50" height="50"></JHeader>
     <view class="total-pane">
       <view class="itemHeader">
         <image :src="common.seamingImgUrl(shopInfo.shopLogo)" mode="" class="avatar"></image>
@@ -78,7 +79,7 @@
 					pay-type-shops
 					:hui-shi-bao-pay="!!currentRechargeCount" show-tonglian-pay
 					:show-commission-pay="!!currentRechargeCount" :show-platform-pay="!!currentRechargeCount"
-					@change="(e) => payInfo = e"
+					:is-password-fail="isPasswordFail" @change="(e) => payInfo = e"
 					@password-input="(e) => (payInfo.pwd = e.pwd) && handlePaymentPassword()"
 				/>
 				<tui-button
@@ -96,7 +97,8 @@
 
 <script>
 import { getRechargeSubmitApi, addRechargeSubmitApi, getRechargeTotalCustomersApi, getByShopAllApi, getByRechargeApi, getIndexShopDetailApi } from '@/api/anotherTFInterface'
-import { paymentModeEnum, handleDoPay } from '@/utils/payUtil'
+import { paymentTypeEnum, handleDoPay } from '@/utils/payUtil'
+import { T_PAY_ORDER } from '../../../constant'
 
 export default {
 	name: 'ShopRecharge',
@@ -116,11 +118,21 @@ export default {
       searchShopValue: "",
 			isShowPayTypePopup: false,
 			payInfo: {},
+			isPasswordFail: false,
+			submitResult: {}
     }
   },
   onLoad(options) {
+		uni.removeStorageSync(T_PAY_ORDER)
     this.shopInfo = JSON.parse(options.shopInfo)
     this.shopId = this.shopInfo.shopId
+  },
+	onShow() {
+		if (uni.getStorageSync(T_PAY_ORDER) && this.isShowPayTypePopup && ((this.payInfo.paymentMode === 9) || (this.payInfo.paymentMode === 4))) {
+			uni.removeStorageSync(T_PAY_ORDER)
+			this.isShowPayTypePopup = false
+			this.payInfo = {}
+		}
     // getByShopAllApi().then(res => {
     //   this.historyMerchantNumber = res.data.records.length
     // })
@@ -150,7 +162,7 @@ export default {
     }).then(res => {
       console.log(res);
     })
-  },
+	},
   methods: {
     handleChnage({ index }) {
       this.currentTab = index
@@ -162,10 +174,18 @@ export default {
       console.log(this.currentRechargeType,this.currentRechargeCount);
     },
 
-		handlePaymentPassword() {
-			if ((this.payInfo.paymentMode !== 9) && (this.payInfo.paymentMode !== 4) && !this.payInfo.pwd) {
-				this.$refs.refCashierList && this.$refs.refCashierList.handleInputPaymentPassword()
-			} else {
+		async handlePaymentPassword() {
+			if (this.isPasswordFail && this.payInfo.pwd) {
+				await handleDoPay({ ...this.submitResult, ...this.payInfo }, 7, paymentTypeEnum[7], {
+					passwordFailFn: (submitResult) => {
+						this.payInfo.pwd = ''
+						this.$refs.refCashierList && (this.$refs.refCashierList.isShowPasswordDialog = true)
+					}
+				})
+			} else if ((this.payInfo.paymentMode !== 9) && (this.payInfo.paymentMode !== 4) && !this.payInfo.pwd) {
+				if (this.isPasswordFail) this.$refs.refCashierList && (this.$refs.refCashierList.isShowPasswordDialog = true)
+				else this.$refs.refCashierList && this.$refs.refCashierList.handleInputPaymentPassword()
+			} else if (!this.isPasswordFail) {
 				if (!this.currentRechargeCount) {
 					this.ttoast({
 						type: "fail",
@@ -173,17 +193,27 @@ export default {
 					})
 					return
 				}
+				uni.showLoading()
 				addRechargeSubmitApi({
 					shopId: this.shopId,
 					amountId: this.rechargePriceList[this.currentRechargeType].amountId,
 					rechargeBalance: this.currentRechargeCount,
 					remark: 'normal'
-				}).then(res => {
-					handleDoPay({ ...res.data, ...this.payInfo }, 7, paymentModeEnum[7], { fn: () => (this.payInfo.pwd = '') })
-					console.log(res);
-				}).catch(err => {
-					console.log(err);
 				})
+					.then(async (res) => {
+						uni.hideLoading()
+						await handleDoPay({ ...res.data, ...this.payInfo }, 7, paymentTypeEnum[7], {
+							passwordFailFn: (submitResult) => {
+								this.submitResult = submitResult
+								this.isPasswordFail = true
+								this.payInfo.pwd = ''
+								this.$refs.refCashierList && (this.$refs.refCashierList.isShowPasswordDialog = true)
+							}
+						})
+					})
+					.catch(() => {
+						uni.hideLoading()
+					})
 			}
 		},
 
@@ -262,16 +292,6 @@ export default {
     align-items: center;
     flex-direction: column;
     position: relative;
-
-    &::after {
-      content: '';
-      width: 624upx;
-      height: 675upx;
-      display: block;
-      position: absolute;
-      left: -344upx;
-      top: -100upx;
-    }
 
     .pane-1 {
       flex: 1;

@@ -131,7 +131,7 @@
 					:show-platform-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))"
 					:show-transaction-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId))"
 					:shop-id-pay="settlement.shops.every((a) => a.skus.every((b) => !b.platformCurrencyId)) ? settlement.shops.length === 1 ? settlement.shops[0].shopId : 0 : 0"
-					@change="handlePaymentSelect"
+					:is-password-fail="isPasswordFail" @change="handlePaymentSelect"
 					@password-input="(e) => (payInfo.pwd = e.pwd) && handlePaymentPassword()"
 				>
 					<template #header="obj">
@@ -175,7 +175,7 @@
 import { resolveGoodsDetailSkuSituation, resolveGoodsDetailTagsSituation, resolveGetOrderSettlement, resolveIntegralSelect, resolveCalcOrderTotal, resolveVoucherData, resolveVoucherPaySelect, resolveSubmitOrder } from '../../../utils'
 import { getShopIdCodeRelationshipCodeApi, bindPlatformRelationshipCodeApi, getShopIsNotDeactivateApi, getOrderDetailApi, getProductDetailsByIdApi, getQueryDictByNameApi } from '../../../api/anotherTFInterface'
 import { T_SKU_ITEM_MSG_LIST, T_SKU_ITEM_INFO, T_PAY_ORDER } from '../../../constant'
-import { handleOrderTypeJump } from '../../../utils/payUtil'
+import { handleOrderTypeJump, paymentTypeEnum, handleDoPay } from '../../../utils/payUtil'
 
 export default {
 	name: 'PaymentCodeConfirm',
@@ -216,6 +216,8 @@ export default {
 			totalPrice: 0, // 合计
 			userAddressInfo: { receiveId: '' },
 			payInfo: { paymentMode: '', huabeiPeriod: -1, pwd: '' }, // 支付相关
+			isPasswordFail: false,
+			submitResult: {},
 			// 拼团相关
 			skuItemInfo: {},
 			// 店铺优惠券相关
@@ -384,10 +386,16 @@ export default {
 	},
 	methods: {
 		handleOnShowBefore(isGetDetail) {
+			const pages = getCurrentPages()
+			if (uni.getStorageSync(T_PAY_ORDER) && (pages.length === 1)) {
+				handleOrderTypeJump({ type: uni.getStorageSync(T_PAY_ORDER).type })
+				return
+			} else if (uni.getStorageSync(T_PAY_ORDER) && ((this.payInfo.paymentMode === 9) || (this.payInfo.paymentMode === 4))) {
+				handleOrderTypeJump({ type: uni.getStorageSync(T_PAY_ORDER).type })
+				return
+			}
 			if (isGetDetail) {
-				if (uni.getStorageSync(T_PAY_ORDER)) {
-					handleOrderTypeJump({ type: uni.getStorageSync(T_PAY_ORDER).type })
-				} else if (typeof this.integralRatio === 'number') {
+				if (typeof this.integralRatio === 'number') {
 					this.handleOnShow()
 				} else {
 					getQueryDictByNameApi({ name: 'credit_exchange_rate' })
@@ -584,26 +592,57 @@ export default {
 			this.totalPrice = orderTotalObj.totalPrice
 		},
 
-		handlePaymentPassword() {
-			if ((this.payInfo.paymentMode !== 9) && (this.payInfo.paymentMode !== 4) && !this.payInfo.pwd) {
-				this.$refs.refCashierList && this.$refs.refCashierList.handleInputPaymentPassword()
-			} else {
-				resolveSubmitOrder({
-					isPayImmediately: !!this.otherInfo.orderId,
-					settlement: this.settlement,
-					userAddressInfo: this.userAddressInfo,
-					skuItemMsgList: this.skuItemMsgList,
-					skuItemInfo: this.skuItemInfo,
-					selectedPlatformCoupon: this.selectedPlatformCoupon,
-					selectIntegral: this.selectIntegral,
-					integralRatio: this.integralRatio,
-					totalPrice: this.totalPrice,
-					otherInfo: this.otherInfo,
-					payInfo: this.payInfo,
-					hasPrice: true,
-					shamPriceText: '请输入金额',
-					fn: () => (this.payInfo.pwd = '')
-				})
+		async handlePaymentPassword() {
+			if (this.isPasswordFail && this.payInfo.pwd) {
+				if (this.otherInfo.orderId) {
+					await handleDoPay({ collageId: this.otherInfo.collageId, money: this.totalPrice, orderId: this.otherInfo.orderId, ...this.payInfo, type: 2 }, this.settlement.shopType, paymentTypeEnum[this.settlement.shopType], {
+						passwordFailFn: (submitResult) => {
+							this.payInfo.pwd = ''
+							this.$refs.refCashierList && (this.$refs.refCashierList.isShowPasswordDialog = true)
+						}
+					})
+				} else {
+					await handleDoPay({ ...this.submitResult, ...this.payInfo, type: 1 }, this.settlement.shopType, paymentTypeEnum[this.settlement.shopType], {
+						passwordFailFn: (submitResult) => {
+							this.payInfo.pwd = ''
+							this.$refs.refCashierList && (this.$refs.refCashierList.isShowPasswordDialog = true)
+						}
+					})
+				}
+			} else if ((this.payInfo.paymentMode !== 9) && (this.payInfo.paymentMode !== 4) && !this.payInfo.pwd) {
+				if (this.isPasswordFail) this.$refs.refCashierList && (this.$refs.refCashierList.isShowPasswordDialog = true)
+				else this.$refs.refCashierList && this.$refs.refCashierList.handleInputPaymentPassword()
+			} else if (!this.isPasswordFail) {
+				if (this.otherInfo.orderId && this.otherInfo.isCanPay) {
+					await handleDoPay({ collageId: this.otherInfo.collageId, money: this.totalPrice, orderId: this.otherInfo.orderId, ...this.payInfo, type: 2 }, this.settlement.shopType, paymentTypeEnum[this.settlement.shopType], {
+						passwordFailFn: (submitResult) => {
+							this.isPasswordFail = true
+							this.payInfo.pwd = ''
+							this.$refs.refCashierList && (this.$refs.refCashierList.isShowPasswordDialog = true)
+						}
+					})
+				} else {
+					resolveSubmitOrder({
+						settlement: this.settlement,
+						userAddressInfo: this.userAddressInfo,
+						skuItemMsgList: this.skuItemMsgList,
+						skuItemInfo: this.skuItemInfo,
+						selectedPlatformCoupon: this.selectedPlatformCoupon,
+						selectIntegral: this.selectIntegral,
+						integralRatio: this.integralRatio,
+						totalPrice: this.totalPrice,
+						otherInfo: this.otherInfo,
+						payInfo: this.payInfo,
+						hasPrice: true,
+						shamPriceText: '请输入金额',
+						passwordFailFn: (submitResult) => {
+							this.submitResult = submitResult
+							this.isPasswordFail = true
+							this.payInfo.pwd = ''
+							this.$refs.refCashierList && (this.$refs.refCashierList.isShowPasswordDialog = true)
+						}
+					})
+				}
 			}
 		}
 	}
