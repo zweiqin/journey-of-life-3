@@ -41,10 +41,28 @@
 							<slot name="successText">{{ successText }}</slot>
 						</view>
 					</view>
-					<view
+					<!-- <view
 						class="slider-btn slider-move-btn" :style="{ 'left': sliderMoveLeft }"
 						:class="{ 'slider-shock': shock }" @touchstart.stop="sliderTouchStart" @touchmove.stop="sliderTouchMove"
 						@touchend.stop="sliderEnd" @mousedown="sliderDown"
+						>
+						<i>&nbsp;</i>
+						<tui-icon name="more-fill" :size="34" unit="px" color="#ffffff" margin="0"></tui-icon>
+						</view> -->
+					<view
+						v-if="$store.state.app.terminal === 5"
+						class="slider-btn slider-move-btn" :style="{ 'left': sliderMoveLeft }"
+						:class="{ 'slider-shock': shock }" @touchstart.stop="sliderTouchStart" @touchmove.stop="sliderTouchMove"
+						@touchend.stop="sliderEnd" @mousedown="sliderDown"
+					>
+						<i>&nbsp;</i>
+						<tui-icon name="more-fill" :size="34" unit="px" color="#ef530e" margin="0"></tui-icon>
+					</view>
+					<view
+						v-else
+						class="slider-btn slider-move-btn" :style="{ 'left': sliderMoveLeft }"
+						:class="{ 'slider-shock': shock }" @touchstart.stop="sliderTouchStart" @touchmove.stop="sliderTouchMove"
+						@touchend.stop="sliderEnd"
 					>
 						<i>&nbsp;</i>
 						<tui-icon name="more-fill" :size="34" unit="px" color="#ffffff" margin="0"></tui-icon>

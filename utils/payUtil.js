@@ -41,32 +41,32 @@ export function handleOrderTypeJump(params = {}) {
 	}, params)
 	// 不知道支付结果的跳转
 	if (type === 'shoppingMall') {
-		// 跳到其它订单页
+		// 跳到'订单跳转页'
 		uni.switchTab({ url: '/pages/order/order' })
 	} else if (type === 'businessDistrict') {
-		// 跳到其它订单页
+		// 跳到'订单跳转页'
 		uni.switchTab({ url: '/pages/order/order' })
 	} else if (type === 'settled') {
 		uni.switchTab({ url: '/pages/user/user' })
 	} else if (type === 'voucher') {
-		// 这种类型的充值，无论是在小程序和APP环境跳转到其它小程序支付后按手机返回键的情况，还是在H5环境使用通联或惠市宝支付后按手机返回键的情况，还是其它支付方式支付后重定向到本页面的情况，都会在本页面触发onshow重新加载数据，可以不用跳到其它订单页。
+		// 这种类型的充值，无论是在套壳小程序和APP环境跳转到其它小程序支付后按手机返回键的情况，还是在H5环境使用通联或惠市宝支付后按手机返回键的情况，还是其它支付方式支付后重定向到本页面的情况，都会在本页面触发onShow重新加载数据，可以不用跳到'订单跳转页'。
 		uni.redirectTo({ url: '/another-tf/another-user/voucher/voucher-operation' })
 	} else if (type === 'mapRedEnvelope') {
 		uni.switchTab({ url: '/pages/user/user' })
 	} else if (type === 'article') {
 		uni.switchTab({ url: '/pages/user/user' })
 	} else if (type === 'shopRecharge') {
-		// 其它
-		uni.switchTab({ url: '/pages/user/user' })
+		// 商家充值，也不用在onShow跳到'订单跳转页'。如果是重定向到该'订单跳转页'，则可能又进行商家充值而出现不断叠加页面栈的情况。
+		uni.reLaunch({ url: '/another-tf/another-user/shop-recharge/selectMerchant' })
 	} else if (type === 'balance') {
-		// 触发onshow
+		// 触发onShow
 		uni.redirectTo({ url: '/another-tf/another-user/my-wallet/balance-operation' })
 	} else if (type === 'verification') {
 		uni.switchTab({ url: '/pages/user/user' })
 	} else if (type === 'activityDeposit') {
 		uni.switchTab({ url: '/pages/user/user' })
 	} else if (type === 'memberCard') {
-		// 跳到其它订单页
+		// 跳到'订单跳转页'
 		uni.redirectTo({ url: '/another-tf/another-user/member-card/user-purchased' })
 	} else {
 		uni.switchTab({ url: '/pages/index/index' })
@@ -77,15 +77,15 @@ export function handleOrderTypeFailJump(params = {}) {
 	const { type } = Object.assign({
 		type: ''
 	}, params)
-	// 支付结果是失败的跳转
+	// 支付结果是失败的跳转。可能会存在本身就在'订单跳转页'进行支付，并支付失败的情况。
 	if (['shoppingMall', 'businessDistrict'].includes(type)) {
-		uni.switchTab({ url: '/pages/order/order' })
+		uni.reLaunch({ url: '/pages/order/order' })
 	} else if (['settled', 'voucher', 'mapRedEnvelope', 'article', 'shopRecharge', 'balance', 'verification', 'activityDeposit'].includes(type)) {
 		uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' })
 	} else if ([ 'memberCard' ].includes(type)) {
-		uni.redirectTo({ url: '/another-tf/another-user/member-card/user-purchased' })
+		uni.reLaunch({ url: '/another-tf/another-user/member-card/user-purchased' })
 	} else {
-		uni.switchTab({ url: '/pages/community-center/community-centerr' })
+		uni.reLaunch({ url: '/pages/community-center/community-centerr' })
 	}
 }
 
@@ -154,6 +154,7 @@ async function payH5InWechat(data, payType, type, otherArgs) {
 		if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
 		else uni.showToast({ title: `支付失败`, icon: 'none' })
 		if (e.data && (e.data.code === '验证密码错误')) {
+			otherArgs.passwordFailFn && typeof otherArgs.passwordFailFn === 'function' && otherArgs.passwordFailFn()
 		} else {
 			setTimeout(() => {
 				handleOrderTypeFailJump({ type })
@@ -182,6 +183,7 @@ async function payH5InEquipment(data, payType, type, otherArgs) {
 		if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
 		else uni.showToast({ title: `支付失败`, icon: 'none' })
 		if (e.data && (e.data.code === '验证密码错误')) {
+			otherArgs.passwordFailFn && typeof otherArgs.passwordFailFn === 'function' && otherArgs.passwordFailFn()
 		} else {
 			setTimeout(() => {
 				handleOrderTypeFailJump({ type })
@@ -229,6 +231,7 @@ async function mpWechatPay(data, payType, type, otherArgs) {
 		if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
 		else uni.showToast({ title: `微信支付失败`, icon: 'none' })
 		if (e.data && (e.data.code === '验证密码错误')) {
+			otherArgs.passwordFailFn && typeof otherArgs.passwordFailFn === 'function' && otherArgs.passwordFailFn()
 		} else {
 			setTimeout(() => {
 				handleOrderTypeFailJump({ type })
@@ -277,6 +280,7 @@ async function appWechatPay(data, payType, type, otherArgs) {
 		if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
 		else uni.showToast({ title: `APP拉起微信支付失败`, icon: 'none' })
 		if (e.data && (e.data.code === '验证密码错误')) {
+			otherArgs.passwordFailFn && typeof otherArgs.passwordFailFn === 'function' && otherArgs.passwordFailFn()
 		} else {
 			setTimeout(() => {
 				handleOrderTypeFailJump({ type })
@@ -321,6 +325,7 @@ async function zhiAliPay(data, payType, type, otherArgs) {
 		if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
 		else uni.showToast({ title: `支付宝支付失败`, icon: 'none' })
 		if (e.data && (e.data.code === '验证密码错误')) {
+			otherArgs.passwordFailFn && typeof otherArgs.passwordFailFn === 'function' && otherArgs.passwordFailFn()
 		} else {
 			setTimeout(() => {
 				handleOrderTypeFailJump({ type })
@@ -351,6 +356,7 @@ async function bankCardPay(data, payType, type, otherArgs) {
 		if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
 		else uni.showToast({ title: `银行卡支付失败`, icon: 'none' })
 		if (e.data && (e.data.code === '验证密码错误')) {
+			otherArgs.passwordFailFn && typeof otherArgs.passwordFailFn === 'function' && otherArgs.passwordFailFn()
 		} else {
 			setTimeout(() => {
 				handleOrderTypeFailJump({ type })
@@ -368,19 +374,19 @@ async function bankCardPay(data, payType, type, otherArgs) {
 
 async function h5TonglianPay(data, payType, type, otherArgs) {
 	if (isInWx()) {
+		if (type) {
+			uni.removeStorageSync(T_PAY_ORDER)
+			uni.setStorageSync(T_PAY_ORDER, {
+				type,
+				TL_ORDER_NO: data.orderSn
+			})
+		}
 		await gotoOrderH5PayApi({
 			...data,
 			purchaseMode: payType,
 			...otherArgs
 		}).then((res) => {
 			console.log(JSON.stringify(res.data))
-			if (type) {
-				uni.removeStorageSync(T_PAY_ORDER)
-				uni.setStorageSync(T_PAY_ORDER, {
-					type,
-					TL_ORDER_NO: data.orderSn
-				})
-			}
 			if (!res.data.package) { // 零元支付情况
 				uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
 			} else {
@@ -405,6 +411,7 @@ async function h5TonglianPay(data, payType, type, otherArgs) {
 				if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
 				else uni.showToast({ title: `支付失败`, icon: 'none' })
 				if (e.data && (e.data.code === '验证密码错误')) {
+					otherArgs.passwordFailFn && typeof otherArgs.passwordFailFn === 'function' && otherArgs.passwordFailFn()
 				} else {
 					setTimeout(() => {
 						handleOrderTypeFailJump({ type })
@@ -415,6 +422,13 @@ async function h5TonglianPay(data, payType, type, otherArgs) {
 				uni.hideLoading()
 			})
 	} else {
+		if (type) {
+			uni.removeStorageSync(T_PAY_ORDER)
+			uni.setStorageSync(T_PAY_ORDER, {
+				type,
+				TL_ORDER_NO: data.orderSn
+			})
+		}
 		await getPayMiniProgramQueryApi({
 			orderNo: data.orderSn,
 			purchaseMode: payType,
@@ -422,13 +436,6 @@ async function h5TonglianPay(data, payType, type, otherArgs) {
 			...otherArgs
 		}).then((res) => {
 			console.log(JSON.stringify(res.data))
-			if (type) {
-				uni.removeStorageSync(T_PAY_ORDER)
-				uni.setStorageSync(T_PAY_ORDER, {
-					type,
-					TL_ORDER_NO: data.orderSn
-				})
-			}
 			if (res.data.isZeroOrder === '1') { // 零元支付情况
 				uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
 			} else {
@@ -445,6 +452,7 @@ async function h5TonglianPay(data, payType, type, otherArgs) {
 				if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
 				else uni.showToast({ title: `支付失败`, icon: 'none' })
 				if (e.data && (e.data.code === '验证密码错误')) {
+					otherArgs.passwordFailFn && typeof otherArgs.passwordFailFn === 'function' && otherArgs.passwordFailFn()
 				} else {
 					setTimeout(() => {
 						handleOrderTypeFailJump({ type })
@@ -463,6 +471,13 @@ async function h5TonglianPay(data, payType, type, otherArgs) {
  */
 
 async function wvTonglianPay(data, payType, type, otherArgs) {
+	if (type) {
+		uni.removeStorageSync(T_PAY_ORDER)
+		uni.setStorageSync(T_PAY_ORDER, {
+			type,
+			TL_ORDER_NO: data.orderSn
+		})
+	}
 	await getPayMiniProgramQueryApi({
 		orderNo: data.orderSn,
 		purchaseMode: payType,
@@ -470,13 +485,6 @@ async function wvTonglianPay(data, payType, type, otherArgs) {
 		...otherArgs
 	}).then((res) => {
 		console.log(JSON.stringify(res.data))
-		if (type) {
-			uni.removeStorageSync(T_PAY_ORDER)
-			uni.setStorageSync(T_PAY_ORDER, {
-				type,
-				TL_ORDER_NO: data.orderSn
-			})
-		}
 		if (res.data.isZeroOrder === '1') { // 零元支付情况
 			uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
 		} else {
@@ -500,6 +508,7 @@ async function wvTonglianPay(data, payType, type, otherArgs) {
 			if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
 			else uni.showToast({ title: `支付失败`, icon: 'none' })
 			if (e.data && (e.data.code === '验证密码错误')) {
+				otherArgs.passwordFailFn && typeof otherArgs.passwordFailFn === 'function' && otherArgs.passwordFailFn()
 			} else {
 				setTimeout(() => {
 					handleOrderTypeFailJump({ type })
@@ -517,19 +526,19 @@ async function wvTonglianPay(data, payType, type, otherArgs) {
  */
 
 async function appTonglianPay(data, payType, type, otherArgs) {
+	if (type) {
+		uni.removeStorageSync(T_PAY_ORDER)
+		uni.setStorageSync(T_PAY_ORDER, {
+			type,
+			TL_ORDER_NO: data.orderSn
+		})
+	}
 	await getPayMiniProgramQueryApi({
 		orderNo: data.orderSn,
 		purchaseMode: payType,
 		paymentMode: data.paymentMode,
 		...otherArgs
 	}).then((res) => {
-		if (type) {
-			uni.removeStorageSync(T_PAY_ORDER)
-			uni.setStorageSync(T_PAY_ORDER, {
-				type,
-				TL_ORDER_NO: data.orderSn
-			})
-		}
 		if (res.data.isZeroOrder === '1') { // 零元支付情况
 			uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
 		} else {
@@ -565,6 +574,7 @@ async function appTonglianPay(data, payType, type, otherArgs) {
 			if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
 			else uni.showToast({ title: `支付失败`, icon: 'none' })
 			if (e.data && (e.data.code === '验证密码错误')) {
+				otherArgs.passwordFailFn && typeof otherArgs.passwordFailFn === 'function' && otherArgs.passwordFailFn()
 			} else {
 				setTimeout(() => {
 					handleOrderTypeFailJump({ type })
@@ -582,19 +592,19 @@ async function appTonglianPay(data, payType, type, otherArgs) {
  */
 
 async function h5CommissionPay(data, payType, type, otherArgs) {
+	if (type) {
+		uni.removeStorageSync(T_PAY_ORDER)
+		uni.setStorageSync(T_PAY_ORDER, {
+			type,
+			TL_ORDER_NO: data.orderSn
+		})
+	}
 	await gotoOrderH5PayApi({
 		...data,
 		purchaseMode: payType,
 		...otherArgs
 	}).then((res) => {
 		console.log(JSON.stringify(res.data))
-		if (type) {
-			uni.removeStorageSync(T_PAY_ORDER)
-			uni.setStorageSync(T_PAY_ORDER, {
-				type,
-				TL_ORDER_NO: data.orderSn
-			})
-		}
 		if (!res.data.package) { // 零元支付情况
 			uni.redirectTo({ url: '/user/otherServe/payment-completed/index' })
 		} else {
@@ -619,6 +629,7 @@ async function h5CommissionPay(data, payType, type, otherArgs) {
 			if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
 			else uni.showToast({ title: `支付失败`, icon: 'none' })
 			if (e.data && (e.data.code === '验证密码错误')) {
+				otherArgs.passwordFailFn && typeof otherArgs.passwordFailFn === 'function' && otherArgs.passwordFailFn()
 			} else {
 				setTimeout(() => {
 					handleOrderTypeFailJump({ type })
@@ -636,19 +647,19 @@ async function h5CommissionPay(data, payType, type, otherArgs) {
  */
 
 async function h5HuiShiBaoPay(data, payType, type, otherArgs) {
+	if (type) {
+		uni.removeStorageSync(T_PAY_ORDER)
+		uni.setStorageSync(T_PAY_ORDER, {
+			type,
+			TL_ORDER_NO: data.orderSn
+		})
+	}
 	await gotoOrderH5PayApi({
 		...data,
 		purchaseMode: payType,
 		...otherArgs
 	}).then((res) => {
 		console.log(JSON.stringify(res.data))
-		if (type) {
-			uni.removeStorageSync(T_PAY_ORDER)
-			uni.setStorageSync(T_PAY_ORDER, {
-				type,
-				TL_ORDER_NO: data.orderSn
-			})
-		}
 		if (!res.data.Cshdk_Url) {
 			uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' })
 		} else {
@@ -661,6 +672,7 @@ async function h5HuiShiBaoPay(data, payType, type, otherArgs) {
 			if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
 			else uni.showToast({ title: `支付失败`, icon: 'none' })
 			if (e.data && (e.data.code === '验证密码错误')) {
+				otherArgs.passwordFailFn && typeof otherArgs.passwordFailFn === 'function' && otherArgs.passwordFailFn()
 			} else {
 				setTimeout(() => {
 					handleOrderTypeFailJump({ type })
@@ -752,6 +764,13 @@ async function wvHuiShiBaoPay(data, payType, type, otherArgs) {
 	// 		}
 	// 	})
 	// } else if (otherArgs.satge === 'two') {
+	// 	if (type) {
+	// 		uni.removeStorageSync(T_PAY_ORDER)
+	// 		uni.setStorageSync(T_PAY_ORDER, {
+	// 			type,
+	// 			TL_ORDER_NO: data.orderSn
+	// 		})
+	// 	}
 	// 	// 考虑到跳转webview的该链接还需要让网页的isInMiniProgram重新赋值（或者在链接上的传参非常多），比较麻烦且可能会产生其它问题
 	// 	delete otherArgs.satge
 	// 	const code = otherArgs.code
@@ -767,13 +786,6 @@ async function wvHuiShiBaoPay(data, payType, type, otherArgs) {
 	// 		...otherArgs
 	// 	}).then((res) => {
 	// 		console.log(JSON.stringify(res.data))
-	// 		if (type) {
-	// 			uni.removeStorageSync(T_PAY_ORDER)
-	// 			uni.setStorageSync(T_PAY_ORDER, {
-	// 				type,
-	// 				TL_ORDER_NO: data.orderSn
-	// 			})
-	// 		}
 	// 		if (!res.data.Cshdk_Url) {
 	// 			uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' })
 	// 		} else {
@@ -794,6 +806,7 @@ async function wvHuiShiBaoPay(data, payType, type, otherArgs) {
 	// 			if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
 	// 			else uni.showToast({ title: `支付失败`, icon: 'none' })
 	// 			if (e.data && (e.data.code === '验证密码错误')) {
+	// 				otherArgs.passwordFailFn && typeof otherArgs.passwordFailFn === 'function' && otherArgs.passwordFailFn()
 	// 			} else {
 	// 				setTimeout(() => {
 	// 					handleOrderTypeFailJump({ type })
@@ -824,10 +837,18 @@ async function wvHuiShiBaoPay(data, payType, type, otherArgs) {
  */
 
 function mpHuiShiBaoPay(data, payType, type, otherArgs) {
+	if (type) {
+		uni.removeStorageSync(T_PAY_ORDER)
+		uni.setStorageSync(T_PAY_ORDER, {
+			type,
+			TL_ORDER_NO: data.orderSn
+		})
+	}
 	return new Promise((resolve, reject) => {
 		const failOperation = (failText = '支付失败', e = { data: '' }) => {
 			uni.showToast({ title: failText, icon: 'none' })
 			if (e.data && (e.data.code === '验证密码错误')) {
+				otherArgs.passwordFailFn && typeof otherArgs.passwordFailFn === 'function' && otherArgs.passwordFailFn()
 			} else {
 				setTimeout(() => {
 					handleOrderTypeFailJump({ type })
@@ -850,13 +871,6 @@ function mpHuiShiBaoPay(data, payType, type, otherArgs) {
 							}),
 							_isShowToast: false
 						}).then((res2) => {
-							if (type) {
-								uni.removeStorageSync(T_PAY_ORDER)
-								uni.setStorageSync(T_PAY_ORDER, {
-									type,
-									TL_ORDER_NO: data.orderSn
-								})
-							}
 							if (res2.data.Rtn_Par_Data) {
 								const paymentObj = JSON.parse(res2.data.Rtn_Par_Data)
 								uni.requestPayment({

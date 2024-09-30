@@ -132,7 +132,7 @@ export default {
 			}
 		}
 	},
-	onLoad() {
+	onShow() {
 		this.$store.dispatch('auth/unifiedProcessingShopAction', {
 			cb: () => {
 				this.getMemberCardSearchList()

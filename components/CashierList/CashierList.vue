@@ -107,7 +107,7 @@
 						<view style="padding: 12rpx 0 0;text-align: left;">
 							<tui-icon
 								name="shut" color="#000000" size="46" unit="rpx"
-								@click="isShowPasswordDialog = false"
+								@click="handleClosePasswordDialog()"
 							></tui-icon>
 						</view>
 						<tui-input v-model="passwordInput" label="" type="password" placeholder="请输入支付密码" focus></tui-input>
@@ -129,6 +129,8 @@
 
 <script>
 import { getOrderHuabeiConfigApi, getPricePlatformAllApi, getRechargeTotalCustomersApi, getShopCheckListDetailApi, getIsPwdBuyerUserExtendApi } from '../../api/anotherTFInterface'
+import { T_PAY_ORDER } from '../../constant'
+import { handleOrderTypeFailJump } from '../../utils/payUtil'
 
 export default {
 	name: 'CashierList',
@@ -225,6 +227,11 @@ export default {
 		shopIdPay: { // 某商家的‘用户的商家充值的余额支付’对应的商家Id
 			type: [String, Number],
 			default: ''
+		},
+		// 是否支付密码输入错误（已创建订单）
+		isPasswordFail: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -1044,6 +1051,15 @@ export default {
 			})
 		},
 
+		handleClosePasswordDialog() {
+			if (this.isPasswordFail) {
+				if (uni.getStorageSync(T_PAY_ORDER)) {
+					handleOrderTypeFailJump({ type: uni.getStorageSync(T_PAY_ORDER).type })
+				}
+			} else {
+				this.isShowPasswordDialog = false
+			}
+		},
 		handleInputPaymentPassword() {
 			uni.showLoading()
 			getIsPwdBuyerUserExtendApi({})

@@ -161,7 +161,7 @@
 		<view style="display: flex;flex-direction: column;align-items: center;margin-top: 100rpx;padding-bottom: 148rpx;">
 			<view style="padding-top: 60rpx;">
 				<VoucherRecharge
-					:platform-voucher-id="voucherChooseInfo.platformVoucherId"
+					ref="refVoucherRecharge" :platform-voucher-id="voucherChooseInfo.platformVoucherId"
 					:purchase-ratio="voucherChooseInfo.purchaseRatio"
 				></VoucherRecharge>
 			</view>
@@ -249,6 +249,7 @@ import VoucherRecharge from './components/VoucherRecharge.vue'
 import VoucherTransfer from './components/VoucherTransfer.vue'
 import VoucherShopTransfer from './components/VoucherShopTransfer.vue'
 import { getByUserOrderVoucherOrderApi, getBuyerTotalVoucherEntryRecordApi, getShopRechargeTotalVoucherApi, getShopExchangeTotalVoucherApi } from '../../../api/anotherTFInterface'
+import { T_PAY_ORDER } from '../../../constant'
 
 export default {
 	name: 'VoucherOperation',
@@ -278,7 +279,20 @@ export default {
 			showTipsType: ''
 		}
 	},
+	onLoad(options) {
+		uni.removeStorageSync(T_PAY_ORDER)
+	},
 	onShow() {
+		if (this.$refs.refVoucherRecharge) {
+			if (uni.getStorageSync(T_PAY_ORDER) && this.$refs.refVoucherRecharge.isShowPayTypePopup && ((this.$refs.refVoucherRecharge.payInfo.paymentMode === 9) || (this.$refs.refVoucherRecharge.payInfo.paymentMode === 4))) {
+				uni.removeStorageSync(T_PAY_ORDER)
+				this.$refs.refVoucherRecharge.isShowPayTypePopup = false
+				this.$refs.refVoucherRecharge.payInfo = {}
+				this.$refs.refVoucherRecharge.isShowVoucherModal = false
+				this.$refs.refVoucherRecharge.isShowPopup = false
+				this.$refs.refVoucherRecharge.rechargeForm.payGrade = ''
+			}
+		}
 		this.handelInitData()
 	},
 	methods: {

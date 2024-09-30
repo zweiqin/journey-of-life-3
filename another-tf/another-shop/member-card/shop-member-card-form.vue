@@ -30,13 +30,13 @@ export default {
 			cb: () => {
 				this.form.basicInfo.shopId = this.$store.state.auth.identityInfo.shopInfo.shopId
 				if ([ 1 ].includes(this.$store.state.app.terminal)) {
-					this.form.basicInfo.memberCardChannel = '1'
+					this.form.basicInfo.memberCardChannel = this.form.basicInfo.originMemberCardChannel = '1'
 				} else if ([3, 5, 6].includes(this.$store.state.app.terminal)) {
-					this.form.basicInfo.memberCardChannel = '2'
+					this.form.basicInfo.memberCardChannel = this.form.basicInfo.originMemberCardChannel = '2'
 				} else if ([ 4 ].includes(this.$store.state.app.terminal)) {
-					this.form.basicInfo.memberCardChannel = '3'
+					this.form.basicInfo.memberCardChannel = this.form.basicInfo.originMemberCardChannel = '3'
 				} else if ([ 2 ].includes(this.$store.state.app.terminal)) {
-					this.form.basicInfo.memberCardChannel = '5'
+					this.form.basicInfo.memberCardChannel = this.form.basicInfo.originMemberCardChannel = '5'
 				}
 				if (options.id) {
 					this.getMemberCardDetail(options.id)
@@ -82,6 +82,12 @@ export default {
 					field: 'memberCardChannel',
 					type: 'radio',
 					placeholder: '发行渠道'
+				},
+				{
+					label: '系统发行渠道：',
+					field: 'originMemberCardChannel',
+					type: 'radio',
+					placeholder: '系统发行渠道'
 				},
 				{
 					label: '会员人群级别：',
@@ -152,6 +158,7 @@ export default {
 					memberCardType: '',
 					memberCardNumber: '',
 					memberCardChannel: '',
+					originMemberCardChannel: '',
 					memberCardLevel: '',
 					memberCardDays: '',
 					cardEquityStatement: '',

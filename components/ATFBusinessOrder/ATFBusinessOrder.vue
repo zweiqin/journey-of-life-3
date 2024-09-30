@@ -360,7 +360,7 @@ export default {
 		handlePayOrder(orderItem) {
 			const { price, collageId, orderId, orderFormid, shopId, skus, orderType } = orderItem
 			this.$emit('pay-order', {
-				showPayPopup: true,
+				isShowPayTypePopup: true,
 				pricePay: price,
 				shopId,
 				skus,

@@ -181,14 +181,11 @@
 
 <script>
 import { getPricePlatformAllApi, addOrderSubmitUserRechargeApi } from '../../../api/anotherTFInterface'
-import { paymentModeEnum, handleDoPay } from '../../../utils/payUtil'
+import { T_PAY_ORDER } from '../../../constant'
+import { paymentTypeEnum, handleDoPay } from '../../../utils/payUtil'
 
 export default {
 	name: 'BalanceOperation',
-	onShow() {
-		this.getPricePlatformAll()
-	},
-
 	data() {
 		return {
 			pricePlatformInfo: {
@@ -218,6 +215,21 @@ export default {
 			payInfo: {},
 			isShowModalRecharge: false
 		}
+	},
+	onLoad(options) {
+		// 因为这种类型的支付页不需要跳到'订单跳转页'，所以为了防止进入该页面前的本地存储已有订单信息，所以进入该页面后就要清除，否则在选择通联或惠市宝支付后并进行切屏回来后支付框消失。
+		uni.removeStorageSync(T_PAY_ORDER)
+	},
+	onShow() {
+		if (uni.getStorageSync(T_PAY_ORDER) && this.isShowPayTypePopup && ((this.payInfo.paymentMode === 9) || (this.payInfo.paymentMode === 4))) {
+			uni.removeStorageSync(T_PAY_ORDER)
+			this.isShowPayTypePopup = false
+			this.payInfo = {}
+			this.isShowModalRecharge = false
+			this.rechargeForm.amounts = ''
+			this.isShowRechargePopup = false
+		}
+		this.getPricePlatformAll()
 	},
 
 	methods: {
@@ -251,7 +263,7 @@ export default {
 			uni.showLoading()
 			addOrderSubmitUserRechargeApi({ ...this.rechargeForm })
 				.then(async (res) => {
-					await handleDoPay({ ...res.data, orderSn: res.data.orderSn || res.data.orderNumber, ...this.payInfo }, 8, paymentModeEnum[8])
+					await handleDoPay({ ...res.data, orderSn: res.data.orderSn || res.data.orderNumber, ...this.payInfo }, 8, paymentTypeEnum[8])
 				})
 				.catch(() => {
 					uni.hideLoading()

@@ -1,5 +1,6 @@
 <template>
   <view class="purchaseOrder">
+		<JHeader title="采购单列表" width="50" height="50"></JHeader>
     <view class="search-box">
       <view class="sarch">
         <tui-input
@@ -83,8 +84,8 @@
 // import { getAllOrderListApi } from "../../../api/anotherTFInterface";
 import { getAllOrderListApi } from "../../../api/anotherTFInterface";
 export default {
-  onLoad() {
-    this.getAllOrderList();
+  onShow() {
+		this.getAllOrderList(true)
   },
   data() {
     return {

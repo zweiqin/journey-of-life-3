@@ -90,8 +90,11 @@
 		<TuanUnLoginPage v-else></TuanUnLoginPage>
 
 		<!-- 商圈支付 -->
-		<tui-bottom-popup :show="payObj.showPayPopup" @close="payObj.showPayPopup = false">
-			<view v-if="payObj.showPayPopup" style="padding: 60rpx 0 128rpx;">
+		<tui-bottom-popup
+			:show="payObj.isShowPayTypePopup"
+			@close="(payObj.isShowPayTypePopup = false) || (payObj = { isShowPayTypePopup: false, pricePay: 0, shopId: '', skus: [], orderType: '', payInfo: {} })"
+		>
+			<view v-if="payObj.isShowPayTypePopup" style="padding: 60rpx 0 128rpx;">
 				<CashierList
 					ref="refCashierList" :price-pay="payObj.pricePay" show
 					:pay-type-shops="[ payObj.shopId ]"
@@ -140,7 +143,7 @@ import SubNavs from './components/SubNavs.vue'
 import AdditionalAmountOrder from '../../community-center/components/AdditionalAmountOrder.vue'
 import CommentTypeV1 from '../../community-center/comment-order/components/CommentTypeV1.vue'
 import CommentTypeV2 from '../../community-center/comment-order/components/CommentTypeV2.vue'
-import { paymentModeEnum, handleDoPay } from '../../utils/payUtil'
+import { paymentTypeEnum, handleDoPay } from '../../utils/payUtil'
 import { importJsSDK } from '../../utils'
 
 export default {
@@ -216,13 +219,14 @@ export default {
 
 			// 支付相关
 			payObj: {
-				showPayPopup: false,
+				isShowPayTypePopup: false,
 				pricePay: 0,
 				shopId: '',
 				skus: [],
 				orderType: '',
 				payInfo: {}
-			}
+			},
+			isPasswordFail: false
 		}
 	},
 
@@ -271,9 +275,6 @@ export default {
 	onLoad(options) {
 		importJsSDK()
 		uni.removeStorageSync(IS_SWITCH_ORDER)
-	},
-
-	onShow() {
 		this.userId = uni.getStorageSync(USER_ID) || ''
 		if (uni.getStorageSync(T_PAY_ORDER) && ['community', 'shoppingMall', 'businessDistrict'].includes(uni.getStorageSync(T_PAY_ORDER).type)) {
 			this.handleChangeOrderMode(uni.getStorageSync(T_PAY_ORDER).type)
@@ -284,9 +285,15 @@ export default {
 		getApp().globalData.orderTypeShow = ''
 		uni.removeStorageSync(T_COMMUNITY_ORDER_NO)
 		uni.removeStorageSync(ENTERPRISE_ORDERS_NO)
-		this.$nextTick(() => {
-			this.getOrderList()
-		})
+	},
+
+	onShow() {
+		if (uni.getStorageSync(T_PAY_ORDER) && this.payObj.isShowPayTypePopup && ((this.payObj.payInfo.paymentMode === 9) || (this.payObj.payInfo.paymentMode === 4))) {
+			uni.removeStorageSync(T_PAY_ORDER)
+			this.payObj.isShowPayTypePopup = false
+			this.payObj = { isShowPayTypePopup: false, pricePay: 0, shopId: '', skus: [], orderType: '', payInfo: {} }
+		}
+		this.getOrderList()
 	},
 
 	methods: {
@@ -305,19 +312,17 @@ export default {
 				default:
 					break
 			}
-			this.$nextTick(() => {
-				this.currentOrderMode = mode
-				if (this.currentOrderMode === 'community') {
-					this.currentStatus = -1
-					this.communityQueryInfo.status = undefined
-				} else if (this.currentOrderMode === 'shoppingMall') {
-					this.currentStatus = 0
-				} else if (this.currentOrderMode === 'businessDistrict') {
-					this.currentStatus = 0
-				}
-				this.isShowSubNav = null
-				isGetData && this.getOrderList()
-			})
+			this.currentOrderMode = mode
+			if (this.currentOrderMode === 'community') {
+				this.currentStatus = -1
+				this.communityQueryInfo.status = undefined
+			} else if (this.currentOrderMode === 'shoppingMall') {
+				this.currentStatus = 0
+			} else if (this.currentOrderMode === 'businessDistrict') {
+				this.currentStatus = 0
+			}
+			this.isShowSubNav = null
+			isGetData && this.getOrderList()
 		},
 
 		// 清空搜索
@@ -583,16 +588,17 @@ export default {
 
 		async handlePaymentPassword() {
 			if ((this.payObj.payInfo.paymentMode !== 9) && (this.payObj.payInfo.paymentMode !== 4) && !this.payObj.payInfo.pwd) {
-				this.$refs.refCashierList && this.$refs.refCashierList.handleInputPaymentPassword()
+				if (this.isPasswordFail) this.$refs.refCashierList && (this.$refs.refCashierList.isShowPasswordDialog = true)
+				else this.$refs.refCashierList && this.$refs.refCashierList.handleInputPaymentPassword()
 			} else {
-				await handleDoPay(this.payObj.payInfo, this.payObj.orderType, paymentModeEnum[this.payObj.orderType], { fn: () => (this.payObj.payInfo.pwd = '') })
-				this.payObj = {
-					showPayPopup: false,
-					pricePay: 0,
-					shopId: '',
-					skus: [],
-					payInfo: {}
-				}
+				await handleDoPay(this.payObj.payInfo, this.payObj.orderType, paymentTypeEnum[this.payObj.orderType], {
+					passwordFailFn: (submitResult) => {
+						uni.removeStorageSync(T_PAY_ORDER)
+						this.isPasswordFail = true
+						this.payObj.payInfo.pwd = ''
+						this.$refs.refCashierList && (this.$refs.refCashierList.isShowPasswordDialog = true)
+					}
+				})
 			}
 		}
 	},

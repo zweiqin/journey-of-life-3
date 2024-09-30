@@ -206,7 +206,7 @@
 						:show-platform-pay="!!cardPurchaseForm.payFee"
 						:show-transaction-pay="!!cardPurchaseForm.payFee"
 						:shop-id-pay="cardPurchaseForm.payFee ? queryInfo.shopId : 0"
-						@change="(e) => payInfo = e"
+						:is-password-fail="isPasswordFail" @change="(e) => payInfo = e"
 						@password-input="(e) => (payInfo.pwd = e.pwd) && handlePaymentPassword()"
 					/>
 					<tui-button
@@ -227,7 +227,7 @@ import { A_TF_MAIN } from '../../../config'
 import { getIndexShopDetailApi, getPageAllShopMemberCardApi, submitShopMemberCardOrderApi } from '../../../api/anotherTFInterface'
 import { navigationAddress, setMiniprogramShareConfig } from '../../../utils'
 import { T_PAY_ORDER } from '../../../constant'
-import { handleOrderTypeJump, paymentModeEnum, handleDoPay } from '../../../utils/payUtil'
+import { handleOrderTypeJump, paymentTypeEnum, handleDoPay } from '../../../utils/payUtil'
 
 export default {
 	name: 'MemberCardList',
@@ -256,7 +256,9 @@ export default {
 				jsonRemark: ''
 			},
 			isShowPayTypePopup: false,
-			payInfo: {}
+			payInfo: {},
+			isPasswordFail: false,
+			submitResult: {}
 		}
 	},
 	onLoad(options) {
@@ -290,7 +292,10 @@ export default {
 		}
 	},
 	onShow() {
-		if (uni.getStorageSync(T_PAY_ORDER)) {
+		const pages = getCurrentPages()
+		if (uni.getStorageSync(T_PAY_ORDER) && (pages.length === 1)) {
+			handleOrderTypeJump({ type: uni.getStorageSync(T_PAY_ORDER).type })
+		} else if (uni.getStorageSync(T_PAY_ORDER) && ((this.payInfo.paymentMode === 9) || (this.payInfo.paymentMode === 4))) {
 			handleOrderTypeJump({ type: uni.getStorageSync(T_PAY_ORDER).type })
 		}
 	},
@@ -363,16 +368,30 @@ export default {
 			this.$refs.refATFMessageFill.isShowPopup = true
 		},
 
-		handlePaymentPassword() {
-			if ((this.payInfo.paymentMode !== 9) && (this.payInfo.paymentMode !== 4) && !this.payInfo.pwd) {
-				this.$refs.refCashierList && this.$refs.refCashierList.handleInputPaymentPassword()
-			} else {
+		async handlePaymentPassword() {
+			if (this.isPasswordFail && this.payInfo.pwd) {
+				await handleDoPay({ ...this.submitResult, ...this.payInfo }, 11, paymentTypeEnum[11], {
+					passwordFailFn: (submitResult) => {
+						this.payInfo.pwd = ''
+						this.$refs.refCashierList && (this.$refs.refCashierList.isShowPasswordDialog = true)
+					}
+				})
+			} else if ((this.payInfo.paymentMode !== 9) && (this.payInfo.paymentMode !== 4) && !this.payInfo.pwd) {
+				if (this.isPasswordFail) this.$refs.refCashierList && (this.$refs.refCashierList.isShowPasswordDialog = true)
+				else this.$refs.refCashierList && this.$refs.refCashierList.handleInputPaymentPassword()
+			} else if (!this.isPasswordFail) {
 				uni.showLoading()
 				submitShopMemberCardOrderApi({ ...this.cardPurchaseForm, promoterUserId: this.cardPurchaseForm.promoterUserId || this.promoterCustom })
 					.then(async (res) => {
-						await handleDoPay({ ...res.data, ...this.payInfo }, 11, paymentModeEnum[11], { fn: () => (this.payInfo.pwd = '') })
 						uni.hideLoading()
-						this.isShowPayTypePopup = false
+						await handleDoPay({ ...res.data, ...this.payInfo }, 11, paymentTypeEnum[11], {
+							passwordFailFn: (submitResult) => {
+								this.submitResult = submitResult
+								this.isPasswordFail = true
+								this.payInfo.pwd = ''
+								this.$refs.refCashierList && (this.$refs.refCashierList.isShowPasswordDialog = true)
+							}
+						})
 					})
 					.catch(() => {
 						uni.hideLoading()
