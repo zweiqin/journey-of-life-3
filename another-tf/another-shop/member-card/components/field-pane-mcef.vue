@@ -1,40 +1,41 @@
 <template>
-	<view class="field-pane-container">
-		<view class="title">{{ title }}</view>
-		<view v-for="item in fields" :key="item.label">
-			<view v-if="item.field === 'equityId'"></view>
-			<view v-else class="item">
-				<template>
-					<view
-						class="input-wrapper" :style="{
-							'flex-direction': item.type === 'textarea' ? 'column' : '',
-							'align-items': item.type === 'textarea' ? 'flex-start' : ''
-						}"
-					>
-						<view class="sub-title">{{ item.label }}</view>
-						<input
-							v-if="item.type === 'input'" :value="form[item.field]" class="input" :disabled="false"
-							:type="item.field === '' ? 'number' : 'text'" :placeholder="item.placeholder"
-							@input="handleInput(item.field, $event)"
-						/>
+	<view class="field-pane-container" :style="{ padding }">
+		<view style="font-size: 34rpx;font-weight: bold;">{{ title }}</view>
+		<view
+			style="margin-top: 20rpx;padding: 30rpx 28rpx 2rpx;background-color: #ffffff;"
+			:style="{ borderRadius: formBorderRadius }"
+		>
+			<view v-for="item in fields" :key="item.label">
+				<view v-if="item.field === 'equityId'"></view>
+				<view v-else class="item">
+					<template>
+						<view class="input-wrapper">
+							<view style="margin-bottom: 24rpx;">{{ item.label }}</view>
+							<input
+								v-if="item.type === 'input'" :value="form[item.field]" class="input" :disabled="false"
+								:type="item.field === '' ? 'number' : 'text'" :placeholder="item.placeholder"
+								@input="handleInput(item.field, $event)"
+							/>
 
-						<textarea
-							v-if="item.type === 'textarea'" :value="form[item.field]" class="textarea"
-							:placeholder="item.placeholder" @input="handleInput(item.field, $event)"
-						></textarea>
+							<textarea
+								v-if="item.type === 'textarea'" :value="form[item.field]" class="textarea"
+								:placeholder="item.placeholder" @input="handleInput(item.field, $event)"
+							></textarea>
 
-						<view
-							v-if="item.type === 'picker' && item.field === 'cardId'" style="flex: 1" :style="{
-								color: form.cardId ? '' : '#999'
-							}" @click="(isShowMemberCardPopup = true) && !isEmpty && !memberCardList.length && getMemberCardSearchList()"
-						>
-							{{ cardName || form.cardId ? `已选 ID：${form.cardId}` : "请选择关联会员卡" }}
+							<view
+								v-if="item.type === 'picker' && item.field === 'cardId'" style="flex: 1" :style="{
+									color: form.cardId ? '' : '#999'
+								}" @click="(isShowMemberCardPopup = true) && !isEmpty && !memberCardList.length && getMemberCardSearchList()"
+							>
+								{{ cardName || form.cardId ? `已选 ID：${form.cardId}` : "请选择关联会员卡" }}
+							</view>
+
 						</view>
-
-					</view>
-				</template>
+					</template>
+				</view>
 			</view>
 		</view>
+
 		<!-- 会员卡选择 -->
 		<tui-bottom-popup
 			:z-index="997" :mask-z-index="996" :show="isShowMemberCardPopup"
@@ -81,10 +82,10 @@
 										<view style="display: flex;align-items: center;padding: 6rpx 10rpx;font-size: 28rpx;">
 											<tui-radio
 												:checked="queryInfo.memberCardType === item.value" :value="item.value"
-												color="#07c160" border-color="#999" :scale-ratio="0.8"
+												color="#ef530e" border-color="#ef5511" :scale-ratio="0.8"
 											>
 											</tui-radio>
-											<text>{{ item.name }}</text>
+											<text style="padding: 0 0 0 4rpx;">{{ item.name }}</text>
 										</view>
 									</tui-label>
 								</view>
@@ -102,10 +103,10 @@
 										<view style="display: flex;align-items: center;padding: 6rpx 10rpx;font-size: 28rpx;">
 											<tui-radio
 												:checked="queryInfo.memberCardState === item.value" :value="item.value"
-												color="#07c160" border-color="#999" :scale-ratio="0.8"
+												color="#ef530e" border-color="#ef5511" :scale-ratio="0.8"
 											>
 											</tui-radio>
-											<text>{{ item.name }}</text>
+											<text style="padding: 0 0 0 4rpx;">{{ item.name }}</text>
 										</view>
 									</tui-label>
 								</view>
@@ -150,7 +151,15 @@ export default {
 			type: Object,
 			required: true
 		},
-		title: String
+		title: String,
+		padding: {
+			type: String,
+			default: '30rpx 0 0'
+		},
+		formBorderRadius: {
+			type: String,
+			default: '16rpx'
+		}
 	},
 
 	data() {
@@ -239,11 +248,27 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../../../../style/var.less";
-@import "../../../../style/mixin.less";
-
 .field-pane-container {
-	margin-top: 30rpx;
+	font-size: 28rpx;
+
+	.item {
+		margin: 0 0 30rpx;
+		border-bottom: 1rpx solid #e7e7e7;
+
+		.input-wrapper {
+			padding: 0 0 28rpx;
+			.input {
+				font-size: 28rpx;
+			}
+
+			.textarea {
+				margin-top: 20rpx;
+				width: 100%;
+				height: 100px;
+				font-size: 26rpx;
+			}
+		}
+	}
 
 	.search-btn {
 		/deep/ .tui-input__wrap {
@@ -254,51 +279,6 @@ export default {
 
 	/deep/ .tui-popup-class.tui-bottom-popup {
 		height: 85vh !important;
-	}
-
-	.title {
-		font-size: @f14;
-		color: #fa5151;
-		font-weight: bold;
-	}
-
-	.chooseGender {
-		flex: 1;
-		text-align: left;
-	}
-
-	.item {
-		padding: 20rpx 0;
-		border-bottom: 1rpx solid #d8d8d8;
-		margin-top: 20rpx;
-
-		.input-wrapper {
-			.flex();
-			font-size: @f12;
-			color: @c3d;
-
-			.sub-title {
-				margin-right: 20rpx;
-			}
-
-			/deep/ .uni-input-placeholder,
-			/deep/ .uni-textarea-placeholder {
-				font-size: @f12;
-				color: @c9;
-			}
-
-			.input {
-				flex: 1;
-				font-size: @f12;
-			}
-
-			.textarea {
-				margin-top: 20rpx;
-				width: 100%;
-				height: 100px;
-				font-size: 24rpx;
-			}
-		}
 	}
 }
 </style>

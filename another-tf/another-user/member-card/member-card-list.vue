@@ -2,16 +2,18 @@
 	<view class="member-card-list-container">
 		<BeeBack>
 			<view
-				style="display: flex;align-items: center;justify-content: space-between;padding: 20rpx 20rpx 16rpx;background-color: #f5f5f5;"
+				style="display: flex;align-items: center;justify-content: space-between;padding: 20rpx 20rpx 16rpx;background-color: #ffffff;"
 			>
 				<BeeIcon name="arrowleft" :size="26" color="#222229" style="width: fit-content;">
 				</BeeIcon>
 				<text style="flex: 1;margin-left: -40rpx;text-align: center;">会员卡购买</text>
 			</view>
 		</BeeBack>
-		<view style="display: flex;justify-content: flex-end;align-items: center;flex-wrap: wrap;padding: 0 20rpx;">
+		<view
+			class="top-btn" style="display: flex;justify-content: flex-end;align-items: center;flex-wrap: wrap;padding: 0 20rpx;"
+		>
 			<tui-button
-				type="blue" width="200rpx" height="60rpx" margin="10rpx 0 0 20rpx"
+				type="warning" width="200rpx" height="56rpx" margin="10rpx 0 0 20rpx"
 				shape="circle"
 				@click="go(`/another-tf/another-user/member-card/promotion-record?shopId=${queryInfo.shopId}`)"
 			>
@@ -19,24 +21,23 @@
 			</tui-button>
 			<view v-if="$store.getters.userInfo.buyerUserId" style="display: flex;align-items: center;">
 				<tui-button
-					type="blue" width="240rpx" height="60rpx" margin="10rpx 0 0 20rpx"
-					shape="circle"
-					@click="handleCopyPromotion"
+					type="warning" width="240rpx" height="56rpx" margin="10rpx 0 0 20rpx"
+					shape="circle" @click="handleCopyPromotion"
 				>
 					复制推广链接
 				</tui-button>
-				<view style="margin: 10rpx 0 0 20rpx;padding: 6rpx 0;border: 2rpx solid #007aff;border-radius: 32rpx;">
+				<view style="margin: 10rpx 0 0 20rpx;padding: 6rpx 0;border: 2rpx solid #ef530e;border-radius: 32rpx;">
 					<BeeWxShare ref="beeWxShareRef" @click="handleShareServe()">
 						<view style="padding: 0 16rpx;text-align: right;">
-							<tui-icon name="share" :size="34" unit="rpx" color="#007aff" margin="0 14rpx 0 0"></tui-icon>
-							<text style="color: #007aff;font-weight: bold;">分享</text>
+							<tui-icon name="share" :size="34" unit="rpx" color="#ef530e" margin="0 14rpx 0 0"></tui-icon>
+							<text style="color: #ef530e;font-weight: bold;">分享</text>
 						</view>
 					</BeeWxShare>
 				</view>
 			</view>
 		</view>
 
-		<view style="padding: 20rpx 30rpx 18rpx;">
+		<view style="padding: 18rpx 20rpx;margin: 20rpx 20rpx 0;background-color: #ffffff;border-radius: 20rpx;">
 			<view style="display: flex;align-items: stretch;">
 				<image
 					style="width: 96rpx;height: 96rpx;margin-right: 24rpx;border-radius: 50%"
@@ -72,95 +73,99 @@
 			</view>
 		</view>
 
-		<view v-if="cardPurchaseForm.promoterUserId" style="padding: 10rpx 20rpx 0;">
-			来源推广用户ID：{{ cardPurchaseForm.promoterUserId }}
-		</view>
-		<view v-else style="display: flex;align-items: center;padding: 10rpx 20rpx 0;">
+		<view style="padding: 18rpx 20rpx;margin: 20rpx 20rpx 0;background-color: #ffffff;border-radius: 20rpx;">
 			<view>
-				推广用户：{{ promoterCustom || '无' }}
-			</view>
-			<tui-button
-				v-if="promoterCustom"
-				type="warning" width="180rpx" height="50rpx" margin="0 0 0 20rpx"
-				shape="circle"
-				@click="isShowPromoterCustomDialog = true"
-			>
-				重新设置
-			</tui-button>
-			<tui-button
-				v-else
-				type="warning" width="120rpx" height="50rpx"
-				margin="0 0 0 20rpx"
-				shape="circle" @click="isShowPromoterCustomDialog = true"
-			>
-				设置
-			</tui-button>
-		</view>
-
-		<view style="padding: 18rpx 20rpx 0;">
-			<view class="search-btn" style="display: flex;align-items: center;padding: 0 0 12rpx;">
-				<text style="font-size: 30rpx;">会员卡名称</text>
-				<view style="flex: 1;margin-left: 16rpx;">
-					<tui-input
-						v-model="queryInfo.cardName" placeholder="根据会员卡名称搜索" is-fillet padding="6rpx 10rpx 6rpx 26rpx"
-						background-color="transparent"
+				<view v-if="cardPurchaseForm.promoterUserId" style="font-weight: bold;">
+					来源推广用户ID：{{ cardPurchaseForm.promoterUserId }}
+				</view>
+				<view v-else style="display: flex;align-items: center;">
+					<view style="font-weight: bold;">
+						推广用户：{{ promoterCustom || '无' }}
+					</view>
+					<tui-button
+						v-if="promoterCustom"
+						type="warning" width="160rpx" height="50rpx" margin="0 0 0 20rpx"
+						shape="circle" :size="28"
+						@click="isShowPromoterCustomDialog = true"
 					>
-						<template #right>
-							<tui-button
-								type="warning" width="120rpx" height="50rpx" shape="circle"
-								@click="(queryInfo.page = 1) && getMemberCardSearchList()"
-							>
-								搜索
-							</tui-button>
-						</template>
-					</tui-input>
+						重新设置
+					</tui-button>
+					<tui-button
+						v-else
+						type="warning" width="100rpx" height="50rpx"
+						margin="0 0 0 20rpx" :size="28"
+						shape="circle" @click="isShowPromoterCustomDialog = true"
+					>
+						设置
+					</tui-button>
 				</view>
 			</view>
-			<tui-radio-group
-				:value="queryInfo.memberCardType"
-				@change="(e) => (queryInfo.memberCardType !== e.detail.value) && ((queryInfo.memberCardType = e.detail.value) || true) && (queryInfo.page = 1) && getMemberCardSearchList()"
-			>
-				<view style="display: flex;flex-wrap: wrap;align-items: center;">
-					<text style="font-size: 30rpx;">类型：</text>
-					<tui-label
-						v-for="(item, index) in [{ name: '全部', value: '' }, { name: '消费卡', value: '1' }, { name: '次数卡', value: '2' }]"
-						:key="index"
-					>
-						<view style="display: flex;align-items: center;padding: 6rpx 10rpx;font-size: 28rpx;">
-							<tui-radio
-								:checked="queryInfo.memberCardType === item.value" :value="item.value"
-								color="#07c160" border-color="#999" :scale-ratio="0.8"
-							>
-							</tui-radio>
-							<text>{{ item.name }}</text>
-						</view>
-					</tui-label>
+
+			<view style="padding: 18rpx 0 0;">
+				<view class="search-btn" style="display: flex;align-items: center;">
+					<text style="font-size: 30rpx;">会员卡名称</text>
+					<view style="flex: 1;margin-left: 16rpx;">
+						<tui-input
+							v-model="queryInfo.cardName" placeholder="根据会员卡名称搜索" is-fillet padding="6rpx 10rpx 6rpx 26rpx"
+							background-color="transparent"
+						>
+							<template #right>
+								<tui-button
+									type="warning" width="120rpx" height="50rpx" shape="circle"
+									@click="(queryInfo.page = 1) && getMemberCardSearchList()"
+								>
+									搜索
+								</tui-button>
+							</template>
+						</tui-input>
+					</view>
 				</view>
-			</tui-radio-group>
-			<tui-radio-group
-				:value="queryInfo.memberCardState"
-				@change="(e) => (queryInfo.memberCardState !== e.detail.value) && ((queryInfo.memberCardState = e.detail.value) || true) && (queryInfo.page = 1) && getMemberCardSearchList()"
-			>
-				<view style="display: flex;flex-wrap: wrap;align-items: center;">
-					<text style="font-size: 30rpx;">状态：</text>
-					<tui-label
-						v-for="(item, index) in [{ name: '全部', value: '' }, { name: '已发行', value: '1' }, { name: '未发行', value: '2' }, { name: '已下架', value: '3' }]"
-						:key="index"
-					>
-						<view style="display: flex;align-items: center;padding: 6rpx 10rpx;font-size: 28rpx;">
-							<tui-radio
-								:checked="queryInfo.memberCardState === item.value" :value="item.value"
-								color="#07c160" border-color="#999" :scale-ratio="0.8"
-							>
-							</tui-radio>
-							<text>{{ item.name }}</text>
-						</view>
-					</tui-label>
-				</view>
-			</tui-radio-group>
+				<tui-radio-group
+					:value="queryInfo.memberCardType"
+					@change="(e) => (queryInfo.memberCardType !== e.detail.value) && ((queryInfo.memberCardType = e.detail.value) || true) && (queryInfo.page = 1) && getMemberCardSearchList()"
+				>
+					<view style="display: flex;flex-wrap: wrap;align-items: center;">
+						<text style="font-size: 30rpx;">类型：</text>
+						<tui-label
+							v-for="(item, index) in [{ name: '全部', value: '' }, { name: '消费卡', value: '1' }, { name: '次数卡', value: '2' }]"
+							:key="index"
+						>
+							<view style="display: flex;align-items: center;padding: 6rpx 10rpx;font-size: 28rpx;">
+								<tui-radio
+									:checked="queryInfo.memberCardType === item.value" :value="item.value"
+									color="#ef530e" border-color="#ef5511" :scale-ratio="0.8"
+								>
+								</tui-radio>
+								<text style="padding: 0 0 0 4rpx;">{{ item.name }}</text>
+							</view>
+						</tui-label>
+					</view>
+				</tui-radio-group>
+				<tui-radio-group
+					:value="queryInfo.memberCardState"
+					@change="(e) => (queryInfo.memberCardState !== e.detail.value) && ((queryInfo.memberCardState = e.detail.value) || true) && (queryInfo.page = 1) && getMemberCardSearchList()"
+				>
+					<view style="display: flex;flex-wrap: wrap;align-items: center;">
+						<text style="font-size: 30rpx;">状态：</text>
+						<tui-label
+							v-for="(item, index) in [{ name: '全部', value: '' }, { name: '已发行', value: '1' }, { name: '未发行', value: '2' }, { name: '已下架', value: '3' }]"
+							:key="index"
+						>
+							<view style="display: flex;align-items: center;padding: 6rpx 10rpx;font-size: 28rpx;">
+								<tui-radio
+									:checked="queryInfo.memberCardState === item.value" :value="item.value"
+									color="#ef530e" border-color="#ef5511" :scale-ratio="0.8"
+								>
+								</tui-radio>
+								<text style="padding: 0 0 0 4rpx;">{{ item.name }}</text>
+							</view>
+						</tui-label>
+					</view>
+				</tui-radio-group>
+			</view>
 		</view>
 
-		<view v-if="memberCardList && memberCardList.length" style="margin: 10rpx 0 0;">
+		<view v-if="memberCardList && memberCardList.length" style="margin: 20rpx 0 0;">
 			<view v-for="(item, index) in memberCardList" :key="index" style="padding: 0 20rpx 35rpx;">
 				<ATFMemberCardInfo
 					:data="item" :is-show-shop="false" :is-shop-operation="false" is-show-purchase
@@ -177,16 +182,18 @@
 			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无商家会员卡内容~</tui-no-data>
 		</view>
 
-		<tui-dialog
-			style="position: relative;z-index: 888;" :buttons="[{ text: '清除' }, { text: '确定', color: '#586c94' }]"
-			:show="isShowPromoterCustomDialog" title="订单核销" @click="handlePromoterCustomDialog"
-		>
-			<template #content>
-				<view>
-					<tui-input v-model="promoterCustom" padding="26rpx 0" label="推广用户ID" placeholder="请填写推广用户ID"></tui-input>
-				</view>
-			</template>
-		</tui-dialog>
+		<view style="position: relative;z-index: 888;">
+			<tui-dialog
+				:buttons="[{ text: '清除' }, { text: '确定', color: '#586c94' }]"
+				:show="isShowPromoterCustomDialog" title="订单核销" @click="handlePromoterCustomDialog"
+			>
+				<template #content>
+					<view>
+						<tui-input v-model="promoterCustom" padding="26rpx 0" label="推广用户ID" placeholder="请填写推广用户ID"></tui-input>
+					</view>
+				</template>
+			</tui-dialog>
+		</view>
 
 		<ATFMessageFill
 			ref="refATFMessageFill" :show="false"
@@ -243,7 +250,7 @@ export default {
 				shopId: '',
 				cardName: '',
 				memberCardType: '',
-				memberCardState: ''
+				memberCardState: '1'
 			},
 			// 推广用户设置
 			isShowPromoterCustomDialog: false,
@@ -384,7 +391,7 @@ export default {
 				submitShopMemberCardOrderApi({ ...this.cardPurchaseForm, promoterUserId: this.cardPurchaseForm.promoterUserId || this.promoterCustom })
 					.then(async (res) => {
 						uni.hideLoading()
-						await handleDoPay({ ...res.data, ...this.payInfo }, 11, paymentTypeEnum[11], {
+						await handleDoPay({ ...res.data, orderSn: res.data.refOrderCode, ...this.payInfo }, 11, paymentTypeEnum[11], {
 							passwordFailFn: (submitResult) => {
 								this.submitResult = submitResult
 								this.isPasswordFail = true
@@ -411,8 +418,14 @@ export default {
 <style lang="less" scoped>
 .member-card-list-container {
 	min-height: 100vh;
-	background-color: #eeeeee;
+	background-color: #f1f1f1;
 	box-sizing: border-box;
+
+	.top-btn {
+		/deep/ .tui-btn-warning {
+			background-color: #ef530e !important;
+		}
+	}
 
 	.search-btn {
 		/deep/ .tui-input__wrap {

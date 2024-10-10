@@ -1,31 +1,17 @@
 <template>
 	<view class="shop-member-card-container">
 		<JHeader title="商家会员卡列表" width="50" height="50"></JHeader>
-		<view style="display: flex;justify-content: flex-end;flex-wrap: wrap;padding: 0 20rpx;">
+		<view class="top-btn" style="display: flex;justify-content: flex-end;flex-wrap: wrap;padding: 0 20rpx;">
 			<tui-button
-				type="blue" width="220rpx" height="60rpx" margin="10rpx 0 0 20rpx"
-				shape="circle"
-				@click="go('/another-tf/another-shop/member-card/shop-member-card-form')"
-			>
-				新增会员卡
-			</tui-button>
-			<tui-button
-				type="blue" width="220rpx" height="60rpx" margin="10rpx 0 0 20rpx"
-				shape="circle"
-				@click="go('/another-tf/another-shop/member-card/member-card-equity')"
-			>
-				会员卡权益
-			</tui-button>
-			<tui-button
-				type="blue" width="180rpx" height="60rpx" margin="10rpx 0 0 20rpx"
-				shape="circle"
+				type="warning" width="180rpx" height="56rpx" margin="10rpx 0 0 20rpx"
+				shape="circle" :size="28"
 				@click="go('/another-tf/another-shop/member-card/settlement-review')"
 			>
 				结算审核
 			</tui-button>
 			<tui-button
-				type="blue" width="180rpx" height="60rpx" margin="10rpx 0 0 20rpx"
-				shape="circle"
+				type="warning" width="180rpx" height="56rpx" margin="10rpx 0 0 20rpx"
+				shape="circle" :size="28"
 				@click="go('/another-tf/another-user/member-card/user-purchased?type=shop')"
 			>
 				用户已购
@@ -64,10 +50,10 @@
 						<view style="display: flex;align-items: center;padding: 6rpx 10rpx;font-size: 28rpx;">
 							<tui-radio
 								:checked="queryInfo.memberCardType === item.value" :value="item.value"
-								color="#07c160" border-color="#999" :scale-ratio="0.8"
+								color="#ef530e" border-color="#ef5511" :scale-ratio="0.8"
 							>
 							</tui-radio>
-							<text>{{ item.name }}</text>
+							<text style="padding: 0 0 0 4rpx;">{{ item.name }}</text>
 						</view>
 					</tui-label>
 				</view>
@@ -85,31 +71,45 @@
 						<view style="display: flex;align-items: center;padding: 6rpx 10rpx;font-size: 28rpx;">
 							<tui-radio
 								:checked="queryInfo.memberCardState === item.value" :value="item.value"
-								color="#07c160" border-color="#999" :scale-ratio="0.8"
+								color="#ef530e" border-color="#ef5511" :scale-ratio="0.8"
 							>
 							</tui-radio>
-							<text>{{ item.name }}</text>
+							<text style="padding: 0 0 0 4rpx;">{{ item.name }}</text>
 						</view>
 					</tui-label>
 				</view>
 			</tui-radio-group>
 		</view>
 
-		<view v-if="memberCardList && memberCardList.length" style="margin: 10rpx 0 0;">
-			<view v-for="(item, index) in memberCardList" :key="index" style="padding: 0 20rpx 35rpx;">
-				<ATFMemberCardInfo
-					:data="item"
-					@off-shelf="handleMemberCardOffShelf" @issue="handleMemberCardIssue"
-				></ATFMemberCardInfo>
+		<view style="margin: 10rpx 0 0;padding: 0 20rpx 180rpx;">
+			<view v-if="memberCardList && memberCardList.length">
+				<view v-for="(item, index) in memberCardList" :key="index" style="padding: 0 0 35rpx;">
+					<ATFMemberCardInfo
+						:data="item"
+						@off-shelf="handleMemberCardOffShelf" @issue="handleMemberCardIssue"
+					></ATFMemberCardInfo>
+				</view>
+			</view>
+			<view style="padding-bottom: 45rpx;">
+				<LoadingMore
+					:status="!isEmpty && !memberCardList.length
+						? 'loading' : !isEmpty && memberCardList.length && (memberCardList.length >= memberCardTotal) ? 'no-more' : ''"
+				>
+				</LoadingMore>
+				<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无商家会员卡内容~</tui-no-data>
 			</view>
 		</view>
-		<view style="padding-bottom: 45rpx;">
-			<LoadingMore
-				:status="!isEmpty && !memberCardList.length
-					? 'loading' : !isEmpty && memberCardList.length && (memberCardList.length >= memberCardTotal) ? 'no-more' : ''"
+		<view
+			class="operation-btn"
+			style="width: 100%;position: fixed;bottom: 0;left: 0;background: #f0f0f0;padding: 30rpx;box-sizing: border-box;"
+		>
+			<tui-button
+				type="warning" width="auto" height="86rpx" margin="10rpx 16rpx 0"
+				:size="28"
+				@click="go('/another-tf/another-shop/member-card/shop-member-card-form')"
 			>
-			</LoadingMore>
-			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无商家会员卡内容~</tui-no-data>
+				创建会员卡
+			</tui-button>
 		</view>
 	</view>
 </template>
@@ -181,8 +181,14 @@ export default {
 <style lang="less" scoped>
 .shop-member-card-container {
 	min-height: 100vh;
-	background-color: #eeeeee;
+	background-color: #f1f1f1;
 	box-sizing: border-box;
+
+	.top-btn {
+		/deep/ .tui-btn-warning {
+			background-color: #ef530e !important;
+		}
+	}
 
 	.search-btn {
 		/deep/ .tui-input__wrap {
@@ -191,9 +197,19 @@ export default {
 		}
 	}
 
+	.operation-btn {
+		/deep/ .tui-btn {
+			border-radius: 20rpx;
+		}
+
+		/deep/ .tui-btn-warning {
+			background-color: #ef530e !important;
+		}
+	}
+
 	/deep/ .j-header-wrapper {
 		padding: 24rpx 12rpx 10rpx;
-		background-color: #f5f5f5;
+		background-color: #ffffff;
 	}
 }
 </style>

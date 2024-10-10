@@ -1,120 +1,133 @@
 <template>
-	<view class="field-pane-container">
-		<view class="title">{{ title }}</view>
-		<view v-for="item in fields" :key="item.label">
-			<view v-if="(item.field === 'cardId') || (item.field === 'shopId') || (item.field === 'originMemberCardChannel')"></view>
-			<!-- <view v-else-if="item.field === 'startTime' || item.field === 'endTime'" class="item">
-				<template>
-				<view
-				class="input-wrapper" :style="{
-				'flex-direction': item.type === 'textarea' ? 'column' : '',
-				'align-items': item.type === 'textarea' ? 'flex-start' : ''
-				}"
-				>
-				<view class="sub-title">{{ item.label }}</view>
-				<view v-if="item.type === 'time' && item.field === 'startTime'">
-				<input
-				:value="form[item.field]" class="input" :disabled="true" type="text"
-				:placeholder="item.placeholder" @click="$refs.dateTimeTradeS[0].show()"
-				@input="handleInput(item.field, $event)"
-				/>
-				<tui-datetime
-				ref="dateTimeTradeS" :type="7" radius
-				@confirm="handleInput(item.field, $event)"
-				></tui-datetime>
-				</view>
-				<view v-if="item.type === 'time' && item.field === 'endTime'">
-				<input
-				:value="form[item.field]" class="input" :disabled="true" type="text"
-				:placeholder="item.placeholder" @click="$refs.dateTimeTradeE[0].show()"
-				@input="handleInput(item.field, $event)"
-				/>
-				<tui-datetime
-				ref="dateTimeTradeE" :type="7" radius
-				@confirm="handleInput(item.field, $event)"
-				></tui-datetime>
-				</view>
-				</view>
-				</template>
-				</view> -->
-			<view v-else class="item">
-				<template>
+	<view class="field-pane-container" :style="{ padding }">
+		<view style="font-size: 34rpx;font-weight: bold;">{{ title }}</view>
+		<view
+			style="margin-top: 20rpx;padding: 30rpx 28rpx 2rpx;background-color: #ffffff;"
+			:style="{ borderRadius: formBorderRadius }"
+		>
+			<view v-for="item in fields" :key="item.label">
+				<view v-if="(item.field === 'cardId') || (item.field === 'shopId') || (item.field === 'originMemberCardChannel')"></view>
+				<!-- <view v-else-if="item.field === 'startTime' || item.field === 'endTime'" class="item">
+					<template>
 					<view
-						class="input-wrapper" :style="{
-							'flex-direction': item.type === 'textarea' ? 'column' : '',
-							'align-items': item.type === 'textarea' ? 'flex-start' : ''
-						}"
+					class="input-wrapper" :style="{
+					'flex-direction': item.type === 'textarea' ? 'column' : '',
+					'align-items': item.type === 'textarea' ? 'flex-start' : ''
+					}"
 					>
-						<view class="sub-title">{{ item.label }}</view>
-						<input
-							v-if="item.type === 'input'" :value="form[item.field]" class="input" :disabled="false"
-							:type="
-								(item.field === 'memberCardNumber') || (item.field === 'memberCardDays') ||
-									(item.field === 'cardPrice') || (item.field === 'cardDiscountedPrice') ||
-									(item.field === 'agentPurchasePrice') || (item.field === 'promotionPrice')
-									? 'number' : 'text'" :placeholder="item.placeholder"
-							@input="handleInput(item.field, $event)"
-						/>
-
-						<textarea
-							v-if="item.type === 'textarea'" :value="form[item.field]" class="textarea"
-							:placeholder="item.placeholder" @input="handleInput(item.field, $event)"
-						></textarea>
-
-						<tui-radio-group
-							v-if="(item.type === 'radio') && (item.field === 'memberCardType')" v-model="form[item.field]"
-							style="display: flex;" @change="(e) => { }"
-						>
-							<tui-label v-for="(part, index) in [{ name: '消费卡', value: '1' }, { name: '次数卡', value: '2' }]" :key="index">
-								<tui-list-cell padding="16rpx">
-									<view>
-										<tui-radio :checked="false" :value="part.value" color="#07c160" border-color="#999">
-										</tui-radio>
-										<text class="tui-text">{{ part.name }}</text>
-									</view>
-								</tui-list-cell>
-							</tui-label>
-						</tui-radio-group>
-						<tui-radio-group
-							v-else-if="(item.type === 'radio') && (item.field === 'memberCardChannel')" v-model="form[item.field]"
-							style="flex: 1;display: flex;flex-wrap: wrap;justify-content: flex-end;" @change="(e) => { }"
-						>
-							<tui-label
-								v-for="(part, index) in [{ name: 'app', value: '1' }, { name: 'H5', value: '2' }, { name: '支付宝小程序', value: '3' }, { name: '线下渠道', value: '4' }, { name: '微信小程序', value: '5' }, { name: '代理发行', value: '6' }]"
-								:key="index"
-							>
-								<tui-list-cell v-if="(part.value === form.originMemberCardChannel) || ['4', '6'].includes(part.value)" padding="16rpx">
-									<view>
-										<tui-radio :checked="false" :value="part.value" color="#07c160" border-color="#999">
-										</tui-radio>
-										<text class="tui-text">{{ part.name }}</text>
-									</view>
-								</tui-list-cell>
-							</tui-label>
-						</tui-radio-group>
-						<tui-radio-group
-							v-else-if="(item.type === 'radio') && (item.field === 'memberCardLevel')" v-model="form[item.field]"
-							style="flex: 1;display: flex;flex-wrap: wrap;justify-content: flex-end;" @change="(e) => { }"
-						>
-							<tui-label
-								v-for="(part, index) in [{ name: '全部会员', value: '1' }, { name: '团长', value: '2' }, { name: '合伙人', value: '3' }]"
-								:key="index"
-							>
-								<tui-list-cell padding="16rpx">
-									<view>
-										<tui-radio :checked="false" :value="part.value" color="#07c160" border-color="#999">
-										</tui-radio>
-										<text class="tui-text">{{ part.name }}</text>
-									</view>
-								</tui-list-cell>
-							</tui-label>
-						</tui-radio-group>
-
+					<view style="margin-right: 20rpx;">{{ item.label }}</view>
+					<view v-if="item.type === 'time' && item.field === 'startTime'">
+					<input
+					:value="form[item.field]" class="input" :disabled="true" type="text"
+					:placeholder="item.placeholder" @click="$refs.dateTimeTradeS[0].show()"
+					@input="handleInput(item.field, $event)"
+					/>
+					<tui-datetime
+					ref="dateTimeTradeS" :type="7" radius
+					@confirm="handleInput(item.field, $event)"
+					></tui-datetime>
 					</view>
-				</template>
+					<view v-if="item.type === 'time' && item.field === 'endTime'">
+					<input
+					:value="form[item.field]" class="input" :disabled="true" type="text"
+					:placeholder="item.placeholder" @click="$refs.dateTimeTradeE[0].show()"
+					@input="handleInput(item.field, $event)"
+					/>
+					<tui-datetime
+					ref="dateTimeTradeE" :type="7" radius
+					@confirm="handleInput(item.field, $event)"
+					></tui-datetime>
+					</view>
+					</view>
+					</template>
+					</view> -->
+				<view v-else-if="item.field === 'memberCardType'">
+					<view class="item">
+						<view class="input-wrapper">
+							<view style="margin-bottom: 24rpx;">{{ item.label }}</view>
+							<view
+								style="display: flex;justify-content: space-between;align-items: center;"
+								@click="(selectType = 'memberCardTypeList') && (selectList = memberCardTypeList) && (isShowListSelect = true)"
+							>
+								<view
+									v-if="item.type === 'select'" :style="{
+										color: form.memberCardType ? '' : '#999'
+									}"
+								>
+									{{ form.memberCardType ? memberCardTypeList.find(i => i.value === String(form.memberCardType)).text : "请选择" }}
+								</view>
+								<view style="font-size: 28rpx;color: #ef530e;">选择</view>
+							</view>
+						</view>
+					</view>
+				</view>
+				<view v-else-if="item.field === 'memberCardChannel'">
+					<view class="item">
+						<view class="input-wrapper">
+							<view style="margin-bottom: 24rpx;">{{ item.label }}</view>
+							<view
+								style="display: flex;justify-content: space-between;align-items: center;"
+								@click="(selectType = 'memberCardChannelList') && (selectList = memberCardChannelList.filter(i => (i.value === form.originMemberCardChannel) || ['4', '6'].includes(i.value))) && (isShowListSelect = true)"
+							>
+								<view
+									v-if="item.type === 'select'" :style="{
+										color: form.memberCardChannel ? '' : '#999'
+									}"
+								>
+									{{ form.memberCardChannel ? memberCardChannelList.find(i => i.value === String(form.memberCardChannel)).text : "请选择" }}
+								</view>
+								<view style="font-size: 28rpx;color: #ef530e;">选择</view>
+							</view>
+						</view>
+					</view>
+				</view>
+				<view v-else class="item">
+					<template>
+						<view class="input-wrapper">
+							<view style="margin-bottom: 24rpx;">{{ item.label }}</view>
+							<input
+								v-if="item.type === 'input'" :value="form[item.field]" class="input" :disabled="false"
+								:type="
+									(item.field === 'memberCardNumber') || (item.field === 'memberCardDays') ||
+										(item.field === 'cardPrice') || (item.field === 'cardDiscountedPrice') ||
+										(item.field === 'agentPurchasePrice') || (item.field === 'promotionPrice')
+										? 'number' : 'text'" :placeholder="item.placeholder"
+								@input="handleInput(item.field, $event)"
+							/>
+
+							<textarea
+								v-else-if="item.type === 'textarea'" :value="form[item.field]" class="textarea"
+								:placeholder="item.placeholder" @input="handleInput(item.field, $event)"
+							></textarea>
+
+							<tui-radio-group
+								v-else-if="(item.type === 'radio') && (item.field === 'memberCardLevel')" v-model="form[item.field]"
+								style="display: flex;flex-wrap: wrap;" @change="(e) => { }"
+							>
+								<tui-label
+									v-for="(part, index) in [{ name: '全部会员', value: '1' }, { name: '团长', value: '2' }, { name: '合伙人', value: '3' }]"
+									:key="index"
+								>
+									<tui-list-cell padding="0 16rpx 0 0">
+										<view>
+											<tui-radio :checked="false" :value="part.value" color="#ef530e" border-color="#ef5511">
+											</tui-radio>
+											<text style="padding: 0 0 0 4rpx;">{{ part.name }}</text>
+										</view>
+									</tui-list-cell>
+								</tui-label>
+							</tui-radio-group>
+
+						</view>
+					</template>
+				</view>
 			</view>
 		</view>
 
+		<tui-select
+			:list="selectList" reverse :show="isShowListSelect" @confirm="handleSelectList"
+			@close="isShowListSelect = false"
+		></tui-select>
 	</view>
 </template>
 
@@ -131,7 +144,15 @@ export default {
 			type: Object,
 			required: true
 		},
-		title: String
+		title: String,
+		padding: {
+			type: String,
+			default: '30rpx 0 0'
+		},
+		formBorderRadius: {
+			type: String,
+			default: '16rpx'
+		}
 	},
 
 	data() {
@@ -142,18 +163,23 @@ export default {
 				cardName: '',
 				memberCardType: '',
 				memberCardNumber: '',
-				memberCardChannel: '',
-				originMemberCardChannel: '',
+				// memberCardChannel: '',
+				// originMemberCardChannel: '',
 				memberCardLevel: '',
 				memberCardDays: '',
 				cardEquityStatement: '',
 				cardPrice: '',
 				cardDiscountedPrice: '',
-				agentPurchasePrice: '',
+				// agentPurchasePrice: '',
 				promotionPrice: ''
 				// startTime: '',
 				// endTime: ''
-			}
+			},
+			selectType: '',
+			selectList: [],
+			memberCardTypeList: [{ text: '消费卡', value: '1' }, { text: '次数卡', value: '2' }],
+			memberCardChannelList: [{ text: 'app', value: '1' }, { text: 'H5', value: '2' }, { text: '支付宝小程序', value: '3' }, { text: '线下渠道', value: '4' }, { text: '微信小程序', value: '5' }, { text: '代理发行', value: '6' }],
+			isShowListSelect: false
 		}
 	},
 
@@ -186,6 +212,14 @@ export default {
 	},
 
 	methods: {
+		handleSelectList(e) {
+			this.isShowListSelect = false
+			if (this.selectType === 'memberCardTypeList') {
+				this.form.memberCardType = e.options.value
+			} else if (this.selectType === 'memberCardChannelList') {
+				this.form.memberCardChannel = e.options.value
+			}
+		},
 		handleInput(field, e) {
 			console.log(field, e)
 			if (field === 'startTime' || field === 'endTime') {
@@ -199,53 +233,24 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../../../../style/var.less";
-@import "../../../../style/mixin.less";
-
 .field-pane-container {
-	margin-top: 30rpx;
-
-	.title {
-		font-size: @f14;
-		color: #fa5151;
-		font-weight: bold;
-	}
-
-	.chooseGender {
-		flex: 1;
-		text-align: left;
-	}
+	font-size: 28rpx;
 
 	.item {
-		padding: 20rpx 0;
-		border-bottom: 1rpx solid #d8d8d8;
-		margin-top: 20rpx;
+		margin: 0 0 30rpx;
+		border-bottom: 1rpx solid #e7e7e7;
 
 		.input-wrapper {
-			.flex();
-			font-size: @f12;
-			color: @c3d;
-
-			.sub-title {
-				margin-right: 20rpx;
-			}
-
-			/deep/ .uni-input-placeholder,
-			/deep/ .uni-textarea-placeholder {
-				font-size: @f12;
-				color: @c9;
-			}
-
+			padding: 0 0 28rpx;
 			.input {
-				flex: 1;
-				font-size: @f12;
+				font-size: 28rpx;
 			}
 
 			.textarea {
 				margin-top: 20rpx;
 				width: 100%;
 				height: 100px;
-				font-size: 24rpx;
+				font-size: 26rpx;
 			}
 		}
 	}

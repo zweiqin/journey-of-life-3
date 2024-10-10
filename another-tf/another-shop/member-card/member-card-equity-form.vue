@@ -1,17 +1,33 @@
 <template>
-	<view class="shop-member-card-form-container">
+	<view class="member-card-equity-form-container">
 		<JHeader width="50" height="50" title="会员卡权益表单"></JHeader>
-		<FieldPaneMCEF v-model="form.basicInfo" :fields="equityInfo" title="基本信息"></FieldPaneMCEF>
+		<view style="padding: 0 40rpx;">
+			<FieldPaneMCEF
+				v-model="form.basicInfo" :fields="equityInfo" title="基础信息"
+				form-border-radius="16rpx 16rpx 0 0"
+			></FieldPaneMCEF>
 
-		<ATFUpload
-			:title="uploadFields[0].label" :img-url="form.imgs[uploadFields[0].field]"
-			@upload="handleSaveImg(uploadFields[0].field, $event)" @delete="handleDeleteImg(uploadFields[0].field)"
-		></ATFUpload>
+			<view
+				style="padding: 0rpx 28rpx 2rpx;background-color: #ffffff;border-radius: 0 0 16rpx 16rpx;"
+			>
+				<ATFUpload
+					margin="0 0 30rpx" :title="uploadFields[0].label" :img-url="form.imgs[uploadFields[0].field]"
+					@upload="handleSaveImg(uploadFields[0].field, $event)" @delete="handleDeleteImg(uploadFields[0].field)"
+				></ATFUpload>
+			</view>
+		</view>
 
-		<view class="buts">
-			<button class="btn" @click="submit()">
-				提交
-			</button>
+		<view
+			class="operation-btn"
+			style="width: 100%;position: fixed;bottom: 0;left: 0;background: #f0f0f0;padding: 30rpx;box-sizing: border-box;"
+		>
+			<tui-button
+				type="warning" width="auto" height="86rpx" margin="10rpx 16rpx 0"
+				:size="28"
+				@click="submit()"
+			>
+				{{ form.basicInfo.equityId ? '确认编辑' : '确认创建' }}
+			</tui-button>
 		</view>
 	</view>
 </template>
@@ -28,6 +44,7 @@ export default {
 	onLoad(options) {
 		this.$store.dispatch('auth/unifiedProcessingShopAction', {
 			cb: () => {
+				this.form.basicInfo.cardId = options.cardId || ''
 				if (options.id) {
 					this.getCardEquityDetail(options.id)
 				}
@@ -57,7 +74,7 @@ export default {
 				{
 					label: '会员卡权益说明',
 					type: 'textarea',
-					field: 'cardEquityStatement',
+					field: 'equityRemark',
 					placeholder: '请填写会员卡权益说明'
 				}
 			],
@@ -126,12 +143,16 @@ export default {
 				this.$showToast('缺少权益Icon')
 				return
 			}
+			if (!data.equityRemark) {
+				this.$showToast('缺少权益说明')
+				return
+			}
 			uni.showModal({
 				title: '提示',
 				content: '确认提交会员卡权益表单？',
 				success: (res) => {
 					if (res.confirm) {
-						if (data.cardId) {
+						if (data.equityId) {
 							updateShopMemberCardEquityApi(data).then((res) => {
 								this.$showToast('修改会员卡权益成功')
 								setTimeout(() => {
@@ -164,39 +185,24 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.shop-member-card-form-container {
-	padding: 40rpx 40rpx 140rpx 40rpx;
+.member-card-equity-form-container {
+	min-height: 100vh;
+	padding: 0 0 180rpx;
+	background-color: #f1f1f1;
 	box-sizing: border-box;
 
-	.buts {
-		position: fixed;
-		bottom: -1px;
-		z-index: 2;
-		padding: 20rpx 40rpx;
-		left: 0;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		background-color: #fff;
-		width: 100%;
-		box-sizing: border-box;
-		margin-top: 272rpx;
+	/deep/ .j-header-wrapper {
+		padding: 24rpx 12rpx 10rpx;
+		background-color: #ffffff;
 	}
 
-	.btn {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		height: 72rpx;
-		width: 306rpx;
-		font-size: 32rpx;
-		color: #fff;
-		margin: 0;
-		background-color: #07b9b9;
-		border-radius: 100px;
+	.operation-btn {
+		/deep/ .tui-btn {
+			border-radius: 20rpx;
+		}
 
-		&:last-child {
-			background-color: #fa5151;
+		/deep/ .tui-btn-warning {
+			background-color: #ef530e !important;
 		}
 	}
 }

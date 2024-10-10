@@ -1,7 +1,7 @@
 <template>
 	<view class="promotion-record-container">
 		<JHeader title="会员卡推广记录" width="50" height="50"></JHeader>
-		<view style="padding: 20rpx 30rpx 18rpx;">
+		<view style="padding: 18rpx 20rpx;margin: 20rpx 20rpx 0;background-color: #ffffff;border-radius: 20rpx;">
 			<view style="display: flex;align-items: stretch;">
 				<image
 					style="width: 96rpx;height: 96rpx;margin-right: 24rpx;border-radius: 50%"
@@ -37,7 +37,7 @@
 			</view>
 		</view>
 
-		<view style="padding: 18rpx 20rpx 0;">
+		<view style="padding: 18rpx 20rpx;margin: 20rpx 20rpx 0;background-color: #ffffff;border-radius: 20rpx;">
 			<view class="search-btn" style="display: flex;align-items: center;padding: 0 0 12rpx;">
 				<text style="font-size: 30rpx;">用户手机号</text>
 				<view style="flex: 1;margin-left: 16rpx;">
@@ -69,35 +69,24 @@
 						<view style="display: flex;align-items: center;padding: 6rpx 10rpx;font-size: 28rpx;">
 							<tui-radio
 								:checked="queryInfo.status === item.value" :value="item.value"
-								color="#07c160" border-color="#999" :scale-ratio="0.8"
+								color="#ef530e" border-color="#ef5511" :scale-ratio="0.8"
 							>
 							</tui-radio>
-							<text>{{ item.name }}</text>
+							<text style="padding: 0 0 0 4rpx;">{{ item.name }}</text>
 						</view>
 					</tui-label>
 				</view>
 			</tui-radio-group>
 		</view>
 
-		<view v-if="cardPromotionList && cardPromotionList.length" style="margin: 10rpx 0 0;">
+		<view v-if="cardPromotionList && cardPromotionList.length" style="margin: 20rpx 0 0;">
 			<view v-for="(item, index) in cardPromotionList" :key="index" style="padding: 0 20rpx 35rpx;">
 				<tui-card :title="{ text: `订单：${item.refOrderCode || '--'}` }" :tag="{ text: `ID：${item.promoterId || '--'}` }">
 					<template #body>
-						<view style="padding: 10rpx 20rpx 0;">
-							<view style="font-size: 30rpx;">
-								<view style="display: flex;justify-content: space-between;align-items: center;flex-wrap: wrap;">
-									<view>
-										<text>结算状态：</text>
-										<text v-if="item.status === 1">已结算</text>
-										<text v-else-if="item.status === 2">待结算</text>
-										<text v-else>--</text>
-									</view>
-									<view style="flex: 1;display: flex;justify-content: flex-end;align-items: center;margin: 0 0 0 14rpx;">
-										<view style="white-space: nowrap;">商家：{{ item.shopName || '--' }}</view>
-									</view>
-								</view>
+						<view style="padding: 0 20rpx;">
+							<view style="padding-top: 12rpx;font-size: 30rpx;">
 								<view
-									style="display: flex;justify-content: space-between;align-items: center;flex-wrap: wrap;padding: 6rpx 0 0;"
+									style="display: flex;justify-content: space-between;align-items: center;flex-wrap: wrap;"
 								>
 									<view>
 										<text>售价：</text>
@@ -112,21 +101,98 @@
 										</text>
 									</view>
 								</view>
+								<view
+									style="display: flex;justify-content: space-between;align-items: center;flex-wrap: wrap;padding: 6rpx 0 0;"
+								>
+									<view>
+										<text>结算状态：</text>
+										<text v-if="item.status === 1">已结算</text>
+										<text v-else-if="item.status === 2">待结算</text>
+										<text v-else>--</text>
+									</view>
+									<view style="flex: 1;display: flex;justify-content: flex-end;align-items: center;margin: 0 0 0 14rpx;">
+										<view style="white-space: nowrap;">商家：{{ item.shopName || '--' }}</view>
+									</view>
+								</view>
+							</view>
+							<view
+								v-if="item.cardUserId || item.name || item.phone2"
+								style="display: flex;align-items: center;padding-top: 12rpx;"
+							>
+								<image
+									style="width: 88rpx;height: 88rpx;border-radius: 50%;" mode="aspectFit"
+									:src="common.seamingImgUrl(item.headImage2) || require('../../../static/images/new-user/default-user-avatar.png')"
+								>
+								</image>
+								<view style="flex: 1;margin-left: 24rpx;">
+									<view
+										style="display: flex;justify-content: space-between;align-items: center;"
+										@click="item.cardUserId && getUserInfo(item.cardUserId)"
+									>
+										<view style="flex: 1;width: 0;font-weight: bold;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+											{{ item.name || '--' }}
+										</view>
+										<view v-if="item.cardUserId">
+											<tui-icon name="arrowright" :size="32" unit="rpx" color="#1c1b1e" margin="0"></tui-icon>
+										</view>
+									</view>
+									<view v-if="item.phone2" style="margin-top: 4rpx;">
+										<BeeMakePhone :phone="item.phone2">
+											<view style="display: flex;align-items: center;font-size: 28rpx;">
+												<tui-icon name="voipphone" :size="28" unit="rpx" color="#9e9e9e" margin="0"></tui-icon>
+												<text style="color: #9e9e9e;">{{ item.phone2 }}</text>
+											</view>
+										</BeeMakePhone>
+									</view>
+								</view>
+							</view>
+
+							<view
+								v-if="item.buyerUserId || item.promotionName || item.phone"
+								style="margin-top: 12rpx;padding-top: 12rpx;border-top: 1rpx solid #cccccc;"
+							>
+								<view style="font-weight: bold;">推广用户</view>
+								<view style="display: flex;align-items: center;padding-top: 12rpx;">
+									<image
+										style="width: 88rpx;height: 88rpx;border-radius: 50%;" mode="aspectFit"
+										:src="common.seamingImgUrl(item.headImage) || require('../../../static/images/new-user/default-user-avatar.png')"
+									>
+									</image>
+									<view style="flex: 1;margin-left: 24rpx;">
+										<view
+											style="display: flex;justify-content: space-between;align-items: center;"
+											@click="item.buyerUserId && getUserInfo(item.buyerUserId)"
+										>
+											<view style="flex: 1;width: 0;font-weight: bold;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+												{{ item.promotionName || '--' }}
+											</view>
+											<view v-if="item.buyerUserId">
+												<tui-icon name="arrowright" :size="32" unit="rpx" color="#1c1b1e" margin="0"></tui-icon>
+											</view>
+										</view>
+										<view v-if="item.phone" style="margin-top: 4rpx;">
+											<BeeMakePhone :phone="item.phone">
+												<view style="display: flex;align-items: center;font-size: 28rpx;">
+													<tui-icon name="voipphone" :size="28" unit="rpx" color="#9e9e9e" margin="0"></tui-icon>
+													<text style="color: #9e9e9e;">{{ item.phone }}</text>
+												</view>
+											</BeeMakePhone>
+										</view>
+									</view>
+								</view>
 							</view>
 
 							<view
 								v-if="item.cardId || item.cardName"
-								style="margin-top: 12rpx;padding-top: 12rpx;border-top: 2rpx solid #dddddd;"
+								style="margin-top: 12rpx;padding-top: 12rpx;border-top: 1rpx solid #cccccc;"
+								@click="item.cardId && getMemberCardInfo(item.cardId)"
 							>
-								<view style="display: flex;align-items: center;">
+								<view style="display: flex;align-items: center;justify-content: space-between;">
 									<view style="font-weight: bold;">关联会员卡</view>
-									<tui-button
-										v-if="item.cardId" type="warning" width="120rpx" height="50rpx"
-										margin="0 20rpx 0"
-										shape="circle" @click="getMemberCardInfo(item.cardId)"
-									>
-										详情
-									</tui-button>
+									<tui-icon
+										v-if="item.cardId" name="arrowright" :size="32" unit="rpx"
+										color="#1c1b1e" margin="0 0 0 12rpx"
+									></tui-icon>
 								</view>
 								<view style="padding: 6rpx 0 0;font-size: 28rpx;">
 									<view style="display: flex;justify-content: space-between;align-items: center;flex-wrap: wrap;">
@@ -151,73 +217,7 @@
 							</view>
 
 							<view
-								v-if="item.buyerUserId || item.name || item.phone2"
-								style="margin-top: 12rpx;padding-top: 12rpx;border-top: 2rpx solid #dddddd;"
-							>
-								<view style="display: flex;align-items: center;">
-									<view style="font-weight: bold;">关联用户</view>
-									<tui-button
-										v-if="item.buyerUserId" type="warning" width="120rpx" height="50rpx"
-										margin="0 20rpx 0"
-										shape="circle" @click="getUserInfo(item.buyerUserId)"
-									>
-										详情
-									</tui-button>
-								</view>
-								<view
-									style="display: flex;justify-content: space-between;align-items: center;flex-wrap: wrap;padding: 6rpx 0 0;"
-								>
-									<view style="flex: 1;display: flex;align-items: center;">
-										<image
-											style="width: 80rpx;height: 80rpx;border-radius: 50%;" mode="aspectFit"
-											:src="common.seamingImgUrl(item.headImage2) || require('../../../static/images/new-user/default-user-avatar.png')"
-										>
-										</image>
-										<text style="margin-left: 34rpx;font-size: 34rpx;">
-											{{ item.name || '--' }}
-										</text>
-									</view>
-									<view v-if="item.phon2e" style="flex: 1;display: flex;justify-content: flex-end;">
-										<BeeMakePhone :phone="item.phone2">
-											<view style="display: flex;align-items: center;">
-												<tui-icon name="voipphone" :size="34" unit="rpx" color="#e02208" margin="0"></tui-icon>
-												<text style="color: #e02208;">{{ item.phone2 }}</text>
-											</view>
-										</BeeMakePhone>
-									</view>
-								</view>
-							</view>
-							<view
-								v-if="item.promotionName || item.phone"
-								style="margin-top: 12rpx;padding-top: 12rpx;border-top: 2rpx solid #dddddd;"
-							>
-								<view style="font-weight: bold;">推广用户</view>
-								<view
-									style="display: flex;justify-content: space-between;align-items: center;flex-wrap: wrap;padding: 6rpx 0 0;"
-								>
-									<view style="flex: 1;display: flex;align-items: center;">
-										<image
-											style="width: 80rpx;height: 80rpx;border-radius: 50%;" mode="aspectFit"
-											:src="common.seamingImgUrl(item.headImage) || require('../../../static/images/new-user/default-user-avatar.png')"
-										>
-										</image>
-										<text style="margin-left: 34rpx;font-size: 34rpx;">
-											{{ item.promotionName || '--' }}
-										</text>
-									</view>
-									<view v-if="item.phone" style="flex: 1;display: flex;justify-content: flex-end;">
-										<BeeMakePhone :phone="item.phone">
-											<view style="display: flex;align-items: center;">
-												<tui-icon name="voipphone" :size="34" unit="rpx" color="#e02208" margin="0"></tui-icon>
-												<text style="color: #e02208;">{{ item.phone }}</text>
-											</view>
-										</BeeMakePhone>
-									</view>
-								</view>
-							</view>
-
-							<view
-								style="margin-top: 12rpx;padding-top: 12rpx;border-top: 2rpx solid #dddddd;font-size: 26rpx;color: #999999;"
+								style="margin-top: 12rpx;padding-top: 12rpx;border-top: 1rpx solid #cccccc;font-size: 26rpx;color: #999999;"
 							>
 								<view style="display: flex;justify-content: space-between;">
 									<text>创建时间：</text>
@@ -228,17 +228,7 @@
 						</view>
 					</template>
 					<template #footer>
-						<view
-							style="display: flex;justify-content: flex-end;align-items: center;flex-wrap: wrap;padding: 10rpx 20rpx;"
-						>
-							<tui-button
-								v-if="item.cardUserId" type="warning" width="220rpx" height="50rpx"
-								margin="0 0 10rpx 20rpx"
-								shape="circle" @click="getUserInfo(item.cardUserId)"
-							>
-								会员卡获得者
-							</tui-button>
-						</view>
+						<view style="padding: 10rpx 20rpx;"></view>
 					</template>
 				</tui-card>
 			</view>
@@ -385,7 +375,7 @@ export default {
 <style lang="less" scoped>
 .promotion-record-container {
 	min-height: 100vh;
-	background-color: #eeeeee;
+	background-color: #f1f1f1;
 	box-sizing: border-box;
 
 	.search-btn {
@@ -409,7 +399,7 @@ export default {
 
 	/deep/ .j-header-wrapper {
 		padding: 24rpx 12rpx 10rpx;
-		background-color: #f5f5f5;
+		background-color: #ffffff;
 	}
 }
 </style>

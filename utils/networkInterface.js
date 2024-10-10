@@ -799,7 +799,7 @@ export const resolveSubmitOrder = async (params = {}) => {
 				})
 			}
 			// type订单类型1-父订单2-子订单
-			await handleDoPay({ ...res.data, ...payInfo, type: 1 }, settlement.shopType, paymentTypeEnum[settlement.shopType], { passwordFailFn, fn })
+			await handleDoPay({ ...res.data, ...payInfo, type: 1 }, settlement.shopType, isProcureCounter ? '1a' : paymentTypeEnum[settlement.shopType], { passwordFailFn, fn })
 		} catch (e) {
 			if (e.data) uni.showToast({ title: `${e.data.message}-${e.data.errorData}`, icon: 'none' })
 			else uni.showToast({ title: `请求：${e.errMsg}`, icon: 'none' }) // 请求失败或请求错误

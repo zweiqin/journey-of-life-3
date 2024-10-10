@@ -1,115 +1,94 @@
 <template>
 	<view class="member-card-commission-container">
-		<JHeader title="会员卡分佣" width="50" height="50"></JHeader>
-		<view style="display: flex;justify-content: flex-end;flex-wrap: wrap;">
+		<JHeader title="会员卡佣金" width="50" height="50"></JHeader>
+		<view class="top-btn" style="display: flex;justify-content: flex-end;flex-wrap: wrap;padding: 0 20rpx;">
 			<tui-button
-				type="blue" width="200rpx" height="60rpx" margin="10rpx 0 0 10rpx"
-				shape="circle"
+				type="warning" width="180rpx" height="56rpx" margin="10rpx 0 0 10rpx"
+				shape="circle" :size="28"
 				@click="go('/another-tf/another-user/member-card/member-card-record')"
 			>
 				收支明细
 			</tui-button>
 			<tui-button
-				type="blue" width="260rpx" height="60rpx" margin="10rpx 0 0 10rpx"
-				shape="circle"
+				type="warning" width="260rpx" height="56rpx" margin="10rpx 0 0 10rpx"
+				shape="circle" :size="28"
 				@click="go('/another-tf/another-user/member-card/settlement-record')"
 			>
 				会员卡结算记录
 			</tui-button>
-			<tui-button
-				type="blue" width="220rpx" height="60rpx" margin="10rpx 0 0 10rpx"
-				shape="circle"
-				@click="go('/another-tf/another-user/member-card/user-purchased')"
-			>
-				已购会员卡
-			</tui-button>
 		</view>
 
 		<view
-			style="margin: 20rpx 30rpx 40rpx;padding: 0 30rpx 34rpx;background-color: #ffffff;color: #666666;font-size: 24rpx;border-radius: 16rpx;"
+			style="display: flex;justify-content: space-evenly;margin: 20rpx 30rpx 40rpx;padding: 34rpx 4rpx;background-color: #ffffff;color: #ef530e;border-radius: 16rpx;"
 		>
-			<view style="display: flex;align-items: center;">
-				<view style="flex:1;width: 0;padding: 34rpx 0 0 32rpx;">
-					<view style="display: flex;align-items: center;">
-						<view style="width: 6rpx;height: 16rpx;background-color: #3370ff;"></view>
-						<view style="margin-left: 8rpx;">待结算</view>
-					</view>
-					<view style="margin-top: 18rpx;font-size: 42rpx;font-weight: bold;color: #191919;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-						{{ typeof cardCommissionData.pendingSettlement === 'number' ? cardCommissionData.pendingSettlement : '--' }}
-					</view>
+			<view style="flex: 1;text-align: center;">
+				<view style="font-weight: bold;">
+					{{ typeof cardCommissionData.pendingSettlement === 'number' ? cardCommissionData.pendingSettlement : '--' }}
 				</view>
-				<view style="flex:1;width: 0;padding: 34rpx 0 0 32rpx;">
-					<view style="display: flex;align-items: center;">
-						<view style="width: 6rpx;height: 16rpx;background-color: #0dc53e;"></view>
-						<view style="margin-left: 8rpx;">已结算</view>
-					</view>
-					<view style="margin-top: 18rpx;font-size: 42rpx;font-weight: bold;color: #191919;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-						{{ typeof cardCommissionData.alreadySettled === 'number' ? cardCommissionData.alreadySettled : '--' }}
-					</view>
+				<view style="margin-top: 12rpx;font-size: 24rpx;color: #666666;">待结算</view>
+			</view>
+			<view style="width: 2rpx;margin: 10rpx 0;background-color: #cccccc;"></view>
+			<view style="flex: 1;text-align: center;">
+				<view style="font-weight: bold;">
+					{{ typeof cardCommissionData.alreadySettled === 'number' ? cardCommissionData.alreadySettled : '--' }}
 				</view>
-				<view style="flex:1;width: 0;padding: 34rpx 0 0 32rpx;">
-					<view style="display: flex;align-items: center;">
-						<view style="width: 6rpx;height: 16rpx;background-color: #0dc53e;"></view>
-						<view style="margin-left: 8rpx;">待审核</view>
-					</view>
-					<view style="margin-top: 18rpx;font-size: 42rpx;font-weight: bold;color: #191919;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-						{{ typeof cardCommissionData.audit === 'number' ? cardCommissionData.audit : '--' }}
-					</view>
+				<view style="margin-top: 12rpx;font-size: 24rpx;color: #666666;">已结算</view>
+			</view>
+			<view style="width: 2rpx;margin: 10rpx 0;background-color: #cccccc;"></view>
+			<view style="flex: 1;text-align: center;">
+				<view style="font-weight: bold;">
+					{{ typeof cardCommissionData.audit === 'number' ? cardCommissionData.audit : '--' }}
 				</view>
+				<view style="margin-top: 12rpx;font-size: 24rpx;color: #666666;">待审核</view>
 			</view>
 		</view>
 
 		<view v-if="cardCommissionList && cardCommissionList.length" style="margin: 10rpx 0 0;">
-			<view v-for="(item, index) in cardCommissionList" :key="index" style="padding: 0 20rpx 35rpx;">
-				<tui-card :title="{ text: `商家：${item.shopName || '--'}` }" :tag="{ text: `ID：${item.shopId || '--'}` }">
-					<template #body>
-						<view style="padding: 10rpx 20rpx 0;font-size: 30rpx;">
-							<view
-								style="display: flex;justify-content: space-between;align-items: center;flex-wrap: wrap;padding: 6rpx 0 0;"
-							>
-								<view>
-									<text>待结算：</text>
-									<text style="font-weight: bold;color: #e02208;">
-										￥{{ typeof item.pendingSettlement === 'number' ? item.pendingSettlement : '--' }}
-									</text>
-								</view>
-								<view>
-									<text>已结算：</text>
-									<text style="font-weight: bold;color: #e02208;">
-										￥{{ typeof item.alreadySettled === 'number' ? item.alreadySettled : '--' }}
-									</text>
-								</view>
-							</view>
-							<view style="padding: 6rpx 0 0;">
-								<text>待审核：</text>
-								<text style="font-weight: bold;color: #e02208;">
-									￥{{ typeof item.audit === 'number' ? item.audit : '--' }}
-								</text>
-							</view>
+			<view
+				v-for="(item, index) in cardCommissionList" :key="index"
+				style="display: flex;justify-content: space-between;align-items: center;margin: 0 30rpx 30rpx;padding: 32rpx;font-size: 28rpx;background-color: #ffffff;border-radius: 16rpx;"
+			>
+				<view style="flex: 1;width: 0;">
+					<view
+						style="display: flex;align-items: center;"
+						@click="item.shopId && getBrandDetail(item.shopId)"
+					>
+						<view style="font-weight: bold;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+							{{ item.shopName || '--' }}
 						</view>
-					</template>
-					<template #footer>
-						<view
-							style="display: flex;justify-content: flex-end;align-items: center;flex-wrap: wrap;padding: 10rpx 20rpx;"
+						<view v-if="item.shopId" style="margin-left: 12rpx;">
+							<tui-icon name="arrowright" :size="32" unit="rpx" color="#1c1b1e" margin="0"></tui-icon>
+						</view>
+					</view>
+					<view style="margin-top: 12rpx;font-size: 24rpx;color: #666666;">
+						<text>已结算：</text>
+						<text>
+							{{ typeof item.alreadySettled === 'number' ? item.alreadySettled : '--' }}元
+						</text>
+					</view>
+				</view>
+				<view style="text-align: right;">
+					<view>
+						<text>待审核：</text>
+						<text style="font-weight: bold;color: #ef530e;">
+							{{ typeof item.audit === 'number' ? item.audit : '--' }}元
+						</text>
+					</view>
+					<view style="margin-top: 2rpx;display: flex;align-items: flex-end;font-size: 28rpx;">
+						<text>待结算：</text>
+						<text style="color: #ef530e;">
+							{{ typeof item.pendingSettlement === 'number' ? item.pendingSettlement : '--' }}元
+						</text>
+						<tui-button
+							v-if="item.shopId && item.pendingSettlement" type="warning" width="fit-content" height="40rpx"
+							margin="0 0 0 10rpx" shape="circle"
+							plain link :size="26" bold
+							@click="handleCardApplyShop(item)"
 						>
-							<tui-button
-								v-if="item.shopId"
-								type="warning" width="180rpx" height="50rpx" margin="0 0 0 20rpx"
-								shape="circle"
-								@click="getBrandDetail(item.shopId)"
-							>
-								关联店铺
-							</tui-button>
-							<tui-button
-								v-if="item.shopId" type="warning"
-								width="180rpx" height="50rpx" margin="0 0 0 20rpx" shape="circle"
-								@click="handleCardApplyShop(item)"
-							>
-								提交结算
-							</tui-button>
-						</view>
-					</template>
-				</tui-card>
+							提交
+						</tui-button>
+					</view>
+				</view>
 			</view>
 		</view>
 		<view style="padding-bottom: 45rpx;">
@@ -204,6 +183,7 @@ export default {
 				})
 				console.log(data)
 				this.brandDetail = data || {}
+				this.isShowPopup = true
 				uni.hideLoading()
 			} catch (error) {
 				console.log(error)
@@ -252,14 +232,12 @@ export default {
 <style lang="less" scoped>
 .member-card-commission-container {
 	min-height: 100vh;
-	background-color: #eeeeee;
+	background-color: #f1f1f1;
 	box-sizing: border-box;
 
-	/deep/ .tui-card {
-		margin: 0;
-
-		.tui-card-header {
-			padding: 10rpx 20rpx;
+	.top-btn {
+		/deep/ .tui-btn-warning {
+			background-color: #ef530e !important;
 		}
 	}
 
@@ -269,7 +247,7 @@ export default {
 
 	/deep/ .j-header-wrapper {
 		padding: 24rpx 12rpx 10rpx;
-		background-color: #f5f5f5;
+		background-color: #ffffff;
 	}
 }
 </style>

@@ -1,74 +1,82 @@
 <template>
 	<view class="settlement-review-container">
-		<JHeader title="会员卡结算审核列表" width="50" height="50"></JHeader>
+		<JHeader title="会员卡结算审核" width="50" height="50"></JHeader>
 
-		<view v-if="cardApplyList && cardApplyList.length" style="margin: 10rpx 0 0;">
-			<view v-for="(item, index) in cardApplyList" :key="index" style="padding: 0 20rpx 35rpx;">
-				<tui-card
-					:title="{ text: `${item.applyOrderCode || '--'}` }"
-					:tag="{ text: `ID：${item.applySettlementId || '--'}` }"
-				>
-					<template #body>
-						<view style="padding: 10rpx 20rpx 0;font-size: 30rpx;">
-							<view>
-								<!-- <view>店铺ID：{{ item.shopId || '--' }}</view> -->
-								<view style="display: flex;justify-content: space-between;align-items: center;flex-wrap: wrap;">
-									<view style="display: flex;align-items: center;">
-										<text>结算金额：</text>
-										<text style="font-weight: bold;color: #e02208;">
-											￥{{ typeof item.applyPrice === 'number' ? item.applyPrice : '--' }}
-										</text>
-										<text style="font-size: 30rpx;">
-											（{{ { 1: '待审核', 2: '已结算', 3: '退回结算' }[item.status] || '--' }}）
-										</text>
-									</view>
-									<view v-if="item.settlementCodeId">
-										校验码ID：{{ item.settlementCodeId }}
-									</view>
-								</view>
-							</view>
-							<view
-								style="margin-top: 12rpx;padding-top: 12rpx;border-top: 2rpx dashed #dddddd;font-size: 26rpx;color: #999999;"
-							>
-								<view style="display: flex;justify-content: space-between;">
-									<text>申请时间：</text>
-									<text>{{ item.applyTime || '--' }}</text>
-								</view>
-								<view v-if="item.settlementTime" style="display: flex;justify-content: space-between;">
-									<text>结算时间：</text>
-									<text>{{ item.settlementTime }}</text>
-								</view>
-							</view>
-						</view>
-					</template>
-					<template #footer>
-						<view
-							style="display: flex;justify-content: flex-end;align-items: center;flex-wrap: wrap;padding: 10rpx 20rpx;"
+		<view v-if="cardApplyList && cardApplyList.length" style="margin: 30rpx 0 0;">
+			<view
+				v-for="(item, index) in cardApplyList" :key="index"
+				style="margin: 0 30rpx 24rpx;padding: 30rpx 32rpx 0;background-color: #ffffff;border-radius: 16rpx;"
+			>
+				<view style="font-size: 30rpx;">
+					<view style="display: flex;justify-content: space-between;align-items: center;">
+						<!-- <view>店铺ID：{{ item.shopId || '--' }}</view> -->
+						<tui-button
+							v-if="item.buyerUserId" type="warning" width="200rpx" height="50rpx"
+							margin="0" :size="28"
+							shape="circle" @click="getUserInfo(item.buyerUserId)"
 						>
-							<tui-button
-								v-if="item.cardId" type="warning" width="200rpx" height="50rpx"
-								margin="0 0 10rpx 20rpx"
-								shape="circle" @click="getMemberCardInfo(item.cardId)"
-							>
-								关联会员卡
-							</tui-button>
-							<tui-button
-								v-if="item.buyerUserId" type="warning" width="180rpx" height="50rpx"
-								margin="0 0 10rpx 20rpx"
-								shape="circle" @click="getUserInfo(item.buyerUserId)"
-							>
-								申请用户
-							</tui-button>
-							<tui-button
-								v-if="item.applySettlementId && ((item.status === 1) || (item.status === 3))" type="warning"
-								width="180rpx" height="50rpx" margin="0 0 10rpx 20rpx" shape="circle"
-								@click="(cardApplyForm.applySettlementId = item.applySettlementId) && (isShowCardApplyDialog = true)"
-							>
-								同意结算
-							</tui-button>
+							查看申请用户
+						</tui-button>
+						<view style="font-size: 22rpx;color: #ffffff;">
+							<text v-if="item.status === 1" style="padding: 4rpx 16rpx;background-color: #ef530e;border-radius: 6rpx;">
+								待审核
+							</text>
+							<text v-else-if="item.status === 2" style="padding: 4rpx 16rpx;background-color: #0fb135;border-radius: 6rpx;">
+								已结算
+							</text>
+							<text v-else-if="item.status === 3" style="padding: 4rpx 16rpx;background-color: #ff3636;border-radius: 6rpx;">
+								退回结算
+							</text>
+							<text v-else>--</text>
 						</view>
-					</template>
-				</tui-card>
+					</view>
+					<view
+						style="margin-top: 32rpx;font-size: 28rpx;color: #999999;"
+					>
+						<view style="display: flex;align-items: center;padding-bottom: 26rpx;">
+							<view style="min-width: 162rpx;">结算金额</view>
+							<view style="flex: 1;margin: 0 0 0 40rpx;color: #ef530e;font-weight: bold;">
+								{{ typeof item.applyPrice === 'number' ? item.applyPrice : '--' }}元
+							</view>
+						</view>
+						<view v-if="item.settlementCodeId" style="display: flex;align-items: center;padding-bottom: 26rpx;">
+							<view style="min-width: 162rpx;">校验码ID</view>
+							<view style="flex: 1;margin: 0 0 0 40rpx;color: #191919;">{{ item.settlementCodeId || '--' }}</view>
+						</view>
+						<view style="display: flex;align-items: center;padding-bottom: 26rpx;">
+							<view style="min-width: 162rpx;">结算编号</view>
+							<view style="flex: 1;margin: 0 0 0 40rpx;color: #191919;">{{ item.applyOrderCode || '--' }}</view>
+						</view>
+						<view style="display: flex;align-items: center;padding-bottom: 26rpx;">
+							<view style="min-width: 162rpx;">申请时间</view>
+							<view style="flex: 1;margin: 0 0 0 40rpx;color: #191919;">{{ item.applyTime || '--' }}</view>
+						</view>
+						<view v-if="item.settlementTime" style="display: flex;align-items: center;padding-bottom: 26rpx;">
+							<view style="min-width: 162rpx;">结算时间</view>
+							<view style="flex: 1;margin: 0 0 0 40rpx;color: #191919;">{{ item.settlementTime || '--' }}</view>
+						</view>
+					</view>
+				</view>
+				<view
+					class="operation-btn"
+					style="display: flex;justify-content: flex-end;align-items: center;flex-wrap: wrap;padding: 10rpx 0 24rpx;"
+				>
+					<tui-button
+						v-if="item.cardId" type="warning" width="180rpx" height="50rpx"
+						margin="0 0 10rpx 20rpx" :size="28"
+						shape="circle" @click="getMemberCardInfo(item.cardId)"
+					>
+						关联会员卡
+					</tui-button>
+					<tui-button
+						v-if="item.applySettlementId && ((item.status === 1) || (item.status === 3))"
+						type="warning" width="160rpx" height="50rpx" margin="0 0 10rpx 20rpx"
+						shape="circle" :size="28"
+						@click="(cardApplyForm.applySettlementId = item.applySettlementId) && (isShowCardApplyDialog = true)"
+					>
+						同意结算
+					</tui-button>
+				</view>
 			</view>
 		</view>
 		<view style="padding-bottom: 45rpx;">
@@ -225,16 +233,8 @@ export default {
 <style lang="less" scoped>
 .settlement-review-container {
 	min-height: 100vh;
-	background-color: #eeeeee;
+	background-color: #f1f1f1;
 	box-sizing: border-box;
-
-	/deep/ .tui-card {
-		margin: 0;
-
-		.tui-card-header {
-			padding: 10rpx 20rpx;
-		}
-	}
 
 	/deep/ .tui-popup-class.tui-bottom-popup {
 		height: 85vh !important;
@@ -242,7 +242,13 @@ export default {
 
 	/deep/ .j-header-wrapper {
 		padding: 24rpx 12rpx 10rpx;
-		background-color: #f5f5f5;
+		background-color: #ffffff;
+	}
+
+	.operation-btn {
+		/deep/ .tui-btn-warning {
+			background-color: #ef530e !important;
+		}
 	}
 }
 </style>
