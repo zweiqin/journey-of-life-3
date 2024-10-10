@@ -6,6 +6,7 @@ import { getUserId, isInWx, jumpToOtherProject } from './index'
 
 export const paymentTypeEnum = {
 	'1': 'shoppingMall',
+	'1a': 'procureCounter',
 	'2': 'businessDistrict',
 	'3': 'settled',
 	'4': 'voucher',
@@ -46,6 +47,8 @@ export function handleOrderTypeJump(params = {}) {
 	} else if (type === 'businessDistrict') {
 		// 跳到'订单跳转页'
 		uni.switchTab({ url: '/pages/order/order' })
+	} else if (type === 'procureCounter') {
+		uni.redirectTo({ url: '/another-tf/another-user/purchaseOrder/index' })
 	} else if (type === 'settled') {
 		uni.switchTab({ url: '/pages/user/user' })
 	} else if (type === 'voucher') {
@@ -80,6 +83,8 @@ export function handleOrderTypeFailJump(params = {}) {
 	// 支付结果是失败的跳转。可能会存在本身就在'订单跳转页'进行支付，并支付失败的情况。
 	if (['shoppingMall', 'businessDistrict'].includes(type)) {
 		uni.reLaunch({ url: '/pages/order/order' })
+	} else if ([ 'procureCounter' ].includes(type)) {
+		uni.reLaunch({ url: '/another-tf/another-user/purchaseOrder/index' })
 	} else if (['settled', 'voucher', 'mapRedEnvelope', 'article', 'shopRecharge', 'balance', 'verification', 'activityDeposit'].includes(type)) {
 		uni.redirectTo({ url: '/user/otherServe/payment-completed/index?state=fail' })
 	} else if ([ 'memberCard' ].includes(type)) {

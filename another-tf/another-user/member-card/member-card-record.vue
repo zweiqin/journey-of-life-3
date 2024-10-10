@@ -108,7 +108,7 @@ export default {
 					page: 1,
 					pageSize: 20
 				},
-				data: [{}, {}, {}],
+				data: [],
 				listTotal: 0,
 				isEmpty: false
 			},

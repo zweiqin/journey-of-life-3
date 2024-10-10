@@ -1,27 +1,16 @@
 <template>
 	<view class="member-card-equity-container">
 		<JHeader title="商家会员卡权益列表" width="50" height="50"></JHeader>
-		<view style="display: flex;justify-content: flex-end;flex-wrap: wrap;padding: 0 20rpx;">
-			<tui-button
-				type="blue" width="260rpx" height="60rpx" margin="10rpx 0 0 20rpx"
-				shape="circle"
-				@click="go('/another-tf/another-shop/member-card/member-card-equity-form')"
-			>
-				新增会员卡权益
-			</tui-button>
-		</view>
 
 		<view style="padding: 18rpx 20rpx 0;">
 			<view style="display: flex;align-items: center;padding: 0 0 12rpx;">
-				<view>
-					会员卡：{{ cardName || '无' }}
-				</view>
+				<view>会员卡：{{ cardName || queryInfo.cardId ? `已选 ID：${queryInfo.cardId}` : "请选择会员卡" }}</view>
 				<tui-button
-					type="warning" width="120rpx" height="50rpx" shape="circle"
-					margin="0 0 0 20rpx"
+					type="warning" width="160rpx" height="50rpx" shape="circle"
+					margin="0 0 0 20rpx" :size="28"
 					@click="(popupType = 'memberCardsPopup') && (isShowPopup = true) && !memberCardsInfo.isEmpty && !memberCardsInfo.data.length && getMemberCardSearchList()"
 				>
-					选择
+					重新选择
 				</tui-button>
 			</view>
 			<view class="search-btn" style="display: flex;align-items: center;padding: 0 0 12rpx;">
@@ -55,10 +44,10 @@
 						<view style="display: flex;align-items: center;padding: 6rpx 10rpx;font-size: 28rpx;">
 							<tui-radio
 								:checked="queryInfo.memberCardType === item.value" :value="item.value"
-								color="#07c160" border-color="#999" :scale-ratio="0.8"
+								color="#ef530e" border-color="#ef5511" :scale-ratio="0.8"
 							>
 							</tui-radio>
-							<text>{{ item.name }}</text>
+							<text style="padding: 0 0 0 4rpx;">{{ item.name }}</text>
 						</view>
 					</tui-label>
 				</view>
@@ -101,7 +90,7 @@
 							<tui-button
 								type="warning" width="120rpx" height="50rpx" margin="0 0 0 20rpx"
 								shape="circle"
-								@click="go(`/another-tf/another-shop/member-card/member-card-equity-form?id=${item.id}`)"
+								@click="go(`/another-tf/another-shop/member-card/member-card-equity-form?id=${item.equityId}&cardId=${queryInfo.cardId}`)"
 							>
 								编辑
 							</tui-button>
@@ -124,6 +113,18 @@
 			>
 			</LoadingMore>
 			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无会员卡权益内容~</tui-no-data>
+		</view>
+		<view
+			class="operation-btn"
+			style="width: 100%;position: fixed;bottom: 0;left: 0;background: #f0f0f0;padding: 30rpx;box-sizing: border-box;"
+		>
+			<tui-button
+				type="warning" width="auto" height="86rpx" margin="10rpx 16rpx 0"
+				:size="28"
+				@click="go(`/another-tf/another-shop/member-card/member-card-equity-form?cardId=${queryInfo.cardId}`)"
+			>
+				新增会员卡权益
+			</tui-button>
 		</view>
 
 		<tui-bottom-popup
@@ -174,10 +175,10 @@
 										<view style="display: flex;align-items: center;padding: 6rpx 10rpx;font-size: 28rpx;">
 											<tui-radio
 												:checked="memberCardsInfo.query.memberCardType === item.value" :value="item.value"
-												color="#07c160" border-color="#999" :scale-ratio="0.8"
+												color="#ef530e" border-color="#ef5511" :scale-ratio="0.8"
 											>
 											</tui-radio>
-											<text>{{ item.name }}</text>
+											<text style="padding: 0 0 0 4rpx;">{{ item.name }}</text>
 										</view>
 									</tui-label>
 								</view>
@@ -195,10 +196,10 @@
 										<view style="display: flex;align-items: center;padding: 6rpx 10rpx;font-size: 28rpx;">
 											<tui-radio
 												:checked="memberCardsInfo.query.memberCardState === item.value" :value="item.value"
-												color="#07c160" border-color="#999" :scale-ratio="0.8"
+												color="#ef530e" border-color="#ef5511" :scale-ratio="0.8"
 											>
 											</tui-radio>
-											<text>{{ item.name }}</text>
+											<text style="padding: 0 0 0 4rpx;">{{ item.name }}</text>
 										</view>
 									</tui-label>
 								</view>
@@ -208,18 +209,18 @@
 							<view v-for="(item, index) in memberCardsInfo.data" :key="index" style="padding: 0 20rpx 35rpx;">
 								<ATFMemberCardInfo
 									:data="item" :is-show-shop="false" :is-shop-operation="false" is-show-select
-									@select="(e) => (queryInfo.cardId = e.cardId) && (cardName = e.cardName) && (isShowPopup = false)"
+									@select="(e) => ((queryInfo.cardId = e.cardId) && (cardName = e.cardName) && (isShowPopup = false)) || ((queryInfo.page = 1) && getCardEquitySearchList())"
 								>
 								</ATFMemberCardInfo>
 							</view>
 						</view>
 						<view style="padding-bottom: 45rpx;">
 							<LoadingMore
-								:status="!isEmpty && !memberCardsInfo.data.length
-									? 'loading' : !isEmpty && memberCardsInfo.data.length && (memberCardsInfo.data.length >= memberCardsInfo.listTotal) ? 'no-more' : ''"
+								:status="!memberCardsInfo.isEmpty && !memberCardsInfo.data.length
+									? 'loading' : !memberCardsInfo.isEmpty && memberCardsInfo.data.length && (memberCardsInfo.data.length >= memberCardsInfo.listTotal) ? 'no-more' : ''"
 							>
 							</LoadingMore>
-							<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无商家会员卡内容~</tui-no-data>
+							<tui-no-data v-if="memberCardsInfo.isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无商家会员卡内容~</tui-no-data>
 						</view>
 					</view>
 				</view>
@@ -261,6 +262,9 @@ export default {
 			},
 			cardName: ''
 		}
+	},
+	onLoad(options) {
+		this.queryInfo.cardId = options.cardId || ''
 	},
 	onShow() {
 		this.$store.dispatch('auth/unifiedProcessingShopAction', {
@@ -366,13 +370,23 @@ export default {
 <style lang="less" scoped>
 .member-card-equity-container {
 	min-height: 100vh;
-	background-color: #eeeeee;
+	background-color: #f1f1f1;
 	box-sizing: border-box;
 
 	.search-btn {
 		/deep/ .tui-input__wrap {
 			border: 2rpx solid #EF5511;
 			border-radius: 8rpx;
+		}
+	}
+
+	.operation-btn {
+		/deep/ .tui-btn {
+			border-radius: 20rpx;
+		}
+
+		/deep/ .tui-btn-warning {
+			background-color: #ef530e !important;
 		}
 	}
 
@@ -390,7 +404,7 @@ export default {
 
 	/deep/ .j-header-wrapper {
 		padding: 24rpx 12rpx 10rpx;
-		background-color: #f5f5f5;
+		background-color: #ffffff;
 	}
 }
 </style>

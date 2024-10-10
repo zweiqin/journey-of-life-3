@@ -84,7 +84,7 @@
 					? 'loading' : !isEmpty && cardSettlementList.length && (cardSettlementList.length >= cardSettlementTotal) ? 'no-more' : ''"
 			>
 			</LoadingMore>
-			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无会员卡权益内容~</tui-no-data>
+			<tui-no-data v-if="isEmpty" :fixed="false" style="padding-top: 60rpx;">暂无会员卡结算记录~</tui-no-data>
 		</view>
 
 		<tui-bottom-popup :z-index="997" :mask-z-index="996" :show="isShowPopup" @close="() => { }">
@@ -196,7 +196,7 @@ export default {
 <style lang="less" scoped>
 .settlement-record-container {
 	min-height: 100vh;
-	background-color: #eeeeee;
+	background-color: #f1f1f1;
 	box-sizing: border-box;
 
 	/deep/ .tui-card {
@@ -213,7 +213,7 @@ export default {
 
 	/deep/ .j-header-wrapper {
 		padding: 24rpx 12rpx 10rpx;
-		background-color: #f5f5f5;
+		background-color: #ffffff;
 	}
 }
 </style>

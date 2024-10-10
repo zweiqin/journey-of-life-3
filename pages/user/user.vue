@@ -37,15 +37,14 @@
 				:show="isShowLotteryDialog" title="团蜂抽奖系统" @click="handleLotteryDialog"
 			>
 				<template #content>
-					<view style="text-align: left;">
+					<view style="text-align: left;color: #000000;">
 						<!-- <tui-input v-model="lotteryForm.codeWordLottery" type="text" placeholder="请输入抽奖暗语"></tui-input> -->
 						<tui-input
 							v-model="lotteryForm.name" label="用户名称" :label-size="26" padding="20rpx 0 20rpx 0"
-							type="text"
-							placeholder="请输入用户名称"
+							type="text" placeholder="请输入用户名称"
 						></tui-input>
 						<ATFUpload
-							title="请选择用户头像" :img-url="common.seamingImgUrl(lotteryForm.url)" purpose-text="设置用户在抽奖模块里的头像，以便展示抽奖结果"
+							margin="30rpx 0" title="请选择用户头像" :img-url="common.seamingImgUrl(lotteryForm.url)" purpose-text="设置用户在抽奖模块里的头像，以便展示抽奖结果"
 							@upload="(e) => (lotteryForm.url = e) && $forceUpdate()" @delete="lotteryForm.url = '' || $forceUpdate()"
 						>
 						</ATFUpload>

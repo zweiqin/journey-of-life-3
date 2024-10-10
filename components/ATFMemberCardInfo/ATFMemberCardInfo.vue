@@ -1,23 +1,105 @@
 <template>
 	<view class="member-card-info-container">
 		<view v-if="data.cardId">
-			<tui-card :title="{ text: `${data.cardName}` }" :tag="{ text: `ID：${data.cardId || '--'}` }">
+			<tui-card :title="{ text: `` }" :tag="{ text: `` }">
 				<template #body>
-					<view style="padding: 10rpx 20rpx 0;font-size: 30rpx;">
-						<view style="padding: 0 10rpx;text-align: center;">
+					<view style="font-size: 30rpx;">
+						<view
+							style="position: relative;text-align: center;"
+							@click="cardColor = cardColor === '#f8f8f9' ? '#4e3200' : '#f8f8f9'"
+						>
 							<image
-								style="width: 100%;max-height: 350rpx;vertical-align: bottom;" mode="widthFix"
+								style="width: 100%;min-height: 340rpx;max-height: 435rpx;vertical-align: bottom;border-radius: 10rpx;"
+								mode="widthFix"
 								:src="common.seamingImgUrl(data.cardCover) || require('../../static/images/new-user/logo.jpg')"
 							>
 							</image>
+
+							<view
+								v-if="!isShowDetails"
+								style="position: absolute;top: 0;left: 0;width: 100%;padding: 20rpx 34rpx 0;text-align: left;box-sizing: border-box;"
+								:style="{ color: cardColor }"
+							>
+								<view style="display: flex;justify-content: space-between;align-items: center;">
+									<view
+										style="flex: 1;font-size: 40rpx;font-weight: bold;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+									>
+										{{ data.cardName || '--' }}
+									</view>
+									<view v-if="data.memberCardState" style="font-size: 24rpx;color: #ffffff;">
+										<view
+											v-if="data.memberCardState === 1"
+											style="padding: 2rpx 14rpx;background-color: #0fb135;border-radius: 6rpx;"
+										>
+											已发行
+										</view>
+										<view
+											v-else-if="data.memberCardState === 2"
+											style="padding: 2rpx 14rpx;background-color: #d1d1d1;border-radius: 6rpx;"
+										>
+											未发行
+										</view>
+										<view
+											v-else-if="data.memberCardState === 3"
+											style="padding: 2rpx 14rpx;background-color: #d1d1d1;border-radius: 6rpx;"
+										>
+											已下架
+										</view>
+										<view v-else>--</view>
+									</view>
+								</view>
+								<view style="margin: 18rpx 0 0;font-size: 28rpx;">
+									<view
+										style="width: fit-content;padding: 2rpx 34rpx;font-weight: bold;background-color: rgba(255, 255, 255, 0.4);border-radius: 28rpx;"
+									>
+										<text v-if="data.memberCardLevel === 1">消费卡</text>
+										<text v-else-if="data.memberCardLevel === 2">次数卡</text>
+										<text v-else>--</text>
+									</view>
+									<view style="margin-top: 12rpx;border-radius: 12rpx;">
+										<view style="display: flex;align-items: center;padding-bottom: 18rpx;">
+											<view style="min-width: 162rpx;">会员卡ID</view>
+											<view style="flex: 1;margin: 0 0 0 40rpx;font-weight: bold;">{{ data.cardId }}</view>
+										</view>
+										<view style="display: flex;align-items: center;padding-bottom: 18rpx;">
+											<view style="min-width: 162rpx;">人群级别</view>
+											<view style="flex: 1;margin: 0 0 0 40rpx;font-weight: bold;">
+												<text v-if="data.memberCardType === 1">全部会员</text>
+												<text v-else-if="data.memberCardType === 2">团长</text>
+												<text v-else-if="data.memberCardType === 3">合伙人</text>
+												<text v-else>--</text>
+											</view>
+										</view>
+										<view style="display: flex;align-items: center;padding-bottom: 18rpx;">
+											<view style="min-width: 162rpx;">发行渠道：</view>
+											<view style="flex: 1;margin: 0 0 0 40rpx;font-weight: bold;">
+												<text v-if="data.memberCardChannel === 1">app</text>
+												<text v-else-if="data.memberCardChannel === 2">H5</text>
+												<text v-else-if="data.memberCardChannel === 3">支付宝小程序</text>
+												<text v-else-if="data.memberCardChannel === 4">线下渠道</text>
+												<text v-else-if="data.memberCardChannel === 5">微信小程序</text>
+												<text v-else-if="data.memberCardChannel === 6">代理发行</text>
+												<text v-else>--</text>
+											</view>
+										</view>
+										<view style="display: flex;align-items: center;">
+											<view style="min-width: 162rpx;">发放张数</view>
+											<view style="flex: 1;margin: 0 0 0 40rpx;font-weight: bold;">
+												{{ data.memberCardNumber || 0 }}张
+											</view>
+										</view>
+									</view>
+								</view>
+							</view>
+
 						</view>
-						<view style="margin: 10rpx 0 0;">
-							<!-- <view style="display: flex;justify-content: space-between;align-items: center;padding: 6rpx 0 0;">
-								<view>
-								会员卡名称：{{ data.cardName || '--' }}
+						<view v-if="isShowDetails" style="padding: 10rpx 20rpx 0;">
+							<view style="display: flex;justify-content: space-between;align-items: center;padding: 6rpx 0 0;">
+								<view style="flex: 1;">
+									会员卡名称：{{ data.cardName || '--' }}
 								</view>
 								<view style="font-size: 26rpx;color: #666666;">（ID：{{ data.cardId }}）</view>
-								</view> -->
+							</view>
 							<view style="display: flex;align-items: center;justify-content: space-between;padding: 6rpx 0 0;">
 								<view>
 									<text>类型：</text>
@@ -59,7 +141,7 @@
 										￥{{ typeof data.agentPurchasePrice === 'number' ? data.agentPurchasePrice : '--' }}
 									</text>
 								</view>
-								<view v-if="data.memberCardDays">会员天数：{{ data.memberCardDays }}</view>
+								<view v-if="data.memberCardDays">会员卡有效天数：{{ data.memberCardDays }}</view>
 							</view>
 
 							<view
@@ -80,33 +162,22 @@
 									<text>创建时间：</text>
 									<text>{{ data.createTime }}</text>
 								</view>
-								<view style="display: flex;justify-content: space-between;align-items: center;flex-wrap: wrap;">
-									<view style="display: flex;align-items: center;">
-										<view>
-											<text>发行渠道：</text>
-											<text v-if="data.memberCardChannel === 1">app</text>
-											<text v-else-if="data.memberCardChannel === 2">H5</text>
-											<text v-else-if="data.memberCardChannel === 3">支付宝小程序</text>
-											<text v-else-if="data.memberCardChannel === 4">线下渠道</text>
-											<text v-else-if="data.memberCardChannel === 5">微信小程序</text>
-											<text v-else-if="data.memberCardChannel === 6">代理发行</text>
-											<text v-else>--</text>
-										</view>
-										<text v-if="data.memberCardNumber">
-											（{{ data.memberCardNumber }}张）
-										</text>
-										<view v-if="data.memberCardState">
-											（{{ { 1: '已发行', 2: '未发行', 3: '已下架' }[data.memberCardState] || '--' }}）
-										</view>
+								<view style="display: flex;align-items: center;">
+									<view>
+										<text>发行渠道：</text>
+										<text v-if="data.memberCardChannel === 1">app</text>
+										<text v-else-if="data.memberCardChannel === 2">H5</text>
+										<text v-else-if="data.memberCardChannel === 3">支付宝小程序</text>
+										<text v-else-if="data.memberCardChannel === 4">线下渠道</text>
+										<text v-else-if="data.memberCardChannel === 5">微信小程序</text>
+										<text v-else-if="data.memberCardChannel === 6">代理发行</text>
+										<text v-else>--</text>
 									</view>
-									<view v-if="isShowShop && data.shopId">
-										<tui-button
-											type="warning" width="180rpx" height="50rpx" margin="0 0 0 20rpx"
-											shape="circle"
-											@click="getBrandDetail(data.shopId)"
-										>
-											所属店铺
-										</tui-button>
+									<text v-if="data.memberCardNumber">
+										（{{ data.memberCardNumber }}张）
+									</text>
+									<view v-if="data.memberCardState">
+										（{{ { 1: '已发行', 2: '未发行', 3: '已下架' }[data.memberCardState] || '--' }}）
 									</view>
 								</view>
 							</view>
@@ -114,43 +185,89 @@
 					</view>
 				</template>
 				<template #footer>
-					<view style="display: flex;justify-content: flex-end;align-items: center;padding: 10rpx 20rpx;">
-						<view v-if="isShowPurchase && (data.memberCardState === 1)">
+					<view
+						style="width: 100%;display: flex;justify-content: space-between;align-items: center;flex-wrap: wrap;padding: 10rpx 0;"
+					>
+						<view v-if="isShowDetails" style="min-width: 49%;padding: 10rpx 0;">
 							<tui-button
-								type="blue" width="120rpx" height="50rpx" margin="0 0 0 20rpx"
-								shape="circle"
+								type="warning" width="auto" height="50rpx" margin="0"
+								plain link bold :size="28"
+								@click="isShowDetails = false"
+							>
+								收起详情
+							</tui-button>
+						</view>
+						<view v-else style="min-width: 49%;padding: 10rpx 0;">
+							<tui-button
+								type="warning" width="auto" height="50rpx" margin="0"
+								plain link bold :size="28"
+								@click="isShowDetails = true"
+							>
+								详情
+							</tui-button>
+						</view>
+						<view v-if="isShowShop && data.shopId" style="min-width: 49%;padding: 10rpx 0;">
+							<tui-button
+								type="warning" width="auto" height="50rpx" margin="0"
+								plain link bold :size="28"
+								@click="getBrandDetail(data.shopId)"
+							>
+								所属店铺
+							</tui-button>
+						</view>
+						<view v-if="isShowPurchase && (data.memberCardState === 1)" style="min-width: 49%;padding: 10rpx 0;">
+							<tui-button
+								type="warning" width="auto" height="50rpx" margin="0"
+								plain link bold :size="28"
 								@click="$emit('purchase', data)"
 							>
 								购买
 							</tui-button>
 						</view>
-						<view v-if="isShowSelect">
+						<view v-if="isShowSelect" style="min-width: 49%;padding: 10rpx 0;">
 							<tui-button
-								type="warning" width="120rpx" height="50rpx" margin="0 0 0 20rpx"
-								shape="circle"
+								type="warning" width="auto" height="50rpx" margin="0"
+								plain link bold :size="28"
 								@click="$emit('select', data)"
 							>
 								选择
 							</tui-button>
 						</view>
-						<view v-if="isShopOperation" style="display: flex;align-items: center;">
+						<view v-if="isShopOperation" style="min-width: 49%;padding: 10rpx 0;">
 							<tui-button
-								type="warning" width="120rpx" height="50rpx" margin="0 0 0 20rpx"
-								shape="circle"
-								@click="go(`/another-tf/another-shop/member-card/shop-member-card-form?id=${data.id}`)"
+								type="warning" width="auto" height="50rpx" margin="0"
+								plain link bold :size="28"
+								@click="go(`/another-tf/another-shop/member-card/member-card-equity?cardId=${data.cardId}`)"
+							>
+								权益
+							</tui-button>
+						</view>
+						<view v-if="isShopOperation" style="min-width: 49%;padding: 10rpx 0;">
+							<tui-button
+								type="warning" width="auto" height="50rpx" margin="0"
+								plain link bold :size="28"
+								@click="go(`/another-tf/another-shop/member-card/shop-member-card-form?id=${data.cardId}`)"
 							>
 								编辑
 							</tui-button>
+						</view>
+						<view v-if="isShopOperation && (data.memberCardState === 1)" style="min-width: 49%;padding: 10rpx 0;">
 							<tui-button
-								v-if="data.memberCardState === 1" type="danger"
-								width="120rpx" height="50rpx" margin="0 0 0 20rpx" shape="circle"
+								type="warning" width="auto" height="50rpx" margin="0"
+								plain link bold :size="28"
 								@click="handleMemberCardOffShelf(data)"
 							>
 								下架
 							</tui-button>
+						</view>
+						<view
+							v-if="isShopOperation && ((data.memberCardState === 2) || (data.memberCardState === 3))"
+							style="min-width: 49%;padding: 10rpx 0;"
+						>
 							<tui-button
-								v-if="(data.memberCardState === 2) || (data.memberCardState === 3)" type="danger" width="120rpx" height="50rpx"
-								margin="0 0 0 20rpx" shape="circle" @click="handleMemberCardIssue(data)"
+								type="warning" width="auto" height="50rpx" margin="0"
+								plain link bold :size="28"
+								@click="handleMemberCardIssue(data)"
 							>
 								发行
 							</tui-button>
@@ -210,7 +327,9 @@ export default {
 	data() {
 		return {
 			isShowPopup: false,
-			brandDetail: {}
+			brandDetail: {},
+			cardColor: '#f8f8f9',
+			isShowDetails: false
 		}
 	},
 	methods: {
@@ -290,10 +409,10 @@ export default {
 	box-sizing: border-box;
 
 	/deep/ .tui-card {
-		margin: 0;
+		margin: 0 !important;
 
 		.tui-card-header {
-			padding: 10rpx 20rpx;
+			padding: 0 !important;
 		}
 	}
 

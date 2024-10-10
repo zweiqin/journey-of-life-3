@@ -10,7 +10,7 @@
 			</view>
 		</BeeBack>
 		<view
-			style="padding: 20rpx 30rpx 18rpx;"
+			style="padding: 18rpx 20rpx;margin: 20rpx 20rpx 0;background-color: #ffffff;border-radius: 20rpx;"
 			@click="go(`/another-tf/another-user/shop/shop-detail?shopId=${shopId}`)"
 		>
 			<view style="display: flex;align-items: stretch;">

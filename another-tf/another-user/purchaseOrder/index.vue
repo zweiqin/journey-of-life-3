@@ -1,6 +1,14 @@
 <template>
   <view class="purchaseOrder">
-		<JHeader title="采购单列表" width="50" height="50"></JHeader>
+		<BeeBack>
+			<view
+				style="display: flex;align-items: center;justify-content: space-between;padding: 20rpx 20rpx 16rpx;background-color: #f5f5f5;"
+			>
+				<BeeIcon name="arrowleft" :size="26" color="#222229" style="width: fit-content;">
+				</BeeIcon>
+				<text style="flex: 1;margin-left: -40rpx;text-align: center;">采购单列表</text>
+			</view>
+		</BeeBack>
     <view class="search-box">
       <view class="sarch">
         <tui-input
@@ -32,7 +40,7 @@
       >
     </view>
     <view class="order-list" v-if="orderList.length > 0">
-      <view class="order-item" v-for="(item,index) in orderList" :key="index" @click="go(`/another-tf/another-serve/orderDetails/index?orderId=${item.orderId}&isProcure=1`)"">
+      <view class="order-item" v-for="(item,index) in orderList" :key="index" @click="go(`/another-tf/another-serve/orderDetails/index?orderId=${item.orderId}&isProcure=1`)">
         <view class="item-top">
           <view>订单编号：{{ item.orderFormid }}</view>
           <!-- '订单状态 1-待付款 2-待发货 3-待收货 4-已完成 5-已完成 6-已完成 7-已完成 8-已完成 9-待核销已付款 10-已核销 11-未付款核销', -->
@@ -74,7 +82,7 @@
       </view>
     </view>
     <view class="empty" v-else>
-        <image class="" src="@/static/images/user/empty.png" />
+        <image class="" src="../../../static/images/user/empty.png" />
         <view>暂无采购单定订单</view>
     </view>
   </view>
