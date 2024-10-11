@@ -2457,9 +2457,21 @@
           }
         },
         {
+          "path": "another-shop/member-card/member-card-order",
+          "style": {
+            "navigationBarTitleText": "会员卡订单"
+          }
+        },
+        {
           "path": "another-shop/member-card/settlement-review",
           "style": {
             "navigationBarTitleText": "会员卡结算审核列表"
+          }
+        },
+        {
+          "path": "another-shop/member-card/user-consumption",
+          "style": {
+            "navigationBarTitleText": "用户消费"
           }
         },
 				// 其它体系
