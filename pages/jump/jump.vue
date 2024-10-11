@@ -20,28 +20,36 @@
 				</view>
 				<view style="flex: 1;">
 					<tui-button
-						v-if="[ 9 ].includes(orderInfo.state)"
-						margin="0 auto" type="green" width="260rpx" shape="circle"
-						@click="handleVerification()"
-					>
-						确认核销
-					</tui-button>
-					<tui-button
-						v-else-if="isOrderVerification" margin="0 auto" type="green" width="260rpx"
+						v-if="isOrderVerification" margin="0 auto" type="green" width="260rpx"
 						plain link
 					>
 						已自动核销
 					</tui-button>
-					<tui-button
-						v-else margin="0 auto" type="green" width="260rpx"
-						plain link
-					>
-						等待付款
-					</tui-button>
+					<view v-else>
+						<tui-button
+							v-if="[8, 11].includes(orderInfo.state)" margin="0 auto" type="green" width="260rpx"
+							plain link
+						>
+							等待付款
+						</tui-button>
+						<tui-button
+							v-else-if="[ 9 ].includes(orderInfo.state)"
+							margin="0 auto" type="green" width="260rpx" shape="circle"
+							@click="handleVerification()"
+						>
+							确认核销
+						</tui-button>
+						<tui-button
+							v-else-if="[ 10 ].includes(orderInfo.state)" margin="0 auto" type="green" width="260rpx"
+							plain link
+						>
+							已核销
+						</tui-button>
+					</view>
 				</view>
 			</view>
 		</view>
-		<view v-if="viewType === 'memberCardWriteOff'" style="padding: 24rpx;">
+		<view v-else-if="viewType === 'memberCardWriteOff'" style="padding: 24rpx;">
 			<JHeader tabbar="/pages/user/user" width="50" height="50" title="会员卡核销"></JHeader>
 			<view v-if="memberCardWriteOffForm.cardPurchasedInfo && memberCardWriteOffForm.cardPurchasedInfo.cardOrderId" style="margin-top: 40rpx;">
 				<ATFCardPurchasedInfo

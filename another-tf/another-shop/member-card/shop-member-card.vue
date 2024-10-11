@@ -1,20 +1,44 @@
 <template>
 	<view class="shop-member-card-container">
-		<JHeader title="商家会员卡列表" width="50" height="50"></JHeader>
+		<JHeader title="商家会员卡列表" width="50" height="50">
+			<template #ftFn>
+				<tui-button
+					type="warning" width="auto" height="56rpx" margin="0 18rpx 0 0"
+					:size="30" plain link bold
+					@click="go('/another-tf/another-shop/member-card/member-card-order')"
+				>
+					会员卡订单
+				</tui-button>
+			</template>
+		</JHeader>
 		<view class="top-btn" style="display: flex;justify-content: flex-end;flex-wrap: wrap;padding: 0 20rpx;">
 			<tui-button
-				type="warning" width="180rpx" height="56rpx" margin="10rpx 0 0 20rpx"
+				type="warning" width="100rpx" height="56rpx" margin="10rpx 0 0 20rpx"
+				shape="circle" :size="28"
+				@click="go('/another-tf/another-serve/withdraw/index?type=3')"
+			>
+				提现
+			</tui-button>
+			<tui-button
+				type="warning" width="160rpx" height="56rpx" margin="10rpx 0 0 20rpx"
 				shape="circle" :size="28"
 				@click="go('/another-tf/another-shop/member-card/settlement-review')"
 			>
 				结算审核
 			</tui-button>
 			<tui-button
-				type="warning" width="180rpx" height="56rpx" margin="10rpx 0 0 20rpx"
+				type="warning" width="160rpx" height="56rpx" margin="10rpx 0 0 20rpx"
 				shape="circle" :size="28"
 				@click="go('/another-tf/another-user/member-card/user-purchased?type=shop')"
 			>
 				用户已购
+			</tui-button>
+			<tui-button
+				type="warning" width="160rpx" height="56rpx" margin="10rpx 0 0 20rpx"
+				shape="circle" :size="28"
+				@click="go('/another-tf/another-shop/member-card/user-consumption')"
+			>
+				用户消费
 			</tui-button>
 		</view>
 

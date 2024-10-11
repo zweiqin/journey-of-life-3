@@ -24,19 +24,25 @@
 							</view>
 						</view>
 					</view>
-					<view v-if="isShowWriteOff && data.cardNum" style="display: flex;align-items: center;padding: 10rpx 0 0;">
-						<view>
-							核销码：{{ data.cardNum }}
+					<view
+						v-if="isShowWriteOff && data.cardNum"
+						style="display: flex;justify-content: space-between;align-items: center;"
+					>
+						<view
+							style="flex: 1;width: 0;display: flex;align-items: flex-end;"
+							@click="$copy(data.cardNum)"
+						>
+							<view
+								style="padding: 10rpx 0 0;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+							>
+								核销码：{{ data.cardNum }}
+							</view>
+							<view style="margin-left: 10rpx;font-size: 26rpx;color: #0b7cde;white-space: nowrap;">
+								复制
+							</view>
 						</view>
 						<tui-button
-							type="warning" width="100rpx" height="50rpx"
-							margin="0 0 0 20rpx" shape="circle"
-							:size="28" @click="$copy(data.cardNum)"
-						>
-							复制
-						</tui-button>
-						<tui-button
-							type="warning" width="180rpx" height="50rpx" margin="0 0 0 20rpx"
+							type="warning" width="180rpx" height="50rpx" margin="10rpx 0 0 20rpx"
 							shape="circle" :size="28" @click="getCode"
 						>
 							核销二维码
@@ -283,21 +289,21 @@
 							</view>
 						</view>
 					</view>
-					<view v-else-if="popupType === 'memberCardWriteOff'" style="padding: 40rpx 0 0;">
-						<view style="padding: 28rpx 0;margin: 0 100rpx;background-color: #ef530e;text-align: center;">
-							<view style="font-size: 34rpx;font-weight: bold;color: #ffffff;">会员卡订单核销二维码</view>
-							<view
-								style="position: relative;width: 420rpx;height: 420rpx;margin: 42rpx auto 0;background-color: #ffffff;border-radius: 10rpx;overflow: hidden;box-sizing: border-box;"
-							>
-								<view style="position: absolute;left: 0;top: 0;width: 100%;height: 100%;box-sizing: border-box;">
-									<view style="display: flex;align-items: center;justify-content: center;width: 100%;height: 100%;">
-										<image
-											:src="codePicUrl" style="width: 98%;height: 98%;" mode="widthFix"
-										/>
-									</view>
-								</view>
-							</view>
+					<view v-else-if="popupType === 'memberCardWriteOff'" style="padding: 40rpx 0 0;color: #191919;text-align: center;">
+						<view style="font-weight: bold;">会员卡订单核销二维码</view>
+						<image
+							style="width: 80rpx;height: 80rpx;border-radius: 50%;margin-top: 28rpx;" mode="aspectFit"
+							:src="require('../../static/images/new-user/fee.icon.png')"
+						>
+						</image>
+						<view style="font-size: 34rpx;font-weight: bold;margin-top: 14rpx;">{{ data.shopName || '--' }}</view>
+						<view style="font-size: 30rpx;color: #9e9e9e;margin-top: 26rpx;">使用时向商家出示二维码</view>
+						<view style="width: 100%;height: 100%;margin-top: 46rpx;">
+							<image
+								:src="codePicUrl" style="width: 54%;height: 54%;" mode="widthFix"
+							/>
 						</view>
+						<view style="font-size: 48rpx;font-weight: bold;margin-top: 58rpx;">{{ data.cardNum }}</view>
 						<!-- 生成二维码 -->
 						<view>
 							<uqrcode
